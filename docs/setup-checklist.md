@@ -19,11 +19,11 @@
 
 ## הגנה על הענף הראשי (זה מה שבפועל אוכף את R-016)
 - [x] להחליט איך נאכף אישור Production. הוחלט (2026-11-23): להישאר כרגע ב-GitHub Free. required reviewers על Environment לא זמין בריפו פרטי, ולכן האכיפה תהיה Tag ruleset (R-023, ADR-009).
-- [ ] (2026-11-23: The owner chose not to pay for Pro. The repo was made public instead, which gives rulesets for free; a deep scan found no secrets or family data, only the owner's commit email. Still open: the Tag ruleset on `v*`.) **לשדרג ל-GitHub Pro ולהקים Tag ruleset על `v*` שרק בעל הריפו יכול ליצור. חובה לפני נתונים אמיתיים, או לפני שסוכנים מתחילים לפתוח PR מול `main`, לפי מה שקודם.** Pro נדרש גם ל-Ruleset על `main` שבסעיף הבא.
+- [x] (2026-11-23: The owner chose not to pay for Pro. The repo was made public instead, which gives rulesets for free; a deep scan found no secrets or family data, only the owner's commit email. Still open: the Tag ruleset on `v*`.) **לשדרג ל-GitHub Pro ולהקים Tag ruleset על `v*` שרק בעל הריפו יכול ליצור. חובה לפני נתונים אמיתיים, או לפני שסוכנים מתחילים לפתוח PR מול `main`, לפי מה שקודם.** Pro נדרש גם ל-Ruleset על `main` שבסעיף הבא. Done 2026-11-23: `protect-releases` tag ruleset on `v*` is active (creation, update, deletion, force push restricted); only the Repository admin role bypasses it.
 - [ ] Ruleset על `main`: PR חובה, אישור אחד לפחות, בדיקות CI חובה, וחסימת דחיפה ישירה. (2026-11-23: `protect-main` is active: PR required, 1 approval, stale approvals dismissed, no deletion or force push, empty bypass list. Still open: required CI checks, once CI exists.)
-- [ ] קובץ CODEOWNERS שמחייב את האישור של בעל הריפו. (2026-11-23: `.github/CODEOWNERS` added; then turn on "Require review from Code Owners" in `protect-main`.)
-- [ ] לוודא שהבוט לא ברשימת העוקפים של ה-Ruleset, ושגם בעל הריפו כמנהל לא עוקף בטעות.
-- [ ] לבדוק בפועל: הבוט פותח PR, מנסה למזג בלי אישור, וההתנסות נחסמת.
+- [x] קובץ CODEOWNERS שמחייב את האישור של בעל הריפו. (2026-11-23: `.github/CODEOWNERS` added; then turn on "Require review from Code Owners" in `protect-main`.) Done 2026-11-23: merged in PR #2, and "Require review from Code Owners" is on in `protect-main`.
+- [x] לוודא שהבוט לא ברשימת העוקפים של ה-Ruleset, ושגם בעל הריפו כמנהל לא עוקף בטעות. Done 2026-11-23: `protect-main` bypass list is empty; `protect-releases` bypass is the Repository admin role only (the owner). The bot has Write, not admin.
+- [x] לבדוק בפועל: הבוט פותח PR, מנסה למזג בלי אישור, וההתנסות נחסמת. Done 2026-11-23: PR #2 opened by the bot showed BLOCKED / REVIEW_REQUIRED until the owner approved. The bot did not attempt the merge itself (agents never merge without the owner's instruction).
 - [ ] Render מוגדר לפרוס רק מ-`main`.
 
 ## לוח ותשתית
