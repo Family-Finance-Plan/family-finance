@@ -4,7 +4,7 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 הריפו הוא מקור האמת לאפיון, ל-ADR ולקוד. כל PR מקושר ל-Issue (`Closes #n`).
 אין בקלוג נוסף בקבצים.
 
-פרטי הריפו והלוח: `<OWNER>/<REPO>`, לוח מספר `<PROJECT_NUMBER>` (להשלים בהקמה).
+פרטי הריפו והלוח: `<OWNER>/family-finance`, לוח מספר `1` (https://github.com/users/<OWNER>/projects/1).
 
 ## מיפוי מושגים
 - **סטטוס:** שדה Status בלוח (Single select), עם אותם שמות ואותו סדר כמו בטבלה למטה.
@@ -64,4 +64,4 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 3. ליצור Milestones לגרסאות.
 4. להתקין ולחבר את `gh` במחשב, עם הרשאת `project`. מומלץ לבדוק ב-`gh auth status`.
 5. להקים זהות נפרדת לסוכנים והגנת ענף כמתואר למעלה.
-6. להחליף את `<OWNER>/<REPO>` ו-`<PROJECT_NUMBER>` בקבצים.
+6. ~~להחליף את placeholders של הריפו והלוח בקבצים.~~ בוצע 2026-11-23.

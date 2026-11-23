@@ -8,10 +8,10 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 הסוכן הראשי בלבד קורא וכותב. תתי-סוכנים מחזירים דוח. פרטי הזרימה: docs/sdlc/github-workflow.md.
 
 ## קריאת הבורד
-פקודות `gh` (להחליף `<OWNER>`, `<REPO>`, `<PROJECT_NUMBER>`):
-- כל פריטי הלוח עם סטטוס: `gh project item-list <PROJECT_NUMBER> --owner <OWNER> --format json --limit 200`
-- פרטי Issue כולל תגובות: `gh issue view <n> --repo <OWNER>/<REPO> --comments --json title,body,labels,milestone,comments`
-- מזהי שדות ואפשרויות: `gh project field-list <PROJECT_NUMBER> --owner <OWNER> --format json`
+פקודות `gh`:
+- כל פריטי הלוח עם סטטוס: `gh project item-list 1 --owner <OWNER> --format json --limit 200`
+- פרטי Issue כולל תגובות: `gh issue view <n> --repo <OWNER>/family-finance --comments --json title,body,labels,milestone,comments`
+- מזהי שדות ואפשרויות: `gh project field-list 1 --owner <OWNER> --format json`
 סדר Backlog: Milestone עולה, ואז Priority. את הסינון והמיון עושים על ה-JSON בקוד קצר, לא בעיניים.
 אם `gh` לא מחובר או אין הרשאה, עצור ודווח. אל תנחש סטטוס.
 הפקודות נכתבו ללא בדיקה מול חשבון אמיתי. בהרצה הראשונה לוודא שהן עובדות ולתקן כאן.
@@ -23,6 +23,7 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 1. לוודא שתנאי היציאה בטבלת הסטטוסים מתקיימים.
 2. לכתוב את התגובה בתבנית (`gh issue comment <n> --body-file`). רק אחריה להעביר סטטוס.
 3. שינוי סטטוס: `gh project item-edit --id <item> --project-id <project> --field-id <status-field> --single-select-option-id <option>`.
+   מזהים קבועים (לוודא מול `field-list` אם משהו נכשל): project-id `PVT_kwHOA3kjEs4Bs3Df`. Status `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKUE`: Backlog `88522986`, Analysis & Spec `2727a1e9`, Test Design `81a23d2b`, In Development `04c0ade8`, In Testing `b5972992`, In Review `bcf239d8`, Awaiting Approval `94d16aaf`, Deploy Ready `4b0dab23`, Deployed `94f4f214`, On Hold `bc77dcaf`. Priority `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKqQ`: P0 `d583d228`, P1 `1ede08f1`, P2 `7b441014`, P3 `2b6b65c7`.
 4. Deploy Ready ו-Deployed רק עם אישור מפורש של בעל הריפו באותה שיחה (R-016), ובפועל רק אחרי שה-PR אושר על ידו. לעולם לא ביוזמת סוכן.
 5. אם חסר מידע או החלטה: On Hold עם שאלה מפורשת.
 
