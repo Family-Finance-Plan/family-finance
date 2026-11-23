@@ -26,9 +26,10 @@ TypeScript מקצה לקצה, monorepo. Backend: NestJS. Frontend: React. נתו
 אימות: Google OIDC (ADR-003). חילוץ מסמכים: Claude API מאחורי ממשק Provider אחד (ADR-008).
 פריסה: Render עם דיסק קבוע, מופע יחיד (ADR-007).
 
-## RTL ושפה
-ממשק המשתמש בעברית ו-RTL. להשתמש ב-CSS logical properties (margin-inline, padding-inline וכדומה) מההתחלה.
-קוד, שמות משתנים והודעות commit באנגלית. תיעוד ב-docs/ בעברית עם מונחים טכניים באנגלית.
+## Language and RTL (R-026)
+English is the default for everything: docs, ADRs, notes, code, comments, identifiers, commit messages, PR and Issue text, agent and skill files, and chat replies to the owner.
+The only exception is end-user UI text: Hebrew, RTL, kept in locale/resource files and never hardcoded. Use CSS logical properties (margin-inline, padding-inline, etc.) from the start.
+Existing Hebrew files are being translated in a separate PR; until then, new text is written in English.
 
 ## איך עובדים (פרטים ב-docs/sdlc/process.md)
 - כל משימה עוברת שלבים לפי סדר, ובכל שלב יש Gate. לא מדלגים.
@@ -39,7 +40,7 @@ TypeScript מקצה לקצה, monorepo. Backend: NestJS. Frontend: React. נתו
 
 ## ניהול משימות (GitHub)
 - GitHub Issues ולוח Projects הם מקור האמת למשימות, סטטוס וגרסה (Milestone). הסוכן הראשי קורא וכותב, תתי-סוכנים מחזירים דוח.
-- אסור Deploy Ready או Deployed בלי אישור מפורש של בעל הריפו, ואסור למזג PR. עבודה דרך `gh`.
+- No move to On Staging or Released without the owner's explicit approval. Agents merge a PR only through devops and only on the owner's explicit instruction; the owner may merge themselves. Only the owner publishes a Release (ADR-009). Work through `gh`.
 - להרצת הבורד: /board-run. פרטים ב-docs/sdlc/github-workflow.md.
 
 ## הקמה פתוחה

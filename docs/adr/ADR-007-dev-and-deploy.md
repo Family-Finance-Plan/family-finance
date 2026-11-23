@@ -20,3 +20,6 @@
 
 ## תנאי לחזרה להחלטה
 משפחות אמיתיות במערכת, צורך בפריסה בלי השבתה, או מעבר למסד משותף.
+
+## Extended by
+ADR-009 (environments and releases) extends this ADR with separate Staging and Production services on Render, tag-based releases, and owner-only release publishing.

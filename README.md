@@ -9,7 +9,8 @@
 ## מבנה
 - CLAUDE.md – עקרונות קבועים, קצר בכוונה
 - docs/spec/ – האפיון המקורי ו-spec-corrections.md (גובר על המקור)
-- docs/adr/ – שמונה החלטות ארכיטקטוניות
+- docs/adr/ – nine architecture decisions (ADR-001 to ADR-009)
+- .github/pull_request_template.md – PR template (Refs #n, tests, docs, safety checklist)
 - docs/sdlc/ – שלבים, Gates, תפקידים, רישום כללים ויומן שינויים
 - .claude/agents/ – שמונה תתי-סוכנים (analyst, architect, ux-designer, developer, tester, reviewer, devops, product-owner)
 - .claude/skills/ – tenancy-standards, process-keeper, gh-sync ו-board-run

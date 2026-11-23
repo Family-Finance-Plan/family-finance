@@ -1,0 +1,42 @@
+# ADR-009: סביבות וגרסאות (Staging ו-Production)
+
+Status: Approved by the owner (2026-11-23). Extends ADR-007 and does not replace it. The items under "פתוח" stay open; they block only real data in Production.
+
+## הקשר
+ADR-007 מגדיר את Render כסביבת פיתוח ובדיקות בלבד. בעל התהליך צריך שליטה במה שמגיע לגרסה החיה, גם בתיקוני באגים וגם בפיצ'רים, בלי שכל מיזוג ל-`main` יגיע ללקוחות.
+
+## החלטה
+- שתי סביבות ב-Render, כל אחת שירות נפרד עם דיסק קבוע משלה:
+  - **Staging:** פריסה אוטומטית בכל מיזוג ל-`main`. נתוני דמה בלבד, תמיד.
+  - **Production:** פריסה אוטומטית כבויה. פריסה רק מ-tag של גרסה (semver `vX.Y.Z`), דרך workflow ב-GitHub Actions שמופעל מ-tag.
+- **מי מאשר:** בעל הריפו בלבד יוצר tag של גרסה, כשהוא מפרסם GitHub Release. יצירת ה-tag היא האישור לפריסה.
+  - אכיפה: Tag ruleset על `v*` שמתיר יצירה רק לבעל הריפו. בריפו פרטי זה דורש GitHub Pro.
+  - עד השדרוג: הנחיה בלבד, ונתוני דמה בלבד.
+  - חלופה שנבדקה: required reviewers על GitHub Environment. זמין בריפו פרטי רק ב-Enterprise, ולכן לא נבחר.
+- זרימת גרסה: פיצ'רים מצטברים ב-Milestone ומאומתים ב-Staging. כשה-Milestone הושלם, devops מכין טיוטת GitHub Release עם release notes של product-owner. בעל הריפו מפרסם אותה, וזה יוצר את ה-tag ומפעיל את הפריסה.
+- באגים: באג רגיל נכנס לגרסה הבאה. באג P0 מקבל מסלול מהיר: קופץ בתור הבקלוג, לא מדלג על אף Gate, ויוצא כ-patch (`vX.Y.Z+1`) דרך אותו אישור Production.
+- סטטוסים בלוח: Deploy Ready ו-Deployed מוחלפים ב-**On Staging** (ה-PR מוזג ל-`main` ונפרס ל-Staging) וב-**Released** (נכלל בגרסה שחיה ב-Production, וה-Issue נסגר).
+
+## כללים
+1. Production נשאר על נתוני דמה עד שתנאי R-006 מתקיימים (אימות וגיבוי לילי מוצפן לכל Tenant).
+2. לפני כל פריסה ל-Production: גיבוי אוטומטי של כל קובץ Tenant ברמת האפליקציה (לא snapshot הדיסק של Render).
+3. Rollback = פריסה מחדש של ה-tag הקודם. אם migration אינו הפיך, משחזרים את גיבויי ה-Tenants.
+4. Migrations תואמים קדימה ורצים לכל Tenant בטרנזקציה נפרדת (ADR-001, ADR-006).
+5. סודות כל סביבה (כולל מפתח הפריסה ל-Production) כמשתני סביבה וכסודות ב-GitHub Actions, לא בריפו (R-007).
+
+## השלכות
+- שירות Render שני עם דיסק מוסיף עלות חודשית.
+- **Provisioning (approved in principle only, 2026-11-23):** nothing is provisioned now. Staging is created together with the first deploy. Production is created only when the first release is close. A persistent disk requires a paid instance (not the Free instance), so before creating either service, devops checks Render's current instance and disk pricing and presents it to the owner for approval.
+- שליטה בפריסה: הגנת הענף (R-016) שולטת במה שמגיע ל-Staging, ו-Tag ruleset (R-023) שולט במה שמגיע ל-Production. שתיהן דורשות GitHub Pro וזהות נפרדת לסוכנים. עד אז שתיהן הנחיה בלבד.
+- התהליך מתארך: מיזוג אינו שחרור, ו-Issue נשאר פתוח עד Released.
+
+## חלופות שנדחו
+סביבה אחת עם פריסה ידנית מ-`main` (אין מקום לאימות לפני לקוחות). פריסה רציפה ל-Production בכל מיזוג (אין שליטה על תזמון ותוכן הגרסה). ענף `release` נפרד במקום tags (יותר ענפים לתחזק, אותה שליטה).
+
+## פתוח
+- אזור הפריסה וסוגיית הפרטיות מול גורם משפטי (ADR-007, כלל 4). חוסם נתונים אמיתיים ב-Production.
+- מדיניות חלון השבתה לפריסות Production (הדיסק מונע פריסה בלי השבתה, ADR-007).
+- האם נדרשים feature flags.
+
+## תנאי לחזרה להחלטה
+צורך בפריסה בלי השבתה, יותר ממופע אחד, מעבר למסד משותף, או קצב תיקוני P0 שמצדיק מסלול נפרד.
