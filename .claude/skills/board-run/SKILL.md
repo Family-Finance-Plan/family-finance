@@ -15,7 +15,7 @@ description: Run one pass over the GitHub Projects board: sample every status, d
 5. **שליחה לסוכן:** לפי טבלת הסטטוסים ב-docs/sdlc/github-workflow.md. ב-Analysis & Spec: analyst, אחריו architect, ואחריו ux-designer אם יש UI. העבר לסוכן את תיאור המשימה, ההערות הקודמות והקבצים הרלוונטיים.
 6. **תיעוד ומעבר:** כתוב את הדוח של הסוכן כתגובה בתבנית, ואז העבר סטטוס לפי הדוח (קדימה, אחורה או On Hold).
 7. **עצירה:** כשמשימה מגיעה ל-Awaiting Approval, הצג לבעל הריפו את סיכום המשימה וחכה להחלטה. אל תמשיך להעביר אותה. On Staging ו-Released רק בהוראה מפורשת של בעל הריפו (R-016, ADR-009).
-8. **Release:** אם כל משימות ה-Milestone ב-On Staging, דווח לבעל הריפו שה-Milestone מוכן ל-Release. לא יוצרים tag בלי הוראתו.
+8. **Release:** אם כל משימות ה-Milestone ב-On Staging, דווח לבעל הריפו שה-Milestone מוכן ל-Release. בהוראתו, devops מכין טיוטה. רק בעל הריפו מפרסם ויוצר את ה-tag (R-023).
 
 ## מגבלות הרצה
 - עד 5 משימות או 5 מעברים בהרצה אחת, ואז דיווח. אפשר להריץ שוב.

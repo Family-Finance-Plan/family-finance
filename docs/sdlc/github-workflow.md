@@ -29,7 +29,7 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 | In Testing | tester | בדיקות אינטגרציה ובידוד עוברות | In Review |
 | In Review | reviewer | אין ממצא חוסם (כולל תיעוד חסר) | Awaiting Approval |
 | Awaiting Approval | בעל הריפו בלבד | אישרת את ה-PR, ו-devops מיזג אותו להוראתך המפורשת | On Staging או חזרה |
-| On Staging | devops | ה-Milestone הושלם, אישרת Release, ואישרת את הפריסה ב-GitHub Environment `production` | Released |
+| On Staging | devops | ה-Milestone הושלם, devops הכין טיוטת Release, ואתה פרסמת אותה (יוצר tag ופורס ל-Production) | Released |
 | Released | אין | מצב סופי: ה-Issue סגור והגרסה חיה ב-Production | אין |
 | On Hold | מי שחסם | נפתחה החסימה | הסטטוס שממנו הגיעה |
 
@@ -45,9 +45,9 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 משימה שסיימה שלב והשלב הבא מלא נשארת בתור: Ready for Dev לפני פיתוח. בשאר השלבים התור הוא הסטטוס הבא בלי תווית `agent-<role>`: תווית קיימת = בעבודה, אין תווית = ממתינה. המספרים ניתנים לשינוי באישור בעל הריפו.
 
 ## Bugs ו-Releases (ADR-009)
-- **פיצ'רים:** מצטברים ב-Milestone ונבדקים ב-Staging. כשה-Milestone הושלם, אתה מאשר Release, devops יוצר tag (`vX.Y.Z`) ו-GitHub Release עם release notes של product-owner, והפריסה ל-Production ממתינה לאישור שלך ב-Environment.
+- **פיצ'רים:** מצטברים ב-Milestone ונבדקים ב-Staging. כשה-Milestone הושלם, devops מכין טיוטת GitHub Release (`vX.Y.Z`) עם release notes של product-owner. אתה מפרסם אותה, וזה יוצר את ה-tag ומפעיל את הפריסה ל-Production.
 - **Bug רגיל:** נכנס ל-Release הבא.
-- **Bug P0:** מסלול מהיר. עוקף את התור ואת מגבלות ה-WIP, אבל לא מדלג על אף Gate. יוצא כגרסת תיקון (`vX.Y.Z+1`) באותו אישור Production.
+- **Bug P0:** מסלול מהיר. עוקף את התור ואת מגבלות ה-WIP, אבל לא מדלג על אף Gate. יוצא כגרסת תיקון (`vX.Y.Z+1`), ואתה מפרסם אותה כמו כל Release.
 
 ## חזרה אחורה
 - In Testing נכשל: חזרה ל-In Development, עם שחזור בתגובה.
@@ -71,7 +71,7 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 
 האכיפה האמיתית היא על המיזוג, לא על עמודת הלוח. לוח Projects לא מגביל מי מעביר לאיזה סטטוס. לכן:
 - הגנת ענף על `main` (Ruleset): PR חובה, אישור אחד לפחות, CODEOWNERS עם בעל הריפו, בדיקות CI חובה. Staging ב-Render פורס רק מ-`main`.
-- Production פורס רק מ-tag, דרך GitHub Environment `production` שהמאשר הנדרש בו הוא בעל הריפו (R-023).
+- Production פורס רק מ-tag, ורק בעל הריפו יוצר tags של גרסה. האכיפה היא Tag ruleset על `v*` (R-023), שדורש GitHub Pro.
 - ב-GitHub מחבר ה-PR לא יכול לאשר אותו בעצמו. אם הסוכנים עובדים תחת החשבון שלך, לא תוכל לאשר את ה-PR שלהם. לכן צריך זהות נפרדת לסוכנים: חשבון בוט או GitHub App, עם טוקן ל-`gh` שאינו שלך.
 - ללא זהות נפרדת, העברה ל-On Staging ול-Released נשארת הנחיה בלבד.
 
@@ -81,5 +81,5 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 3. ליצור Milestones לגרסאות.
 4. להתקין ולחבר את `gh` במחשב, עם הרשאת `project`. מומלץ לבדוק ב-`gh auth status`.
 5. להקים זהות נפרדת לסוכנים והגנת ענף כמתואר למעלה.
-5א. להקים GitHub Environment `production` עם בעל הריפו כמאשר נדרש, ושני שירותי Render (Staging ו-Production) לפי ADR-009.
+5א. לשדרג ל-GitHub Pro, להקים Tag ruleset על `v*` שרק בעל הריפו יכול ליצור, ושני שירותי Render (Staging ו-Production) לפי ADR-009.
 6. ~~להחליף את placeholders של הריפו והלוח בקבצים.~~ בוצע 2026-11-23.

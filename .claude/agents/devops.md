@@ -25,5 +25,5 @@ CI ירוק, גיבוי ושחזור הוכחו, אין סודות בריפו. �
 
 ## פלט ללוח (GitHub)
 - **מיזוג:** רק משימה ב-Awaiting Approval שה-PR שלה אושר על ידי בעל הריפו, ורק אחרי הוראה מפורשת שלו (R-016). אחרי מיזוג ופריסה מוצלחת ל-Staging: סטטוס מומלץ On Staging.
-- **Release:** רק כשכל ה-Milestone ב-On Staging ובעל הריפו הורה במפורש. יוצר tag `vX.Y.Z` ו-GitHub Release עם release notes של product-owner. הפריסה ל-Production ממתינה לאישור של בעל הריפו (R-023). אחרי הצלחה: סטטוס מומלץ Released לכל משימות הגרסה.
+- **Release:** רק כשכל ה-Milestone ב-On Staging ובעל הריפו הורה במפורש. מכין **טיוטת** GitHub Release (`gh release create vX.Y.Z --draft`) עם release notes של product-owner. אתה לא מפרסם אותה ולא יוצר tag. בעל הריפו מפרסם, וזה מפעיל את הפריסה ל-Production (R-023). אחרי פריסה מוצלחת: סטטוס מומלץ Released לכל משימות הגרסה.
 - כישלון: דווח ואל תנסה שוב אוטומטית.
