@@ -7,13 +7,15 @@
 ב-GitHub אי אפשר לאשר PR שכתבת בעצמך. אם הסוכנים עובדים תחת החשבון של בעל הריפו, הוא לא יוכל לאשר את העבודה שלהם, ואי אפשר לאכוף את הכלל R-016 שרק הוא מאשר. לכן הסוכנים צריכים זהות נפרדת, והענף הראשי צריך הגנה. עד שזה מוקם, R-016 הוא הנחיה בלבד, ואסור להעלות נתונים אמיתיים.
 
 ## זהות נפרדת לסוכנים (החלטה: חשבון GitHub נוסף, לא מנוי Claude נוסף)
-- [ ] ללמוד את תנאי השימוש של GitHub לגבי חשבון לאוטומציה, ולוודא שחשבון בוט מותר. אם יש ספק, חלופה: GitHub App.
-- [ ] ליצור חשבון בוט עם מייל נפרד ושם שמסביר מה הוא (שם הפרויקט עם bot).
-- [ ] סיסמה חזקה וייחודית, ואימות דו-שלבי.
-- [ ] להזמין אותו לריפו כ-Collaborator עם הרשאת Write בלבד. לא Admin.
-- [ ] ליצור טוקן fine-grained מוגבל לריפו הזה, עם תפוגה קצרה (למשל 90 יום): קריאה וכתיבה לתוכן, ל-Pull requests ול-Issues, והרשאה ללוח Projects. את הדרך המדויקת להרשאת Projects לבדוק בתיעוד של GitHub בזמן ההקמה.
+- [x] ללמוד את תנאי השימוש של GitHub לגבי חשבון לאוטומציה, ולוודא שחשבון בוט מותר. אם יש ספק, חלופה: GitHub App. Done 2026-11-23: GitHub ToS allows one machine account per person.
+- [x] ליצור חשבון בוט עם מייל נפרד ושם שמסביר מה הוא (שם הפרויקט עם bot). Done 2026-11-23: the bot account.
+- [x] סיסמה חזקה וייחודית, ואימות דו-שלבי. Done 2026-11-23.
+- [x] להזמין אותו לריפו כ-Collaborator עם הרשאת Write בלבד. לא Admin. Done 2026-11-23: invite accepted, permission `write` (personal-account repos have a single collaborator level, no admin).
+- [x] ליצור טוקן fine-grained מוגבל לריפו הזה, עם תפוגה קצרה (למשל 90 יום): קריאה וכתיבה לתוכן, ל-Pull requests ול-Issues, והרשאה ללוח Projects. את הדרך המדויקת להרשאת Projects לבדוק בתיעוד של GitHub בזמן ההקמה. Done 2026-11-23 with a deviation: a **classic** token (scopes `repo`, `project`, 90 days), verified with gh (viewerPermission WRITE). A classic `repo` token reaches every repo the bot can access, so the bot must stay a collaborator on this repo only. Set a reminder to rotate it before it expires.
 - [ ] לשמור את הטוקן כמשתנה סביבה במחשב. לא בריפו, לא בלוגים ולא בשיחה.
-- [ ] לוודא ש-`gh auth status` מציג את הבוט, ולא את החשבון של בעל הריפו.
+- [ ] לוודא ש-`gh auth status` מציג את הבוט, ולא את החשבון של בעל הריפו. (2026-11-23: on this machine gh is still active as `Agranacg`.)
+- [ ] Bot git identity: commits made by the agents are authored as the bot account (git `user.name` and the bot's GitHub noreply email), not as the owner.
+- [ ] Bot access to the Projects board: add the bot account with Write in board Settings → Manage access, and verify the bot token can read and edit items.
 
 ## הגנה על הענף הראשי (זה מה שבפועל אוכף את R-016)
 - [x] להחליט איך נאכף אישור Production. הוחלט (2026-11-23): להישאר כרגע ב-GitHub Free. required reviewers על Environment לא זמין בריפו פרטי, ולכן האכיפה תהיה Tag ruleset (R-023, ADR-009).
