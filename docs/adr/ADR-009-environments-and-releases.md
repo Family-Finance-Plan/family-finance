@@ -1,6 +1,6 @@
 # ADR-009: סביבות וגרסאות (Staging ו-Production)
 
-סטטוס: מוצע (2026-11-23). מרחיב את ADR-007 ולא מחליף אותו.
+Status: Approved by the owner (2026-11-23). Extends ADR-007 and does not replace it. The items under "פתוח" stay open; they block only real data in Production.
 
 ## הקשר
 ADR-007 מגדיר את Render כסביבת פיתוח ובדיקות בלבד. בעל התהליך צריך שליטה במה שמגיע לגרסה החיה, גם בתיקוני באגים וגם בפיצ'רים, בלי שכל מיזוג ל-`main` יגיע ללקוחות.
@@ -26,6 +26,7 @@ ADR-007 מגדיר את Render כסביבת פיתוח ובדיקות בלבד. 
 
 ## השלכות
 - שירות Render שני עם דיסק מוסיף עלות חודשית.
+- **Provisioning (approved in principle only, 2026-11-23):** nothing is provisioned now. Staging is created together with the first deploy. Production is created only when the first release is close. A persistent disk requires a paid instance (not the Free instance), so before creating either service, devops checks Render's current instance and disk pricing and presents it to the owner for approval.
 - שליטה בפריסה: הגנת הענף (R-016) שולטת במה שמגיע ל-Staging, ו-Tag ruleset (R-023) שולט במה שמגיע ל-Production. שתיהן דורשות GitHub Pro וזהות נפרדת לסוכנים. עד אז שתיהן הנחיה בלבד.
 - התהליך מתארך: מיזוג אינו שחרור, ו-Issue נשאר פתוח עד Released.
 

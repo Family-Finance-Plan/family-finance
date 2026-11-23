@@ -25,7 +25,7 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 3. שינוי סטטוס: `gh project item-edit --id <item> --project-id <project> --field-id <status-field> --single-select-option-id <option>`.
    מזהים קבועים (לוודא מול `field-list` אם משהו נכשל): project-id `PVT_kwHOA3kjEs4Bs3Df`. Status `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKUE`: Backlog `9ee7f933`, Analysis & Spec `968af1d2`, Test Design `50e6e31b`, Ready for Dev `0e58bee8`, In Development `20c78f97`, In Testing `210bcb53`, In Review `7bea21c1`, Awaiting Approval `8f4957a5`, On Staging `1a0fb39b`, Released `58c2a041`, On Hold `f43ee6f9`. Priority `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKqQ`: P0 `d583d228`, P1 `1ede08f1`, P2 `7b441014`, P3 `2b6b65c7`.
 4. On Staging ו-Released רק עם אישור מפורש של בעל הריפו באותה שיחה (R-016), ובפועל רק אחרי שה-PR אושר על ידו (On Staging) או שה-Release אושר ופורס (Released). לעולם לא ביוזמת סוכן.
-5. ב-Released סוגרים את ה-Issue: `gh issue close <n> --repo <OWNER>/family-finance --comment "Released in vX.Y.Z"`. PR מקושר עם `Refs #n`, ולכן המיזוג לא סוגר אותו.
+5. **Issue closing (R-027):** PRs link Issues with `Refs #n` only, never `Closes`, `Fixes`, `Resolves` or another closing keyword. An Issue is closed only when its task moves to Released: `gh issue close <n> --repo <OWNER>/family-finance --comment "Released in vX.Y.Z"`. If an Issue closed early (for example a closing keyword slipped into a PR), reopen it and leave a comment.
 6. לפני מעבר קדימה: לבדוק מגבלת WIP של סטטוס היעד (R-021). Bug P0 עוקף אותה (R-025).
 7. אם חסר מידע או החלטה: On Hold עם שאלה מפורשת.
 

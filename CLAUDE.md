@@ -26,9 +26,10 @@ TypeScript מקצה לקצה, monorepo. Backend: NestJS. Frontend: React. נתו
 אימות: Google OIDC (ADR-003). חילוץ מסמכים: Claude API מאחורי ממשק Provider אחד (ADR-008).
 פריסה: Render עם דיסק קבוע, מופע יחיד (ADR-007).
 
-## RTL ושפה
-ממשק המשתמש בעברית ו-RTL. להשתמש ב-CSS logical properties (margin-inline, padding-inline וכדומה) מההתחלה.
-קוד, שמות משתנים והודעות commit באנגלית. תיעוד ב-docs/ בעברית עם מונחים טכניים באנגלית.
+## Language and RTL (R-026)
+English is the default for everything: docs, ADRs, notes, code, comments, identifiers, commit messages, PR and Issue text, agent and skill files, and chat replies to the owner.
+The only exception is end-user UI text: Hebrew, RTL, kept in locale/resource files and never hardcoded. Use CSS logical properties (margin-inline, padding-inline, etc.) from the start.
+Existing Hebrew files are being translated in a separate PR; until then, new text is written in English.
 
 ## איך עובדים (פרטים ב-docs/sdlc/process.md)
 - כל משימה עוברת שלבים לפי סדר, ובכל שלב יש Gate. לא מדלגים.

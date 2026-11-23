@@ -1,7 +1,9 @@
 # תהליך העבודה ב-GitHub
 
 GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, סטטוס, גרסה והיסטוריית התיעוד.
-הריפו הוא מקור האמת לאפיון, ל-ADR ולקוד. כל PR מקושר ל-Issue (`Refs #n`, לא `Closes #n`: מיזוג הוא רק On Staging, וה-Issue נסגר ב-Released על ידי הסוכן הראשי).
+הריפו הוא מקור האמת לאפיון, ל-ADR ולקוד.
+
+**Issue closing rule (ADR-009, R-027):** a PR links its Issue with `Refs #n` only. Never use `Closes`, `Fixes`, `Resolves` or any other GitHub closing keyword, because merging only reaches On Staging. An Issue is closed only when its task moves to Released, by the main agent (see gh-sync).
 אין בקלוג נוסף בקבצים.
 
 פרטי הריפו והלוח: `<OWNER>/family-finance`, לוח מספר `1` (https://github.com/users/<OWNER>/projects/1).

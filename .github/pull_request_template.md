@@ -2,7 +2,7 @@
 <!-- What changed and why. -->
 
 Refs #
-<!-- Use Refs, not Closes: merging only reaches Staging. The issue is closed at Released. -->
+<!-- Use Refs only. Never Closes/Fixes/Resolves: merging only reaches Staging. The issue is closed at Released (R-027). -->
 
 
 ## Acceptance criteria
