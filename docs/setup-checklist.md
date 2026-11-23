@@ -11,7 +11,7 @@
 - [x] ליצור חשבון בוט עם מייל נפרד ושם שמסביר מה הוא (שם הפרויקט עם bot). Done 2026-11-23: the bot account.
 - [x] סיסמה חזקה וייחודית, ואימות דו-שלבי. Done 2026-11-23.
 - [x] להזמין אותו לריפו כ-Collaborator עם הרשאת Write בלבד. לא Admin. Done 2026-11-23: invite accepted, permission `write` (personal-account repos have a single collaborator level, no admin).
-- [x] ליצור טוקן fine-grained מוגבל לריפו הזה, עם תפוגה קצרה (למשל 90 יום): קריאה וכתיבה לתוכן, ל-Pull requests ול-Issues, והרשאה ללוח Projects. את הדרך המדויקת להרשאת Projects לבדוק בתיעוד של GitHub בזמן ההקמה. Done 2026-11-23 with a deviation: a **classic** token (scopes `repo`, `project`, 90 days), verified with gh (viewerPermission WRITE). A classic `repo` token reaches every repo the bot can access, so the bot must stay a collaborator on this repo only. Set a reminder to rotate it before it expires.
+- [x] ליצור טוקן fine-grained מוגבל לריפו הזה, עם תפוגה קצרה (למשל 90 יום): קריאה וכתיבה לתוכן, ל-Pull requests ול-Issues, והרשאה ללוח Projects. את הדרך המדויקת להרשאת Projects לבדוק בתיעוד של GitHub בזמן ההקמה. Done 2026-11-23 with a deviation: a **classic** token (scopes `repo`, `project`, 90 days; `read:org` added 2026-11-23 so `gh project` commands work), verified with gh (viewerPermission WRITE). A classic `repo` token reaches every repo the bot can access, so the bot must stay a collaborator on this repo only. Set a reminder to rotate it before it expires.
 - [x] לשמור את הטוקן כמשתנה סביבה במחשב. לא בריפו, לא בלוגים ולא בשיחה. Done 2026-11-23: saved as the user environment variable `GH_TOKEN`.
 - [x] לוודא ש-`gh auth status` מציג את הבוט, ולא את החשבון של בעל הריפו. Done 2026-11-23: `gh api user` returns the bot account.
 - [x] Bot git identity: commits made by the agents are authored as the bot account (git `user.name` and the bot's GitHub noreply email), not as the owner. Done 2026-11-23: set in this repo's local git config (the bot's GitHub noreply address).
@@ -29,9 +29,9 @@
 ## לוח ותשתית
 - [x] ליצור ריפו ולוח Projects, ולמלא `<OWNER>/<REPO>` ו-`<PROJECT_NUMBER>` בקבצים. השמות עדיין לא קיימים ובעל הריפו יספק אותם.
 - [x] שדה Status עם הסטטוסים ב-docs/sdlc/github-workflow.md, שדה Priority, תוויות ו-Milestones.
-- [ ] בהרצה הראשונה של /board-run לוודא שפקודות `gh` ב-gh-sync עובדות, ולתקן את מה שלא.
+- [ ] בהרצה הראשונה של /board-run לוודא שפקודות `gh` ב-gh-sync עובדות, ולתקן את מה שלא. (2026-11-23: first run on an empty board. After adding `read:org` to the bot token, `item-list` and `field-list` work and all Status and Priority IDs match gh-sync. Still untested: `item-edit`, until the first task exists.)
 
 ## ממתין להחלטת בעל הריפו
 - [ ] Excel כקלט, סוג תנועה "העברה", עדיפויות לדרישות (docs/spec/spec-corrections.md, סעיף ד').
 - [ ] האם process.md הוא גרסה v0.1 עם סקירה חובה אחרי כל שלב, ותיוג כללים כמבוססים או ניסיוניים.
-- [ ] מאגר בדיקה של דפי בנק לחילוץ (R-013), מי מכין אותו.
+- [ ] מאגר בדיקה של דפי בנק לחילוץ (R-013), מי מכין אותו. (2026-11-23: The owner will supply the examples. The repo is public, so they must be synthetic or fully redacted, and never committed with real data.)
