@@ -1,0 +1,25 @@
+# secrets and local config (R-007)
+.env
+.env.*
+*.pem
+*.key
+.claude/settings.local.json
+
+# tenant data and databases: never in the repo (R-006)
+*.sqlite
+*.sqlite3
+*.db
+data/
+tenants/
+
+# dependencies and build output
+node_modules/
+dist/
+build/
+coverage/
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
