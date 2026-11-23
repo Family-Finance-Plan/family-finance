@@ -73,7 +73,7 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 
 האכיפה האמיתית היא על המיזוג, לא על עמודת הלוח. לוח Projects לא מגביל מי מעביר לאיזה סטטוס. לכן:
 - הגנת ענף על `main` (Ruleset): PR חובה, אישור אחד לפחות, CODEOWNERS עם בעל הריפו, בדיקות CI חובה. Staging ב-Render פורס רק מ-`main`.
-- Production פורס רק מ-tag, ורק בעל הריפו יוצר tags של גרסה. האכיפה היא Tag ruleset על `v*` (R-023), שדורש GitHub Pro.
+- Production פורס רק מ-tag, ורק בעל הריפו יוצר tags של גרסה. Enforced by the `protect-releases` tag ruleset on `v*` (R-023), active since 2026-11-23; free because the repo is public (ADR-009).
 - ב-GitHub מחבר ה-PR לא יכול לאשר אותו בעצמו. אם הסוכנים עובדים תחת החשבון שלך, לא תוכל לאשר את ה-PR שלהם. לכן צריך זהות נפרדת לסוכנים: חשבון בוט או GitHub App, עם טוקן ל-`gh` שאינו שלך.
 - ללא זהות נפרדת, העברה ל-On Staging ול-Released נשארת הנחיה בלבד.
 
@@ -83,5 +83,5 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 3. ליצור Milestones לגרסאות.
 4. להתקין ולחבר את `gh` במחשב, עם הרשאת `project`. מומלץ לבדוק ב-`gh auth status`.
 5. להקים זהות נפרדת לסוכנים והגנת ענף כמתואר למעלה.
-5א. לשדרג ל-GitHub Pro, להקים Tag ruleset על `v*` שרק בעל הריפו יכול ליצור, ושני שירותי Render (Staging ו-Production) לפי ADR-009.
+5a. Done 2026-11-23: repo made public and the `protect-releases` tag ruleset on `v*` is active, only the owner can create release tags (ADR-009). Still to do: the two Render services (Staging and Production) per ADR-009.
 6. ~~להחליף את placeholders של הריפו והלוח בקבצים.~~ בוצע 2026-11-23.
