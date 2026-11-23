@@ -23,8 +23,8 @@
 - [ ] Render מוגדר לפרוס רק מ-`main`.
 
 ## לוח ותשתית
-- [ ] ליצור ריפו ולוח Projects, ולמלא `<OWNER>/<REPO>` ו-`<PROJECT_NUMBER>` בקבצים. השמות עדיין לא קיימים ובעל הריפו יספק אותם.
-- [ ] שדה Status עם הסטטוסים ב-docs/sdlc/github-workflow.md, שדה Priority, תוויות ו-Milestones.
+- [x] ליצור ריפו ולוח Projects, ולמלא `<OWNER>/<REPO>` ו-`<PROJECT_NUMBER>` בקבצים. השמות עדיין לא קיימים ובעל הריפו יספק אותם.
+- [x] שדה Status עם הסטטוסים ב-docs/sdlc/github-workflow.md, שדה Priority, תוויות ו-Milestones.
 - [ ] בהרצה הראשונה של /board-run לוודא שפקודות `gh` ב-gh-sync עובדות, ולתקן את מה שלא.
 
 ## ממתין להחלטת בעל הריפו
