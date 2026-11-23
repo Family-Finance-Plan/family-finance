@@ -30,7 +30,7 @@ GitHub Issues ולוח GitHub Projects הם מקור האמת למשימות, ס
 | In Development | developer | PR פתוח (draft מותר), בדיקות יחידה עוברות, תיעוד עודכן אם ההתנהגות השתנתה | In Testing |
 | In Testing | tester | בדיקות אינטגרציה ובידוד עוברות | In Review |
 | In Review | reviewer | אין ממצא חוסם (כולל תיעוד חסר) | Awaiting Approval |
-| Awaiting Approval | בעל הריפו בלבד | אישרת את ה-PR, ו-devops מיזג אותו להוראתך המפורשת | On Staging או חזרה |
+| Awaiting Approval | בעל הריפו בלבד | You approved the PR, and it was merged by you or by devops on your explicit instruction | On Staging או חזרה |
 | On Staging | devops | ה-Milestone הושלם, devops הכין טיוטת Release, ואתה פרסמת אותה (יוצר tag ופורס ל-Production) | Released |
 | Released | אין | מצב סופי: ה-Issue סגור והגרסה חיה ב-Production | אין |
 | On Hold | מי שחסם | נפתחה החסימה | הסטטוס שממנו הגיעה |

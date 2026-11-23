@@ -40,7 +40,7 @@ Existing Hebrew files are being translated in a separate PR; until then, new tex
 
 ## ניהול משימות (GitHub)
 - GitHub Issues ולוח Projects הם מקור האמת למשימות, סטטוס וגרסה (Milestone). הסוכן הראשי קורא וכותב, תתי-סוכנים מחזירים דוח.
-- אסור On Staging או Released בלי אישור מפורש של בעל הריפו. מיזוג PR ויצירת Release רק בידי devops ורק בהוראה מפורשת של בעל הריפו (ADR-009). עבודה דרך `gh`.
+- No move to On Staging or Released without the owner's explicit approval. Agents merge a PR only through devops and only on the owner's explicit instruction; the owner may merge themselves. Only the owner publishes a Release (ADR-009). Work through `gh`.
 - להרצת הבורד: /board-run. פרטים ב-docs/sdlc/github-workflow.md.
 
 ## הקמה פתוחה
