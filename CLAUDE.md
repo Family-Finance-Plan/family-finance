@@ -39,7 +39,7 @@ TypeScript מקצה לקצה, monorepo. Backend: NestJS. Frontend: React. נתו
 
 ## ניהול משימות (GitHub)
 - GitHub Issues ולוח Projects הם מקור האמת למשימות, סטטוס וגרסה (Milestone). הסוכן הראשי קורא וכותב, תתי-סוכנים מחזירים דוח.
-- אסור Deploy Ready או Deployed בלי אישור מפורש של בעל הריפו, ואסור למזג PR. עבודה דרך `gh`.
+- אסור On Staging או Released בלי אישור מפורש של בעל הריפו. מיזוג PR ויצירת Release רק בידי devops ורק בהוראה מפורשת של בעל הריפו (ADR-009). עבודה דרך `gh`.
 - להרצת הבורד: /board-run. פרטים ב-docs/sdlc/github-workflow.md.
 
 ## הקמה פתוחה

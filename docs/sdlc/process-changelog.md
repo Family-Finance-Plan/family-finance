@@ -6,3 +6,5 @@
 | 2026-11-21 | הוספת ניהול משימות מבוסס Jira, תפקיד product-owner, Skills ו-R-016 עד R-020 | בעל הריפו | חבילת התחלה |
 | 2026-11-22 | מעבר מ-Jira ל-GitHub Issues ו-Projects: Milestone במקום Fix Version, gh-sync במקום jira-sync, אכיפת R-016 בהגנת ענף | בעל הריפו | חבילת התחלה |
 | 2026-11-22 | הוספת docs/setup-checklist.md, תזכורת הקמת זהות הסוכנים והגנת ענף, ואישור ADR-006 | בעל הריפו | חבילת התחלה |
+| 2026-11-23 | הקמת לוח Projects מספר 1, שדות Status ו-Priority, תוויות ו-Milestone v0.1 MVP | בעל הריפו | chore/board-setup |
+| 2026-11-23 | סטטוס Ready for Dev ומגבלות WIP לכל שלב (R-021). אחריות לתיעוד עסקי וטכני ותבנית PR (R-022). שתי סביבות Staging ו-Production, Releases לפי tag, מסלול Bug P0 (ADR-009 מוצע, R-023 עד R-025). Deploy Ready ו-Deployed הוחלפו ב-On Staging ו-Released. PR מקושר עם Refs במקום Closes | בעל הריפו | chore/board-setup |
