@@ -32,6 +32,6 @@
 - [ ] בהרצה הראשונה של /board-run לוודא שפקודות `gh` ב-gh-sync עובדות, ולתקן את מה שלא. (2026-11-23: first run on an empty board. After adding `read:org` to the bot token, `item-list` and `field-list` work and all Status and Priority IDs match gh-sync. Still untested: `item-edit`, until the first task exists.)
 
 ## ממתין להחלטת בעל הריפו
-- [ ] Excel כקלט, סוג תנועה "העברה", עדיפויות לדרישות (docs/spec/spec-corrections.md, סעיף ד').
+- [x] Excel כקלט, סוג תנועה "העברה", עדיפויות לדרישות (docs/spec/spec-corrections.md, סעיף ד'). Done 2026-11-24: Excel is D1, transfer is D2, and D17 says no per-requirement priorities in v0.1 (everything in scope is Must).
 - [ ] האם process.md הוא גרסה v0.1 עם סקירה חובה אחרי כל שלב, ותיוג כללים כמבוססים או ניסיוניים.
 - [ ] מאגר בדיקה של דפי בנק לחילוץ (R-013), מי מכין אותו. (2026-11-23: The owner will supply the examples. The repo is public, so they must be synthetic or fully redacted, and never committed with real data.)

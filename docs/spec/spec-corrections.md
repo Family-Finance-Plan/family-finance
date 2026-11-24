@@ -50,4 +50,5 @@ Updated 2026-11-23: the permission matrix, file size and source retention, the d
 | D12 | First dashboard chart | Monthly income vs expense bars for past months. A balance line comes later |
 | D13 | Category suggestion | Extraction suggests a category per row, and the user confirms or changes it on the review screen. No learning from corrections in v0.1 |
 | D16 | Test statements | The owner supplies the examples. They must be synthetic or fully redacted, because the repo is public |
+| D17 | Requirement priorities | No per-requirement priority labels in v0.1. Everything in the v0.1 scope (D14) is Must. Priorities are revisited when v0.2 is planned |
 | D15 | Hosting cost and backup storage | Open. Devops presents prices before Staging and backups are built (ADR-009) |
