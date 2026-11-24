@@ -42,5 +42,26 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 ## חזרה אחורה
 תמיד עם תגובה שמסבירה למה, וקישור לממצא. סוכן שמחזיר משימה לא מעביר אותה הלאה אחרי תיקון בעצמו.
 
+## Pacing GitHub writes (R-028)
+A write is any call that creates or changes something: a new or edited Issue, a comment, a label, a board item edit, a PR.
+- Wait 2-3 seconds between writes. A small random variation is fine, so writes don't land at exact intervals; it is not meant to disguise automation.
+- Before a run with more than 20 writes, tell the owner the count and what will be written, and wait for their approval. Never more than 100 writes per hour.
+- Prefer fewer writes: one comment instead of several, labels in the same `gh issue create` call.
+
+### When GitHub says "slow down"
+Signs: HTTP 403 or 429, a message about "secondary rate limit" or "abuse", or `x-ratelimit-remaining: 0`.
+1. Stop the run at once. Do not send the next write, and do not retry the failed one right away.
+2. Find out how long to wait, in this order:
+   - `Retry-After` header: wait that many seconds.
+   - otherwise `x-ratelimit-remaining: 0`: wait until the time in `x-ratelimit-reset` (Unix time).
+   - otherwise: wait at least 60 seconds.
+3. Report to the owner: what failed, how many writes were done and which are still pending, and the wait time. Save the pending list so the run can resume without repeating writes.
+4. After the wait, resume only the pending writes, at a slower pace (double the delay). A second slow-down in the same run ends the run: report and wait for the owner.
+5. Never retry in a loop, never switch to another account or token, and never try to get around the limit.
+
+### When the account is blocked
+Signs: GraphQL limit 0 with nothing used (`gh api rate_limit --jq .resources.graphql`), a message about the account being suspended or flagged, or `gh auth status` saying the token is invalid while `curl` with the same token works.
+Stop all GitHub work and tell the owner. Do not regenerate the token or change settings. Only the owner contacts GitHub Support. Once unblocked, keep runs small for the first week.
+
 ## אסור
 לשנות Priority או Milestone של משימה קיימת בלי אישור בעל הריפו. למחוק Issues, תגובות או ענפים. למזג PR. לכתוב סודות או נתוני משפחה אמיתיים ב-Issues.
