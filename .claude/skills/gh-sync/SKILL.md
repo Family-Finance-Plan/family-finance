@@ -8,7 +8,7 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 Only the main agent reads and writes. Subagents return a report. Flow details: docs/sdlc/github-workflow.md.
 
 ## Reading the board
-`gh` commands:
+`gh` commands. `<OWNER>` is the repo owner's GitHub username; get it at runtime with `gh repo view --json owner --jq .owner.login` and never write it into files (R-029):
 - All board items with status: `gh project item-list 1 --owner <OWNER> --format json --limit 200`
 - Issue details including comments: `gh issue view <n> --repo <OWNER>/family-finance --comments --json title,body,labels,milestone,comments`
 - Field and option IDs: `gh project field-list 1 --owner <OWNER> --format json`
@@ -24,7 +24,7 @@ Before work: a comment "[role] started" and the label `agent-<role>` (`gh issue 
 2. Write the comment in the template (`gh issue comment <n> --body-file`). Only after that, change the status.
 3. Status change: `gh project item-edit --id <item> --project-id <project> --field-id <status-field> --single-select-option-id <option>`.
    Fixed IDs (verify against `field-list` if something fails): project-id `PVT_kwHOA3kjEs4Bs3Df`. Status `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKUE`: Backlog `9ee7f933`, Analysis & Spec `968af1d2`, Test Design `50e6e31b`, Ready for Dev `0e58bee8`, In Development `20c78f97`, In Testing `210bcb53`, In Review `7bea21c1`, Awaiting Approval `8f4957a5`, On Staging `1a0fb39b`, Released `58c2a041`, On Hold `f43ee6f9`. Priority `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKqQ`: P0 `d583d228`, P1 `1ede08f1`, P2 `7b441014`, P3 `2b6b65c7`.
-4. On Staging and Released only with the owner's explicit approval in the same conversation (R-016), and in practice only after he approved the PR (On Staging) or the Release was approved and deployed (Released). Never on an agent's initiative.
+4. On Staging and Released only with the owner's explicit approval in the same conversation (R-016), and in practice only after they approved the PR (On Staging) or the Release was approved and deployed (Released). Never on an agent's initiative.
 5. **Issue closing (R-027):** PRs link Issues with `Refs #n` only, never `Closes`, `Fixes`, `Resolves` or another closing keyword. An Issue is closed only when its task moves to Released: `gh issue close <n> --repo <OWNER>/family-finance --comment "Released in vX.Y.Z"`. If an Issue closed early (for example a closing keyword slipped into a PR), reopen it and leave a comment.
 6. Before a forward move: check the WIP limit of the target status (R-021). A P0 bug bypasses it (R-025).
 7. If information or a decision is missing: On Hold with an explicit question.

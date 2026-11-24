@@ -19,4 +19,5 @@ Refs #
 
 ## Safety checklist
 - [ ] No secrets, tokens or real family data in code, logs or examples (R-007, R-015)
+- [ ] No personal details (names, emails, phone or ID numbers, account numbers, real figures) in code, docs, commit messages or this PR (R-029)
 - [ ] Touches auth, permissions, data deletion or deployment: needs the owner's manual approval (R-014)

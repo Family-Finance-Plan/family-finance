@@ -1,7 +1,7 @@
 # Setup checklist: go through with the owner before the first real work
 
 ## Instruction for Claude Code
-At the start of every session, as long as there is an item here not ticked [x], remind the owner in one line that this list is still open. When the owner is ready, go through the items with him step by step, one at a time, and explain simply what is done and why. The owner explicitly asked you to go through this with him, because the first explanation in the conversation was confusing. Tick [x] only after the owner confirms the item is done. Never ask the owner to paste a token or password into the conversation.
+At the start of every session, as long as there is an item here not ticked [x], remind the owner in one line that this list is still open. When the owner is ready, go through the items with them step by step, one at a time, and explain simply what is done and why. The owner explicitly asked you to go through this with them, because the first explanation in the conversation was confusing. Tick [x] only after the owner confirms the item is done. Never ask the owner to paste a token or password into the conversation.
 
 ## What and why
 On GitHub you cannot approve a PR you wrote yourself. If the agents work under the owner's account, they cannot approve the agents' work, and rule R-016, that only the owner approves, cannot be enforced. So the agents need a separate identity, and the main branch needs protection. Until this is set up, R-016 is guidance only, and uploading real data is forbidden.

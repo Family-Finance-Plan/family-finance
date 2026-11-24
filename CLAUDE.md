@@ -20,6 +20,7 @@ This document is loaded in every session, so it is short. Details are in docs/ a
 8. An extracted transaction does not enter the system without user approval on the review screen.
 9. Real family data does not go up to the Render environment until there is authentication and an encrypted nightly backup per tenant. Until then, dummy data only.
 10. Secrets only in environment variables. Never in the repo, in logs or in examples.
+11. No personal details anywhere (R-029): no real names, emails, phone or ID numbers, addresses, account numbers or real figures in files, commits, Issues, PRs or comments. Use roles, placeholders or synthetic data.
 
 ## Stack (ADR-005)
 TypeScript end to end, monorepo. Backend: NestJS. Frontend: React. Data: Kysely over SQLite.
@@ -43,7 +44,7 @@ The only exception is end-user UI text: Hebrew, RTL, kept in locale/resource fil
 - To run the board: /board-run. Details in docs/sdlc/github-workflow.md.
 
 ## Open setup
-- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with him step by step. Until then R-016 is guidance only, and real data is forbidden.
+- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with them step by step. Until then R-016 is guidance only, and real data is forbidden.
 
 ## Process owner
 The owner approves gates, ADRs and process changes. At sensitive points (security, permissions, real data) there is no decision without their approval.
