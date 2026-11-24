@@ -1,21 +1,21 @@
-# ADR-004: גבולות מודולים
+# ADR-004: Module boundaries
 
-סטטוס: אושר
+Status: Approved
 
-## החלטה
-שני מודולים נפרדים:
-- **Cash Flow Core:** מבוסס תדפיס בנק. תנועות, תזרים, תחזית, אירועים, Dashboard.
-- **Card Insights:** מבוסס פירוט כרטיסי אשראי, עם ישות CardTransaction נפרדת. אופציונלי.
+## Decision
+Two separate modules:
+- **Cash Flow Core:** based on the bank statement. Transactions, cash flow, forecast, events, Dashboard.
+- **Card Insights:** based on credit card details, with a separate CardTransaction entity. Optional.
 
-## כללי ברזל
-1. קשר חד-כיווני: Card Insights לעולם לא מזין סכומי תזרים.
-2. מנוע סיווג ולמידה משותף, עם טקסונומיית קטגוריות ותגיות אחת לשני המודולים (FR-51 עד FR-57).
-3. קישור רך: בכל תנועת כרטיס נשמרים 4 ספרות אחרונות, תאריך חיוב וסכום חיוב מצטבר.
+## Iron rules
+1. One-way relationship: Card Insights never feeds cash flow amounts.
+2. A shared classification and learning engine, with one category and tag taxonomy for both modules (FR-51 to FR-57).
+3. Soft link: every card transaction stores the last 4 digits, the charge date and the total charge amount.
 
-## השלכות
-- בדשבורד הראשי חיוב האשראי מופיע כשורה אחת עם סטטוס "חיוב אשראי לא מפורט".
-- כל תצוגת קטגוריות מציינת כיסוי (למשל "מבוסס על 62% מההוצאות").
-- הסכמה משאירה מקום לתקציב מול ביצוע.
+## Consequences
+- On the main dashboard the credit card charge appears as one row with the status "credit charge not itemized".
+- Every category view states its coverage (for example "based on 62% of expenses").
+- The schema leaves room for budget vs actual.
 
-## תנאי לחזרה להחלטה
-צורך בתקציב מול ביצוע מפורט, או מעבר לבנקאות פתוחה שמספקת גם פירוט אשראי.
+## Condition for revisiting
+A need for detailed budget vs actual, or a move to open banking that also provides credit card details.

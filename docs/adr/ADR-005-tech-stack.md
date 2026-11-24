@@ -1,19 +1,19 @@
 # ADR-005: Tech Stack
 
-סטטוס: אושר
+Status: Approved
 
-## החלטה
-TypeScript מקצה לקצה ב-monorepo אחד.
-- Backend: NestJS (מבנה מודולרי שמתאים ל-ADR-002 ו-ADR-004).
-- Frontend: React עם TypeScript. גרפים וטבלאות ל-Dashboard ול-Timeline. RTL עם CSS logical properties.
-- חוזה API מוקלד שמשותף ל-Frontend ול-Backend. שינוי בחוזה שובר את ה-Build.
-- צנרת ה-AI באותה שפה, בלי Python.
+## Decision
+TypeScript end to end in one monorepo.
+- Backend: NestJS (a modular structure that fits ADR-002 and ADR-004).
+- Frontend: React with TypeScript. Charts and tables for the Dashboard and Timeline. RTL with CSS logical properties.
+- A typed API contract shared by the Frontend and the Backend. A contract change breaks the build.
+- The AI pipeline in the same language, no Python.
 
-## השלכות
-שפה אחת לכל המערכת. נדרשת משמעת בבדיקות ובטיפוסים (strict mode).
+## Consequences
+One language for the whole system. Requires discipline in tests and types (strict mode).
 
-## חלופות שנדחו
-Microsoft: .NET ו-Angular.
+## Rejected alternatives
+Microsoft: .NET and Angular.
 
-## תנאי לחזרה להחלטה
-צורך בספרייה או במנוע חישוב שקיימים רק בשפה אחרת.
+## Condition for revisiting
+A need for a library or calculation engine that exists only in another language.

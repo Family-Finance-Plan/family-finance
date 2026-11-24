@@ -1,54 +1,54 @@
-# תהליך הפיתוח (SDLC)
+# Development process (SDLC)
 
-בעל התהליך: בעל הריפו. הסוכן הראשי (Orchestrator) מתזמר ושומר על התהליך. כל כלל מפורט נמצא ב-rules.md.
+Process owner: the repo owner. The main agent (Orchestrator) orchestrates and guards the process. Every detailed rule is in rules.md.
 
 Version: v0.1 (2026-11-24). The process has not yet been used on real work and is expected to change. Rules are tagged established or experimental in rules.md.
 
-## שמונה שלבים, ובכל אחד Gate
+## Eight stages, each with a gate
 
-| # | שלב | תפקיד אחראי (תת-סוכן) | מצב עבודה | Gate (תנאי יציאה) |
+| # | Stage | Owning role (subagent) | Work mode | Gate (exit condition) |
 |---|---|---|---|---|
-| 1 | אפיון וניתוח | analyst | plan | דרישות עם מזהה, עדיפות וקריטריוני קבלה. אין סתירה מול spec-corrections. אישור בעל הריפו |
-| 2 | ארכיטקטורה ותכנון | architect | plan | ADR לכל החלטה ארכיטקטונית. תוכנית מימוש מפורקת למשימות. אישור בעל הריפו |
-| 3 | UX/UI | ux-designer | plan, אחר כך acceptEdits | מסכים ב-RTL, מצבי שגיאה ומצבים ריקים, תיאום עם הדרישות. אישור בעל הריפו |
-| 4 | פיתוח | developer | acceptEdits | בדיקות יחידה עוברות, strict mode, בלי עקיפת Repository, PR קטן וממוקד |
-| 5 | בדיקות | tester | acceptEdits | בדיקות אינטגרציה ובידוד Tenants עוברות, כיסוי לקריטריוני הקבלה |
-| 6 | סקירה ואבטחה | reviewer | default | סקירת קוד ואבטחה לפי הרשימה ב-rules.md. אישור ידני של בעל הריפו בנקודות רגישות |
-| 7 | פריסה | devops | default | CI ירוק, גיבוי מוכח, אין סודות בריפו. Staging אחרי מיזוג באישור בעל הריפו. Production רק מ-tag ובאישור בעל הריפו ב-Environment (ADR-009) |
-| 8 | תפעול ולמידה | orchestrator | plan | סיכום איטרציה, הצעות לשיפור התהליך, סקירת כללים שלא נאכפו |
+| 1 | Requirements and analysis | analyst | plan | Requirements with ID, priority and acceptance criteria. No contradiction with spec-corrections. The owner's approval |
+| 2 | Architecture and design | architect | plan | An ADR for every architectural decision. Implementation plan broken into tasks. The owner's approval |
+| 3 | UX/UI | ux-designer | plan, then acceptEdits | Screens in RTL, error and empty states, aligned with the requirements. The owner's approval |
+| 4 | Development | developer | acceptEdits | Unit tests pass, strict mode, no Repository bypass, a small focused PR |
+| 5 | Testing | tester | acceptEdits | Integration and tenant isolation tests pass, acceptance criteria covered |
+| 6 | Review and security | reviewer | default | Code and security review per the checklist in rules.md. The owner's manual approval at sensitive points |
+| 7 | Deployment | devops | default | CI green, backup proven, no secrets in the repo. Staging after merge with the owner's approval. Production only from a tag with the owner's approval in the Environment (ADR-009) |
+| 8 | Operations and learning | orchestrator | plan | Iteration summary, process improvement proposals, review of rules that were not enforced |
 
-## כללי תפעול
-- אין מעבר לשלב הבא בלי Gate שעבר. הסוכן הראשי מתעד את תוצאת ה-Gate.
-- כל תפקיד עובד בתת-סוכן מבודד עם הרשאות מינימליות. הסוכן הראשי לא כותב קוד.
-- נקודות שתמיד דורשות אישור ידני של בעל הריפו: הרשאות, אימות, נתונים אמיתיים, סודות, פריסה, מחיקת נתונים, שינוי ADR.
-- פיצ'ר מתחיל ב-plan mode. אחרי אישור תוכנית עוברים למימוש.
+## Operating rules
+- No move to the next stage without a passed gate. The main agent records the gate result.
+- Every role works in an isolated subagent with minimal permissions. The main agent does not write code.
+- Points that always require the owner's manual approval: permissions, authentication, real data, secrets, deployment, data deletion, ADR changes.
+- A feature starts in plan mode. After the plan is approved, implementation begins.
 - Stage review (v0.1): after every gate passes, the orchestrator writes 2-3 lines on what worked and what got in the way, in the Issue comment that records the gate result. Any suggested rule or gate change goes to the owner as a PR. Stage 8 still holds the full iteration review.
 
-## סדר עבודה מומלץ (MVP)
-1. שלב 1: Tenancy, אימות, משק בית, קליטת מסמכים (העלאה, חילוץ, אימות, אישור), תנועות עם קטגוריות ותגיות, Dashboard בסיסי של נתוני עבר.
-2. שלב 2: למידה מתיקונים, חד-פעמיות, אירועים עתידיים, Timeline עם תחזית בסיס.
-3. שלב 3: נכסים, התחייבויות והון נטו.
-4. שלב 4: תרחישים, What-If, תקציב מול ביצוע, תמיכה בהחלטות, Card Insights.
+## Recommended work order (MVP)
+1. Phase 1: Tenancy, authentication, household, document intake (upload, extraction, review, approval), transactions with categories and tags, a basic Dashboard of past data.
+2. Phase 2: learning from corrections, one-off items, future events, a Timeline with a base forecast.
+3. Phase 3: assets, liabilities and net worth.
+4. Phase 4: scenarios, What-If, budget vs actual, decision support, Card Insights.
 
-הערה: סדר השלבים הוא הצעה. לאשר ב-Gate של אפיון.
+Note: the phase order is a proposal. To be approved at the requirements gate.
 
-## ניהול משימות (GitHub)
-- GitHub Issues ולוח Projects הם מקור האמת למשימות, סטטוס וגרסה (docs/sdlc/github-workflow.md). אין בקלוג בקבצים.
-- הסוכן הראשי היחיד שקורא וכותב ללוח. תתי-סוכנים מחזירים דוח.
-- אסור מעבר ל-On Staging או Released בלי אישור מפורש של בעל הריפו.
-- מגבלות WIP לכל שלב (R-021) ומסלול Bug P0 (R-025): docs/sdlc/github-workflow.md.
+## Task management (GitHub)
+- GitHub Issues and the Projects board are the source of truth for tasks, status and version (docs/sdlc/github-workflow.md). No backlog in files.
+- Only the main agent reads and writes the board. Subagents return a report.
+- No move to On Staging or Released without the owner's explicit approval.
+- WIP limits per stage (R-021) and the P0 bug track (R-025): docs/sdlc/github-workflow.md.
 
-## תיעוד: מי כותב מה (R-022)
-| מסמך | סוג | אחראי | מתי |
+## Documentation: who writes what (R-022)
+| Document | Type | Owner | When |
 |---|---|---|---|
-| docs/spec/: אפיון חי, מה המערכת עושה בפועל | עסקי | analyst | בשלב 1, ומעדכן כשפיצ'ר מגיע ל-Released |
-| Release notes ב-GitHub Release | עסקי | product-owner | לכל Milestone או גרסת תיקון |
-| docs/adr/ | טכני | architect | לכל החלטה ארכיטקטונית (R-005) |
-| docs/ux/ | עיצוב | ux-designer | בשלב 3 |
-| README: הרצה מקומית, docs/architecture.md: סקירת מודולים ומודל נתונים | טכני | developer | באותו PR שמשנה אותם |
-| API reference | טכני | נוצר אוטומטית מ-NestJS (OpenAPI) | בכל Build, לא נכתב ידנית |
-| docs/runbook.md: פריסה, rollback, שחזור משפחה בודדת | תפעול | devops | עם כל שינוי בפריסה או בגיבוי |
-| מדריך למשתמש | עסקי | נדחה | כשיהיו משתמשים אמיתיים |
+| docs/spec/: a living spec, what the system actually does | Business | analyst | In stage 1, and updated when a feature reaches Released |
+| Release notes in the GitHub Release | Business | product-owner | For every Milestone or patch version |
+| docs/adr/ | Technical | architect | For every architectural decision (R-005) |
+| docs/ux/ | Design | ux-designer | In stage 3 |
+| README: running locally; docs/architecture.md: module overview and data model | Technical | developer | In the same PR that changes them |
+| API reference | Technical | Generated automatically from NestJS (OpenAPI) | On every build, never written by hand |
+| docs/runbook.md: deploy, rollback, single-family restore | Operations | devops | With every change to deployment or backup |
+| User guide | Business | Deferred | When there are real users |
 
-האכיפה: סעיף "תיעוד" בתבנית ה-PR (.github/pull_request_template.md). reviewer מסמן תיעוד חסר כממצא חוסם.
-- להרצת מחזור על הבורד: `/board-run`. טוענים גם את gh-sync.
+Enforcement: the "Documentation" section in the PR template (.github/pull_request_template.md). reviewer marks missing documentation as a blocking finding.
+- To run a cycle on the board: `/board-run`. Load gh-sync too.

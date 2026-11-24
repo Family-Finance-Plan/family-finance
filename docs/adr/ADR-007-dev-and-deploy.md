@@ -1,25 +1,25 @@
-# ADR-007: סביבת פיתוח ופריסה
+# ADR-007: Development and deployment environment
 
-סטטוס: אושר
+Status: Approved
 
-## החלטה
-- פיתוח ב-Claude Code על המחשב. הקוד ב-Git.
-- Render מושך את הקוד ופורס כסביבת פיתוח ובדיקות, עם דיסק קבוע לקבצי ה-Tenants.
-- הטאבלט משמש למעקב ולאישורים בלבד (Remote Control מחבר את אפליקציית Claude לסשן שרץ על המחשב, שחייב להישאר דלוק).
+## Decision
+- Development in Claude Code on the computer. The code is in Git.
+- Render pulls the code and deploys it as a development and test environment, with a persistent disk for the tenant files.
+- The tablet is used for tracking and approvals only (Remote Control connects the Claude app to a session running on the computer, which must stay on).
 
-## מגבלות Render שיש להכיר
-- דיסק קבוע נגיש למופע אחד בלבד, ולכן אין הרחבה אופקית.
-- דיסק מונע פריסה בלי השבתה (כמה שניות בכל פריסה).
-- גיבוי אוטומטי של Render הוא אחת ל-24 שעות, נשמר לפחות 7 ימים, ושחזור מחזיר את כל הדיסק (לא משפחה בודדת).
+## Render limitations to know
+- A persistent disk is accessible to one instance only, so there is no horizontal scaling.
+- A disk prevents zero-downtime deploys (a few seconds on every deploy).
+- Render's automatic backup runs once every 24 hours, is kept for at least 7 days, and a restore brings back the whole disk (not a single family).
 
-## כללים
-1. נתוני דמה בלבד ב-Render עד שיש אימות וגיבוי לילי מוצפן לכל Tenant.
-2. גיבוי ברמת האפליקציה (קובץ Tenant נפרד, מוצפן, לאחסון אובייקטים חיצוני) הוא חלק מהמימוש הראשון.
-3. סודות כמשתני סביבה ב-Render, לא בריפו.
-4. לבדוק את אזור הפריסה ואת סוגיית הפרטיות לנתונים פיננסיים של משפחות בישראל מול גורם משפטי.
+## Rules
+1. Dummy data only on Render until there is authentication and an encrypted nightly backup per tenant.
+2. Application-level backup (each tenant file separately, encrypted, to external object storage) is part of the first implementation.
+3. Secrets as environment variables on Render, not in the repo.
+4. Check the deployment region and the privacy question for financial data of families in Israel with a legal advisor.
 
-## תנאי לחזרה להחלטה
-משפחות אמיתיות במערכת, צורך בפריסה בלי השבתה, או מעבר למסד משותף.
+## Condition for revisiting
+Real families in the system, a need for zero-downtime deploys, or a move to a shared database.
 
 ## Extended by
 ADR-009 (environments and releases) extends this ADR with separate Staging and Production services on Render, tag-based releases, and owner-only release publishing.

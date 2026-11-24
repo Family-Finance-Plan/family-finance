@@ -1,38 +1,38 @@
-# תיקוני אפיון והחלטות שנוספו אחרי האפיון המקורי
+# Spec corrections and decisions added after the original spec
 
-מסמך זה גובר על האפיון המקורי (spec-original.md) כשיש סתירה.
+This document overrides the original spec (spec-original.md) where they conflict.
 
-## א. החלטות שהתקבלו אחרי כתיבת האפיון
-- ARCH-07, ARCH-08, ARCH-09: ראו ADR-001 עד ADR-008.
-- INT-04: Claude הוא ספק ה-AI (ADR-008). INT-03: אין ספק OCR נפרד בשלב ראשון.
-- INT-06: אימות עם Google (ADR-003).
-- מקור הנתונים הראשי: תדפיס בנק. פירוט אשראי הוא מודול נפרד אופציונלי (ADR-004).
-- משתמש שייך למשק בית אחד בלבד כרגע (ADR-002).
-- קבצים לכל Tenant (SQLite) במקום מסד משותף בשלב ראשון (ADR-001).
+## A. Decisions made after the spec was written
+- ARCH-07, ARCH-08, ARCH-09: see ADR-001 to ADR-008.
+- INT-04: Claude is the AI provider (ADR-008). INT-03: no separate OCR provider in the first phase.
+- INT-06: authentication with Google (ADR-003).
+- The main data source: the bank statement. Credit card details are a separate optional module (ADR-004).
+- A user belongs to one household only for now (ADR-002).
+- Files per tenant (SQLite) instead of a shared database in the first phase (ADR-001).
 
-## ב. סתירות ופערים שזוהו, עם הצעה
-| נושא | בעיה | הצעה | סטטוס |
+## B. Contradictions and gaps found, with a proposal
+| Topic | Problem | Proposal | Status |
 |---|---|---|---|
-| Excel | סעיף 13 מזכיר Excel, FR-08 מונה רק PDF, CSV ותמונות | להוסיף XLSX ל-FR-08 או להחליט במפורש שלא | Decided 2026-11-23: XLSX supported in v0.1 (section ה, D1) |
-| שכפול מול Multi-Tenancy | FR-05 מדבר על שכפול התקנה, ARCH-02 על מערכת אחת עם משקי בית | יושב ב-ADR-001: Tenant הוא קובץ, יצירת משפחה חדשה היא יצירת קובץ | נסגר |
-| סוג תנועה | FR-60 מכיר רק הכנסה והוצאה, אך FR-100 קובע שהעברה אינה הוצאה | להוסיף סוג שלישי "העברה", גם אם הזיהוי האוטומטי יגיע אחר כך | Decided 2026-11-23: third type "transfer", marked by hand in v0.1 (D4) |
-| שלוש טקסונומיות של ודאות | ביטחון חילוץ, סטטוס אירוע, סוג תחזית | ביטחון חילוץ = תכונת תנועה. סטטוס (מאומת/צפוי/הערכה) = תכונת אירוע. סוג תחזית = סינון לפי סטטוס. תרחישים = שכבת What-If מעל התחזית | מוצע |
-| ציר Y בגרף | לא הוגדר | יתרה נזילה בגרף הראשי. הון נטו כשכבה נפרדת (FR-102) | מוצע |
-| כפילויות בדרישות | FR-16 עד FR-19 חוזרות ב-FR-29 עד FR-32. FR-47 מכפיל את FR-19 | לאחד בשלב האפיון המחודש | מוצע |
-| תלות בתקציב | FR-50 ו-FR-114 תלויים במודול תקציב שנדחה | לסמן כשלב 4 | מוצע |
-| עדיפויות | אין עדיפויות כלל, ולכן אי אפשר לתכנן MVP | לתעדף בשלב 1 של התהליך | Decided 2026-11-23: v0.1 = MVP phase 1; priorities are set per GitHub Issue (D14) |
-| פריטי [הנחה] | רשימות הקטגוריות, שלוש התחזיות, ניתוח רכישת דירה הם הצעות של ChatGPT ולא החלטות | לאשר או לדחות פריט פריט | פתוח |
+| Excel | Section 13 mentions Excel, FR-08 lists only PDF, CSV and images | Add XLSX to FR-08 or decide explicitly not to | Decided 2026-11-23: XLSX supported in v0.1 (section E, D1) |
+| Duplication vs multi-tenancy | FR-05 talks about duplicating an installation, ARCH-02 about one system with households | Settled in ADR-001: a tenant is a file, creating a new family is creating a file | Closed |
+| Transaction type | FR-60 knows only income and expense, but FR-100 states that a transfer is not an expense | Add a third type "transfer", even if automatic detection comes later | Decided 2026-11-23: third type "transfer", marked by hand in v0.1 (D2) |
+| Three certainty taxonomies | Extraction confidence, event status, forecast type | Extraction confidence = a transaction attribute. Status (verified/expected/estimate) = an event attribute. Forecast type = filtering by status. Scenarios = a What-If layer on top of the forecast | Proposed |
+| Chart Y axis | Not defined | Liquid balance on the main chart. Net worth as a separate layer (FR-102) | Proposed |
+| Duplicate requirements | FR-16 to FR-19 repeat in FR-29 to FR-32. FR-47 duplicates FR-19 | Merge in the renewed spec stage | Proposed |
+| Budget dependency | FR-50 and FR-114 depend on a budget module that was deferred | Mark as phase 4 | Proposed |
+| Priorities | No priorities at all, so an MVP cannot be planned | Prioritize in stage 1 of the process | Decided 2026-11-23: v0.1 = MVP phase 1; priorities are set per GitHub Issue (D14) |
+| [assumption] items | The category lists, the three forecasts and the home-purchase analysis are ChatGPT suggestions, not decisions | Approve or reject item by item | Open |
 
-## ג. שינויים באפיון בעקבות ADR-004
-- ישות חדשה: CardTransaction, נפרדת מ-Transaction.
-- סטטוס "חיוב אשראי לא מפורט" לשורה בתדפיס הבנק.
-- FR-97 עד FR-103 וה-Dashboard מתייחסים למודול הליבה בלבד.
-- שלוש דרישות חדשות למודול Card Insights: קישור רך לחיוב בבנק, מדד כיסוי לכל תצוגת קטגוריות, ומדד שלמות נתונים לכל חודש.
+## C. Spec changes following ADR-004
+- A new entity: CardTransaction, separate from Transaction.
+- A "credit charge not itemized" status for the row in the bank statement.
+- FR-97 to FR-103 and the Dashboard refer to the core module only.
+- Three new requirements for the Card Insights module: a soft link to the bank charge, a coverage measure for every category view, and a data completeness measure for every month.
 
-## ד. נושאים שעדיין פתוחים
-Updated 2026-11-23: the permission matrix, file size and source retention, the duplicate rule, deletion, currency and extraction approval are decided for v0.1 (section ה). Still open: notifications, export, regulation and privacy (legal review and hosting region), numeric extraction confidence thresholds, permanent deletion and retention policy, Render pricing and backup storage.
+## D. Topics still open
+Updated 2026-11-23: the permission matrix, file size and source retention, the duplicate rule, deletion, currency and extraction approval are decided for v0.1 (section E). Still open: notifications, export, regulation and privacy (legal review and hosting region), numeric extraction confidence thresholds, permanent deletion and retention policy, Render pricing and backup storage.
 
-## ה. Decisions for v0.1 (owner, 2026-11-23)
+## E. Decisions for v0.1 (owner, 2026-11-23)
 | # | Topic | Decision |
 |---|---|---|
 | D14 | v0.1 scope | v0.1 = MVP phase 1 from process.md: tenancy, Google login, household, document intake (upload, extraction, review, approval), transactions with categories and tags, basic past-data dashboard |

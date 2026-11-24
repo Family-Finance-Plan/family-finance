@@ -3,22 +3,22 @@ name: process-keeper
 description: How to add, change or retire an SDLC rule, stage gate or agent responsibility. Use when the user says to add a rule, change a mandatory checkpoint, or reassign who is responsible for a step.
 ---
 
-# עדכון תהליך ה-SDLC
+# Updating the SDLC process
 
-## כשבעל הריפו מבקש "תוסיף כלל: ..., בשלב X, באחריות Y"
-1. קבע מזהה חדש ב-docs/sdlc/rules.md (המספר הבא ברצף, R-0xx).
-2. מלא: כלל, שלב, אחראי, אכיפה, נימוק, תאריך. Status is always `experimental` for a new rule (see rules.md for promotion to `established`).
-3. אכיפה: אם הכלל קריטי, חייבת להיות אכיפה אוטומטית (בדיקה, CI, Hook או lint). אם אין, סמן "המלצה" והצע מה להקים.
-4. עדכן את קובץ התת-סוכן של האחראי ב-.claude/agents/ אם הכלל משנה את עבודתו.
-5. אם נדרש lint, בדיקה או Hook, צור משימה למפתח או ל-devops. אל תכתוב שהכלל נאכף לפני שהאכיפה קיימת.
-6. הוסף שורה ל-docs/sdlc/process-changelog.md.
-7. הצג לבעל הריפו את השינוי כ-diff וקבל אישור לפני merge.
+## When the owner asks "add a rule: ..., at stage X, owned by Y"
+1. Pick a new ID in docs/sdlc/rules.md (the next number in sequence, R-0xx).
+2. Fill in: rule, stage, owner, enforcement, reason, date. Status is always `experimental` for a new rule (see rules.md for promotion to `established`).
+3. Enforcement: if the rule is critical, it must have automatic enforcement (test, CI, hook or lint). If it has none, mark it "recommendation" and propose what to set up.
+4. Update the owner's subagent file in .claude/agents/ if the rule changes its work.
+5. If a lint rule, test or hook is needed, create a task for the developer or devops. Don't write that the rule is enforced before the enforcement exists.
+6. Add a row to docs/sdlc/process-changelog.md.
+7. Show the owner the change as a diff and get approval before merge.
 
-## שינוי Gate או שלב
-עדכן את הטבלה ב-docs/sdlc/process.md ואת הסעיף ב-CLAUDE.md אם העיקרון שם משתנה. CLAUDE.md נשאר מתחת ל-200 שורות. פירוט עובר לקבצי docs.
+## Changing a gate or stage
+Update the table in docs/sdlc/process.md, and the section in CLAUDE.md if the principle there changes. CLAUDE.md stays under 200 lines. Details go to the docs files.
 
-## הסרת כלל
-כלל שלא נאכף שני מחזורים, או שאין לו נימוק, מוצע להסרה בסיכום איטרציה (שלב 8). הסרה בלי אישור בעל הריפו אסורה.
+## Removing a rule
+A rule that was not enforced for two cycles, or that has no reason, is proposed for removal in the iteration review (stage 8). Removing a rule without the owner's approval is forbidden.
 
-## בדיקת סבירות לפני הוספה
-האם כבר קיים כלל דומה? האם הכלל סותר ADR? אם כן, עצור והצע ADR חדש.
+## Sanity check before adding
+Is there already a similar rule? Does the rule contradict an ADR? If so, stop and propose a new ADR.
