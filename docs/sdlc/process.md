@@ -2,6 +2,8 @@
 
 בעל התהליך: בעל הריפו. הסוכן הראשי (Orchestrator) מתזמר ושומר על התהליך. כל כלל מפורט נמצא ב-rules.md.
 
+Version: v0.1 (2026-11-24). The process has not yet been used on real work and is expected to change. Rules are tagged established or experimental in rules.md.
+
 ## שמונה שלבים, ובכל אחד Gate
 
 | # | שלב | תפקיד אחראי (תת-סוכן) | מצב עבודה | Gate (תנאי יציאה) |
@@ -20,6 +22,7 @@
 - כל תפקיד עובד בתת-סוכן מבודד עם הרשאות מינימליות. הסוכן הראשי לא כותב קוד.
 - נקודות שתמיד דורשות אישור ידני של בעל הריפו: הרשאות, אימות, נתונים אמיתיים, סודות, פריסה, מחיקת נתונים, שינוי ADR.
 - פיצ'ר מתחיל ב-plan mode. אחרי אישור תוכנית עוברים למימוש.
+- Stage review (v0.1): after every gate passes, the orchestrator writes 2-3 lines on what worked and what got in the way, in the Issue comment that records the gate result. Any suggested rule or gate change goes to the owner as a PR. Stage 8 still holds the full iteration review.
 
 ## סדר עבודה מומלץ (MVP)
 1. שלב 1: Tenancy, אימות, משק בית, קליטת מסמכים (העלאה, חילוץ, אימות, אישור), תנועות עם קטגוריות ותגיות, Dashboard בסיסי של נתוני עבר.

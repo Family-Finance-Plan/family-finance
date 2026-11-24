@@ -33,5 +33,5 @@
 
 ## ממתין להחלטת בעל הריפו
 - [x] Excel כקלט, סוג תנועה "העברה", עדיפויות לדרישות (docs/spec/spec-corrections.md, סעיף ד'). Done 2026-11-24: Excel is D1, transfer is D2, and D17 says no per-requirement priorities in v0.1 (everything in scope is Must).
-- [ ] האם process.md הוא גרסה v0.1 עם סקירה חובה אחרי כל שלב, ותיוג כללים כמבוססים או ניסיוניים.
+- [x] האם process.md הוא גרסה v0.1 עם סקירה חובה אחרי כל שלב, ותיוג כללים כמבוססים או ניסיוניים. Done 2026-11-24: yes to all three (process.md, rules.md Status column, process-keeper and changelog updated).
 - [ ] מאגר בדיקה של דפי בנק לחילוץ (R-013), מי מכין אותו. (2026-11-23: The owner will supply the examples. The repo is public, so they must be synthetic or fully redacted, and never committed with real data.)

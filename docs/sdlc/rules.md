@@ -1,37 +1,38 @@
 # רישום כללי חובה
 
-כל כלל: מזהה, שלב, תפקיד אחראי, מנגנון אכיפה, נימוק, תאריך.
+כל כלל: מזהה, שלב, תפקיד אחראי, מנגנון אכיפה, נימוק, תאריך, סטטוס.
+Status (since v0.1, 2026-11-24): every rule starts as `experimental`. It becomes `established` once it has automatic enforcement (test, CI, hook or lint) and has come through one full iteration; the owner approves the change in the stage 8 review. Experimental rules are the first candidates to change or remove.
 כלל קריטי חייב אכיפה אוטומטית. כלל שמבוסס רק על הנחיה הוא המלצה ומסומן ככזה.
 סקירה תקופתית: כללים שלא נאכפו נמחקים או מוחלפים. כל כלל חדש דורש נימוק.
 
-| מזהה | כלל | שלב | אחראי | אכיפה | נימוק | תאריך |
-|---|---|---|---|---|---|---|
-| R-001 | סכומים כמספר שלם ביחידות קטנות בלבד, בלי floating point | פיתוח | developer | בדיקה אוטומטית + סוקר מאמת | דיוק כספי (ADR-001, ADR-006) | 2026-11-21 |
-| R-002 | בדיקת בידוד בין Tenants רצה בכל Build | בדיקות | tester | CI | דליפת מידע בין משפחות היא הסיכון הקריטי (ADR-002) | 2026-11-21 |
-| R-003 | Tenant נקבע מהסשן המאומת בלבד, לא מפרמטר מהדפדפן | פיתוח | developer | בדיקה אוטומטית + סקירת אבטחה | מניעת גישה חוצת-משפחות | 2026-11-21 |
-| R-004 | לוגיקה עסקית לא מייבאת את Kysely, רק Repository | פיתוח | developer | כלל lint על ייבואים | ניידות ופישוט בדיקות (ADR-006) | 2026-11-21 |
-| R-005 | כל שינוי ארכיטקטוני מקבל ADR | ארכיטקטורה | architect | אישור ידני של בעל הריפו | תיעוד והחזרות להחלטה | 2026-11-21 |
-| R-006 | נתוני דמה בלבד ב-Render עד שיש אימות וגיבוי לילי מוצפן | פריסה | devops | אישור ידני של בעל הריפו | נתונים פיננסיים אמיתיים (ADR-007) | 2026-11-21 |
-| R-007 | סודות רק במשתני סביבה, בלי סודות בריפו | פריסה | devops | סריקת סודות ב-CI + Hook | מניעת דליפת מפתחות | 2026-11-21 |
-| R-008 | תנועה שחולצה נכנסת רק אחרי אישור משתמש | פיתוח | developer | בדיקת אינטגרציה | FR-13, FR-14 | 2026-11-21 |
-| R-009 | נתון עתידי מסומן מאומת, צפוי או הערכה, ללא ערבוב | פיתוח | developer | טיפוס ב-TypeScript + בדיקה | הוחלט באפיון (סעיף 9) | 2026-11-21 |
-| R-010 | ערכי הכנסה והוצאה לא נדרסים, נשמרים עם תאריך תוקף | פיתוח | developer | בדיקה אוטומטית | FR-72, FR-73 | 2026-11-21 |
-| R-011 | Card Insights לא מזין סכומי תזרים | פיתוח | architect | lint על ייבואים בין מודולים + סקירה | מניעת ספירה כפולה (ADR-004) | 2026-11-21 |
-| R-012 | ממשק ב-RTL עם CSS logical properties | UX/UI | ux-designer | lint על CSS | קהל דובר עברית | 2026-11-21 |
-| R-013 | חילוץ AI נבדק מול מאגר בדיקה לפני כל החלפת מודל או פרומפט | בדיקות | tester | ריצת הערכה ב-CI | איכות החילוץ קובעת את איכות המוצר (ADR-008) | 2026-11-21 |
-| R-014 | שינוי הרשאות, אימות, מחיקת נתונים או פריסה דורש אישור ידני של בעל הריפו | סקירה | reviewer | Gate ידני | סיכון גבוה | 2026-11-21 |
-| R-015 | אין שדה PII בלוגים (סכומים, תיאורי בתי עסק, מיילים) | פיתוח | developer | בדיקה + סקירת אבטחה | פרטיות | 2026-11-21 |
-| R-016 | מעבר ל-On Staging או Released רק באישור מפורש של בעל הריפו (עודכן 2026-11-23: היה Deploy Ready ו-Deployed) | אישור | הסוכן הראשי | Ruleset `protect-main`: PR required, 1 approval, Code Owners review (CODEOWNERS = the owner), empty bypass list. Enforced since 2026-11-23; agents work as the bot account | שליטה בפריסה | 2026-11-21 |
-| R-017 | תגובה בתבנית לפני כל מעבר סטטוס | כל השלבים | הסוכן הראשי | בדיקה ב-board-run | תיעוד לכל משימה | 2026-11-21 |
-| R-018 | משיכה מהבקלוג לפי Milestone נמוך ואז Priority, בלי חסימות, ו-WIP של 3 ב-Awaiting Approval | בקלוג | product-owner | הסוכן הראשי מאכף | מניעת עומס על הסקירה | 2026-11-21 |
-| R-019 | Milestone חובה לפני יציאה מ-Analysis & Spec | אפיון | analyst | בדיקה ב-board-run (ל-GitHub אין Validator) | תכנון גרסאות | 2026-11-21 |
-| R-020 | חזרה אחורה דורשת שחזור או ממצא בתגובה | בדיקות וסקירה | tester, reviewer | בדיקה ב-board-run | מניעת החזרות ריקות | 2026-11-21 |
-| R-021 | מגבלות WIP: עד 2 ב-In Development, עד 2 ב-In Testing, עד 3 ב-Awaiting Approval. שלב מלא = המשימה נשארת בתור (Ready for Dev) | כל השלבים | הסוכן הראשי | בדיקה ב-board-run לפני כל מעבר קדימה | מניעת עומס על תת-סוכן ועל הסקירה של בעל הריפו | 2026-11-23 |
-| R-022 | PR שמשנה התנהגות מעדכן את התיעוד באותו PR (spec חי, README, ארכיטקטורה, runbook). API מתועד אוטומטית מ-OpenAPI | פיתוח וסקירה | developer, reviewer | סעיף חובה בתבנית ה-PR + ממצא חוסם בסקירה. המלצה עד שתוקם בדיקת CI | סוכנים מתחילים בלי זיכרון, והתיעוד הוא ההקשר שלהם | 2026-11-23 |
-| R-023 | Production נפרס רק מ-tag של Release, ורק בעל הריפו יוצר tag כזה (כשהוא מפרסם את ה-Release) | פריסה | בעל הריפו, devops מכין טיוטה | Tag ruleset `protect-releases` on `v*`; only the Repository admin role (the owner) bypasses it. Enforced since 2026-11-23 (public repo, ADR-009) | שליטה של בעל הריפו בגרסה החיה (ADR-009) | 2026-11-23 |
-| R-024 | גיבוי של כל קבצי ה-Tenants לפני כל פריסה ל-Production, והפריסה נכשלת אם הגיבוי נכשל | פריסה | devops | שלב חובה ב-workflow של Production. המלצה עד שה-workflow קיים | אפשרות חזרה אחרי migration שאי אפשר לבטל (ADR-009) | 2026-11-23 |
-| R-025 | Bug P0 עוקף את התור ואת ה-WIP, אבל לא מדלג על אף Gate | כל השלבים | הסוכן הראשי | בדיקה ב-board-run | תיקון מהיר בלי לוותר על בדיקות | 2026-11-23 |
-| R-026 | English is the default language for everything: docs, ADRs, notes, code, comments, identifiers, commits, PR and Issue text, agent and skill files, and chat replies. Only end-user UI text is Hebrew (RTL), and it lives in locale/resource files, never hardcoded | All stages | All roles; reviewer checks | Reviewer blocking finding. Recommendation until a lint rule flags Hebrew string literals outside locale files | One working language for agents and tooling; UI stays Hebrew for users | 2026-11-23 |
-| R-027 | PRs link Issues with `Refs #n` only, never `Closes`, `Fixes` or `Resolves`. An Issue is closed only when its task moves to Released | Development, release | developer, main agent | PR template + reviewer check. Recommendation until a CI check rejects closing keywords in PR bodies | Merging reaches Staging only; Issues must stay open until Released (ADR-009) | 2026-11-23 |
+| מזהה | כלל | שלב | אחראי | אכיפה | נימוק | תאריך | Status |
+|---|---|---|---|---|---|---|---|
+| R-001 | סכומים כמספר שלם ביחידות קטנות בלבד, בלי floating point | פיתוח | developer | בדיקה אוטומטית + סוקר מאמת | דיוק כספי (ADR-001, ADR-006) | 2026-11-21 | experimental |
+| R-002 | בדיקת בידוד בין Tenants רצה בכל Build | בדיקות | tester | CI | דליפת מידע בין משפחות היא הסיכון הקריטי (ADR-002) | 2026-11-21 | experimental |
+| R-003 | Tenant נקבע מהסשן המאומת בלבד, לא מפרמטר מהדפדפן | פיתוח | developer | בדיקה אוטומטית + סקירת אבטחה | מניעת גישה חוצת-משפחות | 2026-11-21 | experimental |
+| R-004 | לוגיקה עסקית לא מייבאת את Kysely, רק Repository | פיתוח | developer | כלל lint על ייבואים | ניידות ופישוט בדיקות (ADR-006) | 2026-11-21 | experimental |
+| R-005 | כל שינוי ארכיטקטוני מקבל ADR | ארכיטקטורה | architect | אישור ידני של בעל הריפו | תיעוד והחזרות להחלטה | 2026-11-21 | experimental |
+| R-006 | נתוני דמה בלבד ב-Render עד שיש אימות וגיבוי לילי מוצפן | פריסה | devops | אישור ידני של בעל הריפו | נתונים פיננסיים אמיתיים (ADR-007) | 2026-11-21 | experimental |
+| R-007 | סודות רק במשתני סביבה, בלי סודות בריפו | פריסה | devops | סריקת סודות ב-CI + Hook | מניעת דליפת מפתחות | 2026-11-21 | experimental |
+| R-008 | תנועה שחולצה נכנסת רק אחרי אישור משתמש | פיתוח | developer | בדיקת אינטגרציה | FR-13, FR-14 | 2026-11-21 | experimental |
+| R-009 | נתון עתידי מסומן מאומת, צפוי או הערכה, ללא ערבוב | פיתוח | developer | טיפוס ב-TypeScript + בדיקה | הוחלט באפיון (סעיף 9) | 2026-11-21 | experimental |
+| R-010 | ערכי הכנסה והוצאה לא נדרסים, נשמרים עם תאריך תוקף | פיתוח | developer | בדיקה אוטומטית | FR-72, FR-73 | 2026-11-21 | experimental |
+| R-011 | Card Insights לא מזין סכומי תזרים | פיתוח | architect | lint על ייבואים בין מודולים + סקירה | מניעת ספירה כפולה (ADR-004) | 2026-11-21 | experimental |
+| R-012 | ממשק ב-RTL עם CSS logical properties | UX/UI | ux-designer | lint על CSS | קהל דובר עברית | 2026-11-21 | experimental |
+| R-013 | חילוץ AI נבדק מול מאגר בדיקה לפני כל החלפת מודל או פרומפט | בדיקות | tester | ריצת הערכה ב-CI | איכות החילוץ קובעת את איכות המוצר (ADR-008) | 2026-11-21 | experimental |
+| R-014 | שינוי הרשאות, אימות, מחיקת נתונים או פריסה דורש אישור ידני של בעל הריפו | סקירה | reviewer | Gate ידני | סיכון גבוה | 2026-11-21 | experimental |
+| R-015 | אין שדה PII בלוגים (סכומים, תיאורי בתי עסק, מיילים) | פיתוח | developer | בדיקה + סקירת אבטחה | פרטיות | 2026-11-21 | experimental |
+| R-016 | מעבר ל-On Staging או Released רק באישור מפורש של בעל הריפו (עודכן 2026-11-23: היה Deploy Ready ו-Deployed) | אישור | הסוכן הראשי | Ruleset `protect-main`: PR required, 1 approval, Code Owners review (CODEOWNERS = the owner), empty bypass list. Enforced since 2026-11-23; agents work as the bot account | שליטה בפריסה | 2026-11-21 | experimental |
+| R-017 | תגובה בתבנית לפני כל מעבר סטטוס | כל השלבים | הסוכן הראשי | בדיקה ב-board-run | תיעוד לכל משימה | 2026-11-21 | experimental |
+| R-018 | משיכה מהבקלוג לפי Milestone נמוך ואז Priority, בלי חסימות, ו-WIP של 3 ב-Awaiting Approval | בקלוג | product-owner | הסוכן הראשי מאכף | מניעת עומס על הסקירה | 2026-11-21 | experimental |
+| R-019 | Milestone חובה לפני יציאה מ-Analysis & Spec | אפיון | analyst | בדיקה ב-board-run (ל-GitHub אין Validator) | תכנון גרסאות | 2026-11-21 | experimental |
+| R-020 | חזרה אחורה דורשת שחזור או ממצא בתגובה | בדיקות וסקירה | tester, reviewer | בדיקה ב-board-run | מניעת החזרות ריקות | 2026-11-21 | experimental |
+| R-021 | מגבלות WIP: עד 2 ב-In Development, עד 2 ב-In Testing, עד 3 ב-Awaiting Approval. שלב מלא = המשימה נשארת בתור (Ready for Dev) | כל השלבים | הסוכן הראשי | בדיקה ב-board-run לפני כל מעבר קדימה | מניעת עומס על תת-סוכן ועל הסקירה של בעל הריפו | 2026-11-23 | experimental |
+| R-022 | PR שמשנה התנהגות מעדכן את התיעוד באותו PR (spec חי, README, ארכיטקטורה, runbook). API מתועד אוטומטית מ-OpenAPI | פיתוח וסקירה | developer, reviewer | סעיף חובה בתבנית ה-PR + ממצא חוסם בסקירה. המלצה עד שתוקם בדיקת CI | סוכנים מתחילים בלי זיכרון, והתיעוד הוא ההקשר שלהם | 2026-11-23 | experimental |
+| R-023 | Production נפרס רק מ-tag של Release, ורק בעל הריפו יוצר tag כזה (כשהוא מפרסם את ה-Release) | פריסה | בעל הריפו, devops מכין טיוטה | Tag ruleset `protect-releases` on `v*`; only the Repository admin role (the owner) bypasses it. Enforced since 2026-11-23 (public repo, ADR-009) | שליטה של בעל הריפו בגרסה החיה (ADR-009) | 2026-11-23 | experimental |
+| R-024 | גיבוי של כל קבצי ה-Tenants לפני כל פריסה ל-Production, והפריסה נכשלת אם הגיבוי נכשל | פריסה | devops | שלב חובה ב-workflow של Production. המלצה עד שה-workflow קיים | אפשרות חזרה אחרי migration שאי אפשר לבטל (ADR-009) | 2026-11-23 | experimental |
+| R-025 | Bug P0 עוקף את התור ואת ה-WIP, אבל לא מדלג על אף Gate | כל השלבים | הסוכן הראשי | בדיקה ב-board-run | תיקון מהיר בלי לוותר על בדיקות | 2026-11-23 | experimental |
+| R-026 | English is the default language for everything: docs, ADRs, notes, code, comments, identifiers, commits, PR and Issue text, agent and skill files, and chat replies. Only end-user UI text is Hebrew (RTL), and it lives in locale/resource files, never hardcoded | All stages | All roles; reviewer checks | Reviewer blocking finding. Recommendation until a lint rule flags Hebrew string literals outside locale files | One working language for agents and tooling; UI stays Hebrew for users | 2026-11-23 | experimental |
+| R-027 | PRs link Issues with `Refs #n` only, never `Closes`, `Fixes` or `Resolves`. An Issue is closed only when its task moves to Released | Development, release | developer, main agent | PR template + reviewer check. Recommendation until a CI check rejects closing keywords in PR bodies | Merging reaches Staging only; Issues must stay open until Released (ADR-009) | 2026-11-23 | experimental |
 
 הערה: R-004, R-007, R-011, R-012 דורשים הקמת lint, סריקת סודות ו-Hook בפועל בשלב 4. עד אז הם מסומנים כהמלצה. R-022, R-024 הם המלצה עד שהאכיפה שלהם תוקם (משימות devops). R-026 and R-027 are recommendations until their lint and CI checks exist.

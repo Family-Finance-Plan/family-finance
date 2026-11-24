@@ -7,7 +7,7 @@ description: How to add, change or retire an SDLC rule, stage gate or agent resp
 
 ## כשבעל הריפו מבקש "תוסיף כלל: ..., בשלב X, באחריות Y"
 1. קבע מזהה חדש ב-docs/sdlc/rules.md (המספר הבא ברצף, R-0xx).
-2. מלא: כלל, שלב, אחראי, אכיפה, נימוק, תאריך.
+2. מלא: כלל, שלב, אחראי, אכיפה, נימוק, תאריך. Status is always `experimental` for a new rule (see rules.md for promotion to `established`).
 3. אכיפה: אם הכלל קריטי, חייבת להיות אכיפה אוטומטית (בדיקה, CI, Hook או lint). אם אין, סמן "המלצה" והצע מה להקים.
 4. עדכן את קובץ התת-סוכן של האחראי ב-.claude/agents/ אם הכלל משנה את עבודתו.
 5. אם נדרש lint, בדיקה או Hook, צור משימה למפתח או ל-devops. אל תכתוב שהכלל נאכף לפני שהאכיפה קיימת.
