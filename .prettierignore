@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+dist/
+coverage/
+*.tsbuildinfo
+# Prose docs, ADRs and agent/skill files are not reformatted by Prettier.
+*.md
