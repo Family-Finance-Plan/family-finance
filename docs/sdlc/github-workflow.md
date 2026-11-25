@@ -6,7 +6,7 @@ The repo is the source of truth for the spec, the ADRs and the code.
 **Issue closing rule (ADR-009, R-027):** a PR links its Issue with `Refs #n` only. Never use `Closes`, `Fixes`, `Resolves` or any other GitHub closing keyword, because merging only reaches On Staging. An Issue is closed only when its task moves to Released, by the main agent (see gh-sync).
 There is no other backlog in files.
 
-Repo and board details: `<OWNER>/family-finance`, board number `1` (https://github.com/users/<OWNER>/projects/1).
+Repo and board details: `Family-Finance-Plan/family-finance`, organization board number `1` (https://github.com/orgs/Family-Finance-Plan/projects/1). The agents act as the GitHub App `family-finance-agents` (ADR-011).
 
 ## Concept mapping
 - **Status:** the Status field on the board (single select), with the same names and order as in the table below.
@@ -73,15 +73,16 @@ The main agent shows you a summary: acceptance criteria, test results, review fi
 
 The real enforcement is on the merge, not on the board column. A Projects board does not restrict who moves what to which status. Therefore:
 - Branch protection on `main` (ruleset): PR required, at least one approval, CODEOWNERS with the owner, required CI checks. Staging on Render deploys only from `main`.
-- Production deploys only from a tag, and only the owner creates version tags. Enforced by the `protect-releases` tag ruleset on `v*` (R-023), active since 2026-11-23; free because the repo is public (ADR-009).
-- On GitHub the author of a PR cannot approve it themselves. If the agents work under your account, you cannot approve their PR. So the agents need a separate identity: a bot account or a GitHub App, with a `gh` token that is not yours.
+- Production deploys only from a tag, and only the owner creates version tags. Enforced by the `protect-releases` tag ruleset on `v*` (R-023), set up on 2026-11-23 on the old repo; free only while the repo is public (ADR-009). The repo moved to the organization on 2026-11-25 and is private for now, so the rulesets must be recreated and are not enforced until it is public again.
+- On GitHub the author of a PR cannot approve it themselves. If the agents work under your account, you cannot approve their PR. So the agents need a separate identity: the GitHub App `family-finance-agents` (ADR-011), with a short-lived token from `tools/gh-app-token.sh`, never yours.
 - Without a separate identity, moving to On Staging and Released remains an instruction only.
 
 ## One-time setup (the owner)
 1. Create a Projects board and a Status field with the statuses above, a Priority field, and add the repo.
 2. Create labels: `epic`, `bug`, `agent-analyst`, `agent-architect`, `agent-ux-designer`, `agent-developer`, `agent-tester`, `agent-reviewer`, `agent-devops`.
 3. Create Milestones for the versions.
-4. Install and connect `gh` on the computer, with the `project` scope. It is worth checking with `gh auth status`.
+4. Install `gh` on the computer. It authenticates with the App token (`export GH_TOKEN=$(bash tools/gh-app-token.sh)`), not with `gh auth login`.
 5. Set up a separate identity for the agents and branch protection as described above.
 5a. Done 2026-11-23: repo made public and the `protect-releases` tag ruleset on `v*` is active, only the owner can create release tags (ADR-009). Still to do: the two Render services (Staging and Production) per ADR-009.
 6. ~~Replace the repo and board placeholders in the files.~~ Done 2026-11-23.
+7. Done 2026-11-26: the repo moved to the `Family-Finance-Plan` organization; the GitHub App created the new board, the Status and Priority fields, the labels and the `v0.1 MVP` Milestone (ADR-011).

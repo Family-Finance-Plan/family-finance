@@ -5,7 +5,7 @@ This document is loaded in every session, so it is short. Details are in docs/ a
 
 ## Sources of truth (read before working)
 - Spec: docs/spec/ (including docs/spec/spec-corrections.md, which overrides the original spec)
-- Architecture decisions: docs/adr/ (ADR-001 to ADR-010)
+- Architecture decisions: docs/adr/ (ADR-001 to ADR-011)
 - Process and gates: docs/sdlc/process.md and docs/sdlc/rules.md
 - If something is not in these files, it has not been decided. Ask, don't invent.
 
@@ -44,7 +44,7 @@ The only exception is end-user UI text: Hebrew, RTL, kept in locale/resource fil
 - To run the board: /board-run. Details in docs/sdlc/github-workflow.md.
 
 ## Open setup
-- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with them step by step. Until then R-016 is guidance only, and real data is forbidden.
+- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with them step by step. While the repo is private (rulesets not enforced on GitHub Free), R-016 is guidance only, and real data is forbidden.
 
 ## Process owner
 The owner approves gates, ADRs and process changes. At sensitive points (security, permissions, real data) there is no decision without their approval.

@@ -7,14 +7,20 @@ description: How the main agent reads and updates the GitHub Issues and Projects
 
 Only the main agent reads and writes. Subagents return a report. Flow details: docs/sdlc/github-workflow.md.
 
+## Identity and token (ADR-011)
+The agents act as the GitHub App `family-finance-agents` (`family-finance-agents[bot]`), never as the owner. At the start of a run, and again after an hour, get a fresh token in the same shell:
+`export GH_TOKEN=$(bash tools/gh-app-token.sh)`
+Never print, log or save the token (R-007). If the script fails, stop and report; don't fall back to another token or account.
+To push with the App: `git -c http.extraHeader="Authorization: Basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)" push origin <branch>`.
+
 ## Reading the board
-`gh` commands. `<OWNER>` is the repo owner's GitHub username; get it at runtime with `gh repo view --json owner --jq .owner.login` and never write it into files (R-029):
-- All board items with status: `gh project item-list 1 --owner <OWNER> --format json --limit 200`
-- Issue details including comments: `gh issue view <n> --repo <OWNER>/family-finance --comments --json title,body,labels,milestone,comments`
-- Field and option IDs: `gh project field-list 1 --owner <OWNER> --format json`
+Repo `Family-Finance-Plan/family-finance`, organization board number 1:
+- All board items with status: `gh project item-list 1 --owner Family-Finance-Plan --format json --limit 200`
+- Issue details including comments: `gh issue view <n> --repo Family-Finance-Plan/family-finance --comments --json title,body,labels,milestone,comments`
+- Field and option IDs: `gh project field-list 1 --owner Family-Finance-Plan --format json`
 Backlog order: Milestone ascending, then Priority. Filter and sort the JSON with a short script, not by eye.
 If `gh` is not connected or lacks permission, stop and report. Don't guess a status.
-The commands were written without testing against a real account. On the first run, verify they work and fix them here.
+Verified 2026-11-26 with the App token: `item-list`, `field-list` and `project view` work. `item-edit` is untested until the first task exists; verify it on the first real run and fix it here.
 
 ## Claiming a task
 Before work: a comment "[role] started" and the label `agent-<role>` (`gh issue edit <n> --add-label`). If there is already a label of another role, or of the same role in an active run, skip it. When done, remove the label.
@@ -23,9 +29,9 @@ Before work: a comment "[role] started" and the label `agent-<role>` (`gh issue 
 1. Verify that the exit conditions in the status table are met.
 2. Write the comment in the template (`gh issue comment <n> --body-file`). Only after that, change the status.
 3. Status change: `gh project item-edit --id <item> --project-id <project> --field-id <status-field> --single-select-option-id <option>`.
-   Fixed IDs (verify against `field-list` if something fails): project-id `PVT_kwHOA3kjEs4Bs3Df`. Status `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKUE`: Backlog `9ee7f933`, Analysis & Spec `968af1d2`, Test Design `50e6e31b`, Ready for Dev `0e58bee8`, In Development `20c78f97`, In Testing `210bcb53`, In Review `7bea21c1`, Awaiting Approval `8f4957a5`, On Staging `1a0fb39b`, Released `58c2a041`, On Hold `f43ee6f9`. Priority `PVTSSF_lAHOA3kjEs4Bs3DfzhrDKqQ`: P0 `d583d228`, P1 `1ede08f1`, P2 `7b441014`, P3 `2b6b65c7`.
+   Fixed IDs of the organization board (2026-11-26; verify against `field-list` if something fails): project-id `PVT_kwDOFYlAys4BtPYU`. Status `PVTSSF_lADOFYlAys4BtPYUzhrZxs4`: Backlog `567f64f8`, Analysis & Spec `8eab332c`, Test Design `5dd9b361`, Ready for Dev `f7263aba`, In Development `1cd09c56`, In Testing `1f231925`, In Review `d4444c46`, Awaiting Approval `4f1797c2`, On Staging `b4c36411`, Released `1c46c93f`, On Hold `16d5ad0b`. Priority `PVTSSF_lADOFYlAys4BtPYUzhrZxt4`: P0 `7b7f5ab3`, P1 `e5fb4915`, P2 `c32e69ce`, P3 `8cc4d39b`.
 4. On Staging and Released only with the owner's explicit approval in the same conversation (R-016), and in practice only after they approved the PR (On Staging) or the Release was approved and deployed (Released). Never on an agent's initiative.
-5. **Issue closing (R-027):** PRs link Issues with `Refs #n` only, never `Closes`, `Fixes`, `Resolves` or another closing keyword. An Issue is closed only when its task moves to Released: `gh issue close <n> --repo <OWNER>/family-finance --comment "Released in vX.Y.Z"`. If an Issue closed early (for example a closing keyword slipped into a PR), reopen it and leave a comment.
+5. **Issue closing (R-027):** PRs link Issues with `Refs #n` only, never `Closes`, `Fixes`, `Resolves` or another closing keyword. An Issue is closed only when its task moves to Released: `gh issue close <n> --repo Family-Finance-Plan/family-finance --comment "Released in vX.Y.Z"`. If an Issue closed early (for example a closing keyword slipped into a PR), reopen it and leave a comment.
 6. Before a forward move: check the WIP limit of the target status (R-021). A P0 bug bypasses it (R-025).
 7. If information or a decision is missing: On Hold with an explicit question.
 
@@ -61,7 +67,7 @@ Signs: HTTP 403 or 429, a message about "secondary rate limit" or "abuse", or `x
 
 ### When the account is blocked
 Signs: GraphQL limit 0 with nothing used (`gh api rate_limit --jq .resources.graphql`), a message about the account being suspended or flagged, or `gh auth status` saying the token is invalid while `curl` with the same token works.
-Stop all GitHub work and tell the owner. Do not regenerate the token or change settings. Only the owner contacts GitHub Support. Once unblocked, keep runs small for the first week.
+Stop all GitHub work and tell the owner. Do not regenerate the key or token, or change settings. Only the owner contacts GitHub Support. Once unblocked, keep runs small for the first week. (This happened to the earlier bot user account on 2026-11-24; see ADR-011.)
 
 ## Forbidden
 Changing the Priority or Milestone of an existing task without the owner's approval. Deleting Issues, comments or branches. Merging a PR. Writing secrets or real family data in Issues.
