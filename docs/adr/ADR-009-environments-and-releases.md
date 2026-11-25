@@ -5,6 +5,8 @@ Status: Approved by the owner (2026-11-23). Extends ADR-007 and does not replace
 ## Context
 ADR-007 defines Render as a development and test environment only. The process owner needs control over what reaches the live version, for both bug fixes and features, without every merge to `main` reaching customers.
 
+> **Temporary (2026-11-25):** the repo is private while the bot account is blocked and the public history is cleaned (R-029). The rulesets below are configured but not enforced until the repo is public again.
+
 ## Decision
 - Two environments on Render, each a separate service with its own persistent disk:
   - **Staging:** automatic deploy on every merge to `main`. Dummy data only, always.
