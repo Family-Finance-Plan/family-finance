@@ -73,7 +73,7 @@ The main agent shows you a summary: acceptance criteria, test results, review fi
 
 The real enforcement is on the merge, not on the board column. A Projects board does not restrict who moves what to which status. Therefore:
 - Branch protection on `main` (ruleset): PR required, at least one approval, CODEOWNERS with the owner, required CI checks. Staging on Render deploys only from `main`.
-- Production deploys only from a tag, and only the owner creates version tags. Enforced by the `protect-releases` tag ruleset on `v*` (R-023), set up on 2026-11-23 on the old repo; free only while the repo is public (ADR-009). The repo moved to the organization on 2026-11-25 and is private for now, so the rulesets must be recreated and are not enforced until it is public again.
+- Production deploys only from a tag, and only the owner creates version tags. Enforced by the `protect-releases` tag ruleset on `v*` (R-023), set up on 2026-11-23 on the old repo; free only while the repo is public (ADR-009). The repo moved to the organization on 2026-11-25; it is public again and both rulesets were recreated there on 2026-11-26.
 - On GitHub the author of a PR cannot approve it themselves. If the agents work under your account, you cannot approve their PR. So the agents need a separate identity: the GitHub App `family-finance-agents` (ADR-011), with a short-lived token from `tools/gh-app-token.sh`, never yours.
 - Without a separate identity, moving to On Staging and Released remains an instruction only.
 
