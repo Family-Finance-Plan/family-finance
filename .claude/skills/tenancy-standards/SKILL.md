@@ -3,36 +3,36 @@ name: tenancy-standards
 description: Multi-tenant standards for Family Finance: tenant resolution from session, one SQLite file per household, repository access, isolation tests, money and date conventions. Use when touching data access, auth, migrations, or anything that crosses tenants.
 ---
 
-# תקני Multi-Tenancy
+# Multi-tenancy standards
 
-## הקצאת Tenant
-1. Control Plane (מאגר מרכזי נפרד) מחזיק משתמשים, שיוך למשק בית ותפקיד. ללא נתוני תנועות.
-2. בכניסה: אימות Google (sub יציב), חיפוש משתמש ב-Control Plane, קביעת tenantId, שמירה בסשן.
-3. כל בקשה: ה-Guard מוציא tenantId מהסשן. אין קריאה של tenantId מ-URL, גוף בקשה או header.
-4. ה-TenantContext מועבר לשכבת הגישה לנתונים, והיא היחידה שמקבלת נתיב קובץ.
+## Tenant resolution
+1. The Control Plane (a separate central database) holds users, their household and their role. No transaction data.
+2. On sign-in: Google authentication (stable `sub`), look up the user in the Control Plane, determine the tenantId, store it in the session.
+3. Every request: the Guard takes the tenantId from the session. The tenantId is never read from the URL, request body or a header.
+4. The TenantContext is passed to the data access layer, which is the only layer that receives a file path.
 
-## שכבת הגישה לנתונים
-- ממשקי Repository (למשל TransactionRepository) הם החוזה. המימוש היחיד כרגע: Kysely מעל SQLite.
-- חיבור לקובץ Tenant נפתח לפי tenantId שאומת, נשמר ב-cache מוגבל, ונסגר בתום השימוש.
-- tenant_id קיים בכל טבלה גם כשיש קובץ נפרד, ובכל שאילתה כתנאי נוסף (הגנה בעומק).
+## Data access layer
+- Repository interfaces (for example TransactionRepository) are the contract. The only implementation for now: Kysely over SQLite.
+- A connection to a tenant file is opened by the verified tenantId, kept in a bounded cache, and closed when no longer used.
+- tenant_id exists in every table even though each tenant has its own file, and is in every query as an extra condition (defense in depth).
 
 ## Migrations
-- קבצי migration עם תאריך ISO בשם. רצים על כל קובץ Tenant דרך Migrator.
-- Migration שנכשל באמצע: ממשיכים לשאר ה-Tenants, מדווחים, ולא משאירים Tenant במצב חצוי (טרנזקציה לכל Tenant).
-- לפני migration הרסני: גיבוי של הקובץ.
+- Migration files with an ISO date in the name. They run on every tenant file through the Migrator.
+- A migration that fails midway: continue with the other tenants, report, and never leave a tenant half-migrated (one transaction per tenant).
+- Before a destructive migration: back up the file.
 
-## מוסכמות נתונים
-- סכום: מספר שלם ביחידות קטנות (אגורות) + שדה מטבע.
-- תאריך: מחרוזת ISO. עמודת period (למשל "2026-11") כשדה רגיל.
-- מזהה: UUID בטקסט.
-- ערכים בני תוקף: effective_from, effective_to, previous_value, source, certainty, note.
-- certainty של נתון עתידי: verified, expected, estimate בלבד.
+## Data conventions
+- Amount: an integer in minor units (agorot) + a currency field.
+- Date: an ISO string. A period column (for example "2026-11") as a regular field.
+- ID: UUID as text.
+- Effective-dated values: effective_from, effective_to, previous_value, source, certainty, note.
+- certainty of future data: verified, expected, estimate only.
 
-## בדיקת בידוד (חובה בכל Build)
-1. יוצרים שני Tenants עם נתוני דמה שונים.
-2. מבצעים כל נקודת קצה עם סשן של Tenant א' ומנסים לבקש מזהי משאבים של Tenant ב' (ברמת URL, גוף ופרמטרים).
-3. מצופה: 403 או 404, ושום נתון של Tenant ב' בתגובה, בלוג או בהודעת שגיאה.
-4. בדיקה נוספת: סשן בלי Tenant נדחה.
+## Isolation test (mandatory on every build)
+1. Create two tenants with different dummy data.
+2. Call every endpoint with tenant A's session and try to request tenant B's resource IDs (in the URL, body and parameters).
+3. Expected: 403 or 404, and no tenant B data in the response, the log or an error message.
+4. An extra test: a session without a tenant is rejected.
 
-## אסור
-פתיחת קובץ SQLite מחוץ לשכבת הגישה. הסקת Tenant משם קובץ או משדה שהמשתמש שולט בו. מיזוג נתונים בין Tenants בקוד אפליקציה.
+## Forbidden
+Opening a SQLite file outside the data access layer. Inferring the tenant from a file name or from a field the user controls. Merging data across tenants in application code.

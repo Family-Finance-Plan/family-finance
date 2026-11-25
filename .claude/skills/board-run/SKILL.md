@@ -3,27 +3,27 @@ name: board-run
 description: Run one pass over the GitHub Projects board: sample every status, dispatch the owning subagent for each task, write its documentation, advance the status per the SDLC, and report. Use when the user says run the board, continue the work, or invokes /board-run.
 ---
 
-# הרצת הבורד
+# Running the board
 
-טוענים גם את gh-sync. הסוכן הראשי מתזמר, תתי-הסוכנים עושים.
+Load gh-sync too. The main agent orchestrates; the subagents do the work.
 
-## מחזור
-1. **דגימה:** שאילתה לכל סטטוס לפי gh-sync. קח רק משימות שאין להן תווית agent פעילה.
-2. **סדר עדיפות לטיפול:** קודם Bug P0 בכל שלב (R-025), ואז מה שקרוב לסיום (In Review, In Testing, In Development, Ready for Dev, Test Design, Analysis & Spec), ורק בסוף משיכה חדשה. כך ה-WIP לא גדל.
-3. **WIP (R-021):** לפני כל מעבר קדימה, ספור את סטטוס היעד. In Development ו-In Testing עד 2, Awaiting Approval עד 3. אם היעד מלא, המשימה נשארת: מ-Test Design עוברים ל-Ready for Dev, ובשאר השלבים נשארים בלי תווית agent. Bug P0 עוקף את המגבלה.
-4. **משיכה:** אם יש מקום, העבר את הרשימה המוצעת של product-owner (הוא מקבל את ה-Backlog ואת מספר המשימות ב-Awaiting Approval) ומעביר את הנבחרות ל-Analysis & Spec.
-5. **שליחה לסוכן:** לפי טבלת הסטטוסים ב-docs/sdlc/github-workflow.md. ב-Analysis & Spec: analyst, אחריו architect, ואחריו ux-designer אם יש UI. העבר לסוכן את תיאור המשימה, ההערות הקודמות והקבצים הרלוונטיים.
-6. **תיעוד ומעבר:** כתוב את הדוח של הסוכן כתגובה בתבנית, ואז העבר סטטוס לפי הדוח (קדימה, אחורה או On Hold).
-7. **עצירה:** כשמשימה מגיעה ל-Awaiting Approval, הצג לבעל הריפו את סיכום המשימה וחכה להחלטה. אל תמשיך להעביר אותה. On Staging ו-Released רק בהוראה מפורשת של בעל הריפו (R-016, ADR-009).
-8. **Release:** אם כל משימות ה-Milestone ב-On Staging, דווח לבעל הריפו שה-Milestone מוכן ל-Release. בהוראתו, devops מכין טיוטה. רק בעל הריפו מפרסם ויוצר את ה-tag (R-023).
+## Cycle
+1. **Sample:** query every status per gh-sync. Take only tasks without an active agent label.
+2. **Handling order:** first a P0 bug at any stage (R-025), then whatever is closest to done (In Review, In Testing, In Development, Ready for Dev, Test Design, Analysis & Spec), and only at the end a new pull. This keeps WIP from growing.
+3. **WIP (R-021):** before every forward move, count the target status. In Development and In Testing up to 2, Awaiting Approval up to 3. If the target is full, the task stays: from Test Design it moves to Ready for Dev, and at other stages it stays without an agent label. A P0 bug bypasses the limit.
+4. **Pull:** if there is room, get product-owner's proposed list (it receives the Backlog and the number of tasks in Awaiting Approval) and move the chosen tasks to Analysis & Spec.
+5. **Dispatch to an agent:** per the status table in docs/sdlc/github-workflow.md. In Analysis & Spec: analyst, then architect, then ux-designer if there is UI. Give the agent the task description, previous comments and the relevant files.
+6. **Document and move:** write the agent's report as a comment in the template, then move the status according to the report (forward, back or On Hold).
+7. **Stop:** when a task reaches Awaiting Approval, show the owner the task summary and wait for their decision. Don't keep moving it. On Staging and Released only on the owner's explicit instruction (R-016, ADR-009).
+8. **Release:** if all of the Milestone's tasks are On Staging, tell the owner the Milestone is ready for a Release. On their instruction, devops prepares a draft. Only the owner publishes and creates the tag (R-023).
 
-## מגבלות הרצה
-- עד 5 משימות או 5 מעברים בהרצה אחת, ואז דיווח. אפשר להריץ שוב.
-- עצור מיד אם: אין חיבור ל-gh, תתי-הסוכנים מחזירים דוח לא תקין, או נדרשת פעולה ידנית (פריסה, הרשאות, סודות, נתונים אמיתיים).
-- עבודה נעשית ב-acceptEdits. בסשן שנוגע בתשתית, בהרשאות או בפריסה עוברים ל-default (R-014).
+## Run limits
+- Up to 5 tasks or 5 moves in one run, then report. It can be run again.
+- Stop at once if: there is no gh connection, a subagent returns an invalid report, or a manual action is needed (deploy, permissions, secrets, real data).
+- Work runs in acceptEdits. In a session that touches infrastructure, permissions or deployment, switch to default (R-014).
 
-## סיכום בסוף
-רשימה קצרה: מה הוזז ולאן, מה ממתין לך (Awaiting Approval עם קישורים), מה חסום ולמה, ומה נמשך מה-Backlog.
+## Summary at the end
+A short list: what moved and where to, what is waiting for you (Awaiting Approval with links), what is blocked and why, and what was pulled from the Backlog.
 
-## הרצה רציפה
-סשן Claude Code לא רץ מעצמו. ההרצה מתבצעת כשמפעילים את ה-Skill. אפשר לשקול בהמשך משימה מתוזמנת, אבל בנתונים אמיתיים ובלי בעל הריפו זמין זה לא מומלץ.
+## Continuous running
+A Claude Code session does not run by itself. The run happens when the skill is invoked. A scheduled task could be considered later, but with real data and without the owner available it is not recommended.

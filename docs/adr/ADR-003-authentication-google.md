@@ -1,19 +1,19 @@
-# ADR-003: אימות באמצעות Google
+# ADR-003: Authentication with Google
 
-סטטוס: אושר
+Status: Approved
 
-## החלטה
-התחברות עם Google בפרוטוקול OIDC. האימות מבודד מאחורי ממשק אחד, כך שאפשר להוסיף או להחליף ספק.
+## Decision
+Sign-in with Google over OIDC. Authentication is isolated behind a single interface, so a provider can be added or replaced.
 
-## כללי יישום
-1. מזהים משתמש לפי המזהה היציב של Google (claim בשם sub), לא לפי מייל.
-2. מקבלים רק כתובות מייל שאומתו אצל Google.
-3. הזמנה למשק בית נעשית לפי מייל. השיוך נקשר למזהה היציב בכניסה הראשונה.
-4. ניהול סשן אצלנו: תוקף קצר, ניתוק אוטומטי ויציאה מכל המכשירים.
+## Implementation rules
+1. Identify the user by Google's stable identifier (the `sub` claim), not by email.
+2. Accept only email addresses verified by Google.
+3. An invitation to a household is made by email. The link is bound to the stable identifier at the first sign-in.
+4. Session management on our side: short lifetime, automatic sign-out and sign-out from all devices.
 
-## מגבלות
-- MFA הוא הגדרה אישית בחשבון Google ואי אפשר לכפות אותו. מומלץ למשתמשים להפעיל אימות דו-שלבי, ולשקול אימות חוזר לפעולות רגישות (מחיקה, ייצוא).
-- מי שאין לו חשבון Google לא יכול להיכנס. לשלב ראשון זה סביר.
+## Limitations
+- MFA is a personal setting in the Google account and cannot be enforced. Users are advised to turn on two-step verification, and re-authentication for sensitive actions (deletion, export) should be considered.
+- Someone without a Google account cannot sign in. For the first phase this is reasonable.
 
-## תנאי לחזרה להחלטה
-דרישה לספק נוסף, או צורך בכפיית MFA.
+## Condition for revisiting
+A requirement for another provider, or a need to enforce MFA.

@@ -1,22 +1,22 @@
-# ADR-001: בידוד Tenants
+# ADR-001: Tenant isolation
 
-סטטוס: אושר
+Status: Approved
 
-## הקשר
-פלטפורמה גנרית למשקי בית (ARCH-02, FR-05), נתונים פיננסיים רגישים, ובשלב ראשון בלי שרת DB.
+## Context
+A generic platform for households (ARCH-02, FR-05), sensitive financial data, and in the first phase no DB server.
 
-## החלטה
-- כל משק בית הוא Tenant עם קובץ SQLite נפרד ותיקיית מסמכי מקור נפרדת.
-- רק שכבת גישה אחת לנתונים פותחת קבצים.
-- הסכמה מנוהלת עם Migrations. שדה tenant_id בכל טבלה גם כשיש קובץ נפרד.
-- סכומים כמספר שלם ביחידות קטנות, מזהים UUID.
+## Decision
+- Every household is a tenant with a separate SQLite file and a separate folder for source documents.
+- Only one data access layer opens files.
+- The schema is managed with migrations. A tenant_id field in every table even though each tenant has its own file.
+- Amounts as integers in minor units, UUID identifiers.
 
-## השלכות
-בידוד פיזי בין משפחות. שכפול משפחה הוא יצירת קובץ. גיבוי הוא העתקת קובץ.
-ניתוח חוצה-משפחות ועדכון סכמה בכל הקבצים קשים יותר.
+## Consequences
+Physical isolation between families. Creating a family is creating a file. A backup is copying a file.
+Cross-family analysis and updating the schema across all files are harder.
 
-## חלופות שנדחו
-מסד משותף עם tenant_id ו-Row-Level Security (נשמר כשלב עתידי). קבצי JSON או CSV גולמיים.
+## Rejected alternatives
+A shared database with tenant_id and Row-Level Security (kept as a future phase). Raw JSON or CSV files.
 
-## תנאי לחזרה להחלטה
-מאות משפחות, צורך בניתוח חוצה-משפחות, או עומס כתיבה במקביל באותה משפחה.
+## Condition for revisiting
+Hundreds of families, a need for cross-family analysis, or concurrent write load within the same family.

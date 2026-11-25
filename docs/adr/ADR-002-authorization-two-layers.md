@@ -1,19 +1,19 @@
-# ADR-002: הרשאות בשתי שכבות
+# ADR-002: Authorization in two layers
 
-סטטוס: אושר (מטריצת ההרשאות המפורטת, FR-06, עדיין פתוחה)
+Status: Approved (the detailed permission matrix, FR-06, is still open)
 
-## החלטה
-- מאגר מרכזי קטן ונפרד (Control Plane) מחזיק משתמשים, שיוך משתמש-למשק-בית ותפקיד. הוא לא נשמר בקבצי המשפחות.
-- בשלב ראשון משתמש שייך למשק בית אחד בלבד. זו מגבלה מכוונת.
-- ה-Tenant נקבע מהסשן המאומת בלבד, ולעולם לא מפרמטר שמגיע מהדפדפן.
-- רק שכבת הגישה לנתונים מקבלת נתיב קובץ מהמאגר המרכזי, אחרי בדיקת הרשאה.
-- תפקידים בתוך Tenant: מנהל משק בית, בן/בת זוג, משתמש מוגבל.
+## Decision
+- A small, separate central store (Control Plane) holds users, the user-to-household link and the role. It is not stored in the family files.
+- In the first phase a user belongs to one household only. This is a deliberate limitation.
+- The tenant is determined from the authenticated session only, and never from a parameter that comes from the browser.
+- Only the data access layer receives a file path from the central store, after a permission check.
+- Roles within a tenant: household admin, partner, limited user.
 
-## השלכות
-בדיקה אוטומטית בכל Build: משתמש ממשפחה א' לא ניגש לנתוני משפחה ב'. הבדיקה חייבת להיכשל בניסיון גישה.
+## Consequences
+An automatic test on every build: a user from family A cannot reach family B's data. The access attempt must fail.
 
-## חיזוק עתידי אופציונלי
-הצפנה נפרדת לכל משפחה (SQLCipher) עם מפתח שמשוחרר לסשן מורשה בלבד.
+## Optional future hardening
+Separate encryption per family (SQLCipher) with a key released only to an authorized session.
 
-## תנאי לחזרה להחלטה
-צורך במשתמש בכמה משקי בית. אז עוברים לטבלת שיוך רבים-לרבים ובחירת משק בית פעיל בכניסה.
+## Condition for revisiting
+A need for one user in several households. Then move to a many-to-many link table and choosing the active household at sign-in.
