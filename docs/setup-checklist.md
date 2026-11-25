@@ -12,7 +12,7 @@ On GitHub you cannot approve a PR you wrote yourself. If the agents work under t
 - [x] The App's private key outside the repo, readable only by the owner's Windows user, and the user environment variables `GH_APP_ID`, `GH_APP_INSTALLATION_ID` and `GH_APP_KEY_PATH`. Done 2026-11-26.
 - [x] `tools/gh-app-token.sh` gets a one-hour token. Done 2026-11-26: the App sees only this repo, with limits of 5000 per hour for REST and GraphQL.
 - [x] Agents' git identity in this repo's local config: `family-finance-agents[bot]` with the App bot's GitHub noreply address. Done 2026-11-26.
-- [ ] Test it for real: the App opens a PR and the owner approves it (the first one is the PR that adds ADR-011).
+- [x] Test it for real: the App opens a PR and the owner approves it. Done 2026-11-26: PR #3, opened by the App, approved by the owner and merged. A second test with the rulesets active is the PR that ticks this item.
 - [ ] From 2026-11-28: the owner deletes the old repo on their personal account (Settings → Danger zone), and tells the agent to delete the local `backup/pre-redact-*` branches and the `old-origin` remote. These are the last copies with personal details (R-029).
 - [ ] When the Support ticket for the old bot user is closed: remove the `GH_TOKEN` environment variable and revoke that token.
 
@@ -29,9 +29,9 @@ The bot user below was restricted by GitHub on 2026-11-24 after a burst of Issue
 - [x] Bot access to the Projects board: add the bot account with Write in board Settings → Manage access, and verify the bot token can read and edit items. Done 2026-11-23: GraphQL as the bot reads the board and returns `viewerCanUpdate: true`. Note: `gh project ...` commands fail with "unknown owner type" under this token; see the /board-run item below.
 
 ## Protecting the main branch (this is what actually enforces R-016)
-> **Temporary (2026-11-26):** the repo moved to the `Family-Finance-Plan` organization on 2026-11-25 and is private. On GitHub Free, rulesets are not enforced on private repos, so R-016 and R-023 are guidance only. The items below describe the old repo; the rulesets did not move with the history.
+> **2026-11-26:** the repo moved to the `Family-Finance-Plan` organization on 2026-11-25. The items below describe the old repo; the rulesets did not move with the history, and were recreated as in the next item.
 
-- [ ] Recreate `protect-main` and `protect-releases` on the new repo (same settings as below, empty bypass list on `main`), and make the repo public again so they are enforced. The history is already clean.
+- [x] Recreate `protect-main` and `protect-releases` on the new repo, and make the repo public again so they are enforced (on GitHub Free, rulesets are not enforced on private repos). Done 2026-11-26: the owner chose public over a paid plan after a full scan found no personal details or secrets; both rulesets are active (`main`: PR, 1 approval, Code Owners, stale approvals dismissed, no deletion or force push; `v*` tags: creation, update and deletion restricted, Repository admin bypass).
 
 - [x] Decide how Production approval is enforced. Decided (2026-11-23): stay on GitHub Free for now. Required reviewers on an Environment are not available on a private repo, so enforcement will be a tag ruleset (R-023, ADR-009).
 - [x] (2026-11-23: The owner chose not to pay for Pro. The repo was made public instead, which gives rulesets for free; a deep scan found no secrets or family data, only the owner's commit email. Still open: the Tag ruleset on `v*`.) **Upgrade to GitHub Pro and set up a tag ruleset on `v*` that only the owner can create. Mandatory before real data, or before agents start opening PRs against `main`, whichever comes first.** Pro is also needed for the ruleset on `main` in the next item. Done 2026-11-23: `protect-releases` tag ruleset on `v*` is active (creation, update, deletion, force push restricted); only the Repository admin role bypasses it.

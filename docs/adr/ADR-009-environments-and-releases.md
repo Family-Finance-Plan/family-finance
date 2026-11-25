@@ -5,7 +5,7 @@ Status: Approved by the owner (2026-11-23). Extends ADR-007 and does not replace
 ## Context
 ADR-007 defines Render as a development and test environment only. The process owner needs control over what reaches the live version, for both bug fixes and features, without every merge to `main` reaching customers.
 
-> **Temporary (2026-11-26):** the repo moved to the `Family-Finance-Plan` organization with a cleaned history (ADR-011, R-029) and is private for now. The rulesets below must be recreated on the new repo, and are not enforced until it is public again.
+> **2026-11-26:** the repo moved to the `Family-Finance-Plan` organization with a cleaned history (ADR-011, R-029). It is public again and the rulesets below were recreated there and are active.
 
 ## Decision
 - Two environments on Render, each a separate service with its own persistent disk:

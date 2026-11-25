@@ -21,7 +21,7 @@ At the same time, the old repo's public history held personal details (R-029), a
 - Rate limits belong to the App installation (verified 5000 per hour for REST and GraphQL), not to a new user account, and Apps are GitHub's supported way to automate. R-028 pacing still applies.
 - No password or 2FA for a second account to manage. The private key is the one secret; losing it means generating a new key in the App settings and deleting the old one.
 - Tokens last one hour, so long runs get a fresh token from the script.
-- Rulesets are not enforced on private repos on GitHub Free, in an organization as well. Until the repo is public again (ADR-009), R-016 and R-023 are guidance only. The rulesets must be recreated on the new repo; they did not move with the history.
+- Rulesets are not enforced on private repos on GitHub Free, in an organization as well. The rulesets did not move with the history; on 2026-11-26 the repo was made public again and both were recreated (ADR-009).
 - Issues and PRs from the old repo were not moved. Stories are recreated on the new board when needed, paced per R-028.
 
 ## Alternatives considered

@@ -44,7 +44,7 @@ The only exception is end-user UI text: Hebrew, RTL, kept in locale/resource fil
 - To run the board: /board-run. Details in docs/sdlc/github-workflow.md.
 
 ## Open setup
-- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with them step by step. While the repo is private (rulesets not enforced on GitHub Free), R-016 is guidance only, and real data is forbidden.
+- If docs/setup-checklist.md has an unticked item, remind the owner at the start of the session and go through the list with them step by step. If the repo is ever private again on GitHub Free, rulesets are not enforced and R-016 becomes guidance only. Real data is forbidden until the checklist is complete.
 
 ## Process owner
 The owner approves gates, ADRs and process changes. At sensitive points (security, permissions, real data) there is no decision without their approval.
