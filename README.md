@@ -13,7 +13,9 @@ Prerequisites: Node 26 (see `.nvmrc`) and pnpm, installed once with `npm install
 pnpm bootstrap
 ```
 
-This installs the dependencies and starts the API (http://localhost:3000, under `/api`) and the web app together. Open http://localhost:5173. The web dev server proxies `/api` to the API, so the browser sees one origin.
+This installs the dependencies and starts the API (http://127.0.0.1:3000, under `/api`) and the web app together. Open http://localhost:5173. The web dev server proxies `/api` to the API, so the browser sees one origin.
+
+The API listens on `127.0.0.1:3000` by default. The `HOST` and `PORT` environment variables override this (the hosting platform sets them); nothing needs to be set locally.
 
 Other commands, run from the repo root:
 - `pnpm dev` – start the API and the web app in parallel

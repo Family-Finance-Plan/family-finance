@@ -4,11 +4,12 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   plugins: [react()],
   server: {
+    host: "127.0.0.1",
     port: 5173,
     strictPort: true,
     // One origin in the browser, so no CORS (ADR-010).
     proxy: {
-      "/api": "http://localhost:3000",
+      "/api": "http://127.0.0.1:3000",
     },
   },
   test: {

@@ -24,6 +24,17 @@ describe("ServerStatus", () => {
     expect(fetchMock).toHaveBeenCalledWith("/api/health", expect.anything());
   });
 
+  it("shows the error state when /api/health returns a non-2xx response", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn().mockResolvedValue(new Response(null, { status: 500 })),
+    );
+
+    render(<ServerStatus />);
+
+    expect(await screen.findByText(he.serverStatus.error)).toBeTruthy();
+  });
+
   it("shows the error state when the server cannot be reached", async () => {
     vi.stubGlobal(
       "fetch",
