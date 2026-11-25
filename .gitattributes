@@ -1,4 +1,5 @@
 # Agent, skill and doc files must keep LF endings: Claude Code fails to load
 # agent files that have CRLF endings and a colon in the description.
 .claude/** text eol=lf
+*.sh text eol=lf
 *.md text eol=lf
