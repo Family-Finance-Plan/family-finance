@@ -9,11 +9,12 @@
 ## Structure
 - CLAUDE.md – standing principles, short on purpose
 - docs/spec/ – the original spec and spec-corrections.md (overrides the original)
-- docs/adr/ – ten architecture decisions (ADR-001 to ADR-010)
+- docs/adr/ – eleven architecture decisions (ADR-001 to ADR-011)
 - .github/pull_request_template.md – PR template (Refs #n, tests, docs, safety checklist)
 - docs/sdlc/ – stages, gates, roles, rule register and change log
 - .claude/agents/ – eight subagents (analyst, architect, ux-designer, developer, tester, reviewer, devops, product-owner)
 - .claude/skills/ – tenancy-standards, process-keeper, gh-sync and board-run
+- tools/gh-app-token.sh – one-hour token for the agents' GitHub App (ADR-011)
 
 ## GitHub setup (one-time)
 See "One-time setup" in docs/sdlc/github-workflow.md: Projects board and statuses, labels, Milestones, `gh` connected, a separate identity for the agents and branch protection.
