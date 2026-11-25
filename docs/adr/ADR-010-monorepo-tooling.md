@@ -36,13 +36,13 @@ ADR-005 sets TypeScript end to end in a monorepo, with NestJS for the backend an
 - Next.js: SSR and its own server overlap with NestJS and complicate the one-backend model (ADR-005).
 - Create React App: deprecated and unmaintained.
 - Jest everywhere: slower, and awkward with Vite and ESM in the web app; Vitest gives one runner.
-- Zod / ts-rest / OpenAPI codegen for T1: premature before the first real endpoint; deferred to ADR-011.
+- Zod / ts-rest / OpenAPI codegen for T1: premature before the first real endpoint; deferred to ADR-012.
 - CORS-based dev wiring: two origins in dev diverge from production and add config that the proxy avoids.
 
 ## Open
-- Runtime validation of contracts and how it relates to the OpenAPI output required by R-022. To be decided in ADR-011 before the first real endpoint.
+- Runtime validation of contracts and how it relates to the OpenAPI output required by R-022. To be decided in ADR-012 before the first real endpoint (renumbered 2026-11-26: ADR-011 went to the GitHub App identity).
 - Module format (ESM vs CommonJS) once `packages/contracts` contains runtime code.
 - How production serves the frontend: Nest serving static files vs a separate Render static site (ADR-007, ADR-009).
 
 ## Revisit conditions
-Build or test times that make a task runner worthwhile, more apps or packages than project references handle cleanly, Render not supporting Node 26, Vitest failing for Nest (triggers the Jest fallback), or ADR-011 choosing a contract approach that changes the package layout.
+Build or test times that make a task runner worthwhile, more apps or packages than project references handle cleanly, Render not supporting Node 26, Vitest failing for Nest (triggers the Jest fallback), or ADR-012 choosing a contract approach that changes the package layout.

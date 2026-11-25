@@ -15,7 +15,7 @@ A pnpm workspace with two apps and one shared package.
 
 ## How they connect
 - **Runtime:** in development the browser talks only to the Vite dev server (port 5173). Vite proxies `/api` to Nest on port 3000, so there is one origin and no CORS (ADR-010). How production serves the frontend is still open (ADR-010, Open).
-- **Compile time:** controllers in `apps/api` declare contract types as their return types, and `apps/web` uses the same types for responses. The imports are type-only and are erased at build time. A mismatch fails `pnpm build` and `pnpm typecheck`. There is no runtime validation yet (ADR-011 decides it).
+- **Compile time:** controllers in `apps/api` declare contract types as their return types, and `apps/web` uses the same types for responses. The imports are type-only and are erased at build time. A mismatch fails `pnpm build` and `pnpm typecheck`. There is no runtime validation yet (ADR-012 decides it, see ADR-010 Open).
 
 ## Build and test model
 - `tsconfig.base.json` holds the strict flags; every package extends it and none disables one.
