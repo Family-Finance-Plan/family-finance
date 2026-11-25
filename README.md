@@ -6,6 +6,29 @@
 3. Start in plan mode with the request: "Read CLAUDE.md, docs/spec and docs/adr, and propose a plan for MVP phase 1 according to docs/sdlc/process.md".
 4. If the subagents are not recognized, restart Claude Code.
 
+## Running locally
+Prerequisites: Node 26 (see `.nvmrc`) and pnpm, installed once with `npm install -g pnpm` (it switches to the version pinned in `package.json` by itself).
+
+```sh
+pnpm bootstrap
+```
+
+This installs the dependencies and starts the API (http://127.0.0.1:3000, under `/api`) and the web app together. Open http://localhost:5173. The web dev server proxies `/api` to the API, so the browser sees one origin.
+
+The API listens on `127.0.0.1:3000` by default. The `HOST` and `PORT` environment variables override this (the hosting platform sets them); nothing needs to be set locally.
+
+Other commands, run from the repo root:
+- `pnpm dev` – start the API and the web app in parallel
+- `pnpm build` – build all packages
+- `pnpm typecheck` – strict TypeScript check of the whole workspace (`tsc -b`)
+- `pnpm test` – run the Vitest suites of all packages
+- `pnpm format` – format code with Prettier
+
+Workspace layout (ADR-010):
+- `apps/api` – NestJS backend
+- `apps/web` – React + Vite frontend (Hebrew, RTL)
+- `packages/contracts` – shared API types
+
 ## Structure
 - CLAUDE.md – standing principles, short on purpose
 - docs/spec/ – the original spec and spec-corrections.md (overrides the original)
