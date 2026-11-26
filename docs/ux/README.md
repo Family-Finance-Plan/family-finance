@@ -61,27 +61,32 @@ A dark theme redefines the same tokens; see [settings.md](settings.md#dark-theme
 
 Defined as CSS custom properties on `:root` in `apps/prototype/src/styles.css`.
 
-| Token | Value | Use | Contrast on `--bg-surface` |
-|---|---|---|---|
-| `--bg-page` | `#F5F6F8` | Page background | n/a |
-| `--bg-surface` | `#FFFFFF` | Cards, tables, dialogs | n/a |
-| `--bg-subtle` | `#EEF0F4` | Table header, hover row, month header | n/a |
-| `--border` | `#C9CED6` | Dividers, input borders (use `--border-strong` for inputs) | n/a |
-| `--border-strong` | `#8A93A3` | Input borders, focus-independent outlines | 3.1:1 |
-| `--text` | `#1A1D23` | Body text | 16.9:1 |
-| `--text-muted` | `#5B6472` | Secondary text, captions | 6.0:1 |
-| `--primary` | `#2952CC` | Primary buttons, links, active nav | 6.6:1 |
-| `--primary-contrast` | `#FFFFFF` | Text on `--primary` | 6.6:1 |
-| `--focus-ring` | `#2952CC` | 2px outline, 2px offset | n/a |
-| `--danger` | `#B42318` | Errors, destructive actions | 6.6:1 |
-| `--banner-bg` / `--banner-text` | `#3D2E00` / `#FFE58A` | Prototype banner | 10.6:1 |
+Direction A, "warm and family", chosen by the owner on 2026-11-26 (UX2) from three interactive options: a calm blue-green ground, teal for text, links and selection, sunny yellow for the one main action on a screen, round shapes, and a rounded face for big numbers.
+
+| Token | Light | Dark | Use | Contrast |
+|---|---|---|---|---|
+| `--bg-page` | `#EEF6F7` | `#10201F` | Page background | n/a |
+| `--bg-surface` | `#FFFFFF` | `#1C3237` | Cards, tables, dialogs | n/a |
+| `--bg-subtle` | `#E2F0F1` | `#234046` | Table header, hover row, month header | n/a |
+| `--border` | `#CFE1E3` | `#2F4D53` | Dividers, card borders | n/a |
+| `--border-strong` | `#7F9A9E` | `#6D8C91` | Input borders | 3:1 or more |
+| `--text` | `#1F3B40` | `#E6F2F3` | Body text | 10.9:1 on page |
+| `--text-muted` | `#557074` | `#9DB8BC` | Secondary text, captions | 4.5:1 or more on every surface |
+| `--primary` | `#17707A` | `#6CC9CF` | Links, selected state, focus, active nav text on phone | 5.8:1 / 7.0:1 |
+| `--primary-tint` | `#E3F2F3` | `#1E3D42` | Selected backgrounds | n/a |
+| `--action` / `--on-action` | `#F2A93B` / `#3A2604` | `#F5B75A` / `#2B1A00` | Primary buttons and the logo mark only | 7.2:1 / 9.4:1 |
+| `--warm-tint` / `--nav-active-ink` | `#FDF0DA` / `#7A4A00` | `#3A3220` / `#FFD590` | Active side-nav item | 6.7:1 / 9.2:1 |
+| `--danger` | `#C4403B` | `#FF8A80` | Errors, destructive actions | 5.1:1 / 5.9:1 |
+| `--banner-bg` / `--banner-text` | `#3D2E00` / `#FFE58A` | same | Prototype banner | 10.6:1 |
+
+The yellow is never used for text on a light surface (it fails contrast); text and links use teal.
 
 Semantic set:
 
 | Token | Text / icon | Background (badge, row tint) | Meaning | Paired non-colour cue |
 |---|---|---|---|---|
-| `--income` | `#1B7F3B` | `#E6F4EA` | Income | "+" sign, label "הכנסה" |
-| `--expense` | `#B42318` | `#FDECEA` | Expense | "−" sign, label "הוצאה" |
+| `--income` | `#2A7D4F` | `#E6F4EA` | Income | "+" sign, label "הכנסה" |
+| `--expense` | `#C4403B` | `#FDECEA` | Expense | "−" sign, label "הוצאה" |
 | `--transfer` | `#5B6472` | `#EEF0F4` | Transfer (excluded from totals, D2) | ⇄ icon, label "העברה" |
 | `--verified` | `#0F6E6E` | `#E0F2F1` | Future item: verified | solid border, check icon, "מאומת" |
 | `--expected` | `#8A5300` | `#FFF1DB` | Future item: expected | dashed border, clock icon, "צפוי" |
@@ -94,15 +99,17 @@ Chart colours: income bars `--income`, expense bars `--expense`; category breakd
 
 ### Typography
 
-- Family: **Rubik** from Google Fonts (weights 400, 500, 700; subsets `hebrew,latin`), with fallback `"Rubik", "Segoe UI", "Arial Hebrew", Arial, system-ui, sans-serif`. Load with `display=swap`. (Alternative if the owner prefers a lighter look: Assistant.)
+- Text: **Assistant** from Google Fonts (400, 500, 600, 700), fallback `"Assistant", "Segoe UI", "Arial Hebrew", Arial, system-ui, sans-serif`.
+- Big numbers (summary cards): **Varela Round** (400) via `--font-num`, for the soft, friendly feel of direction A. Table amounts stay in Assistant for density.
+- Both load with `display=swap` and support Hebrew.
 - Scale (rem, base 16px): `--fs-xs 0.75` (captions), `--fs-sm 0.875` (table cells, labels), `--fs-md 1` (body), `--fs-lg 1.25` (section titles), `--fs-xl 1.5` (page titles), `--fs-2xl 2` (summary card amounts).
 - Line height 1.5 for text, 1.2 for numbers in cards. Numbers: `tabular-nums`.
 
 ### Spacing, radius, elevation
 
 - Spacing scale (4px base): `--sp-1 4px`, `--sp-2 8px`, `--sp-3 12px`, `--sp-4 16px`, `--sp-5 24px`, `--sp-6 32px`, `--sp-7 48px`.
-- Radius: `--radius-sm 4px` (badges, inputs), `--radius-md 8px` (cards, buttons), `--radius-lg 12px` (dialogs, drawers).
-- Elevation: cards `0 1px 2px rgb(0 0 0 / 0.08)`; dialogs and drawers `0 8px 24px rgb(0 0 0 / 0.16)`.
+- Radius: `--radius-sm 8px` (badges, inputs), `--radius-md 14px` (menus, nav items), `--radius-lg 22px` (cards, dialogs, drawers). Buttons are pill-shaped (`999px`) and shrink slightly when pressed.
+- Elevation: soft, tinted shadows. Cards `0 4px 14px rgb(31 59 64 / 0.07)`; dialogs and drawers `0 12px 32px rgb(31 59 64 / 0.18)`.
 - Page gutter: 16px phone, 24px tablet, 32px desktop.
 
 ## App shell and navigation
@@ -208,7 +215,7 @@ The prototype has a role switcher in the `UserMenu` ("הצגה בתור: מנה�
 4. Coverage line: keep both the percentage and the account count.
 5. Bulk edit and delete (FR-34): included in the prototype; may be deferred for v0.1 itself.
 6. Settings screen added during review: theme (system, light, dark), text size and more ([settings.md](settings.md)).
-7. The visual look is too generic and not attractive enough. Accepted for the prototype as is; a dedicated visual design pass (brand, colour, typography, illustration) comes as a separate task later, before the real screens in `apps/web` are styled.
+7. The visual look was too generic. UX2 showed three interactive directions; the owner chose **A, warm and family** (2026-11-26). It is applied to the prototype and is the reference for `apps/web`.
 
 ## Implementation notes (UX1 prototype, developer)
 Where the prototype deviates from or fills gaps in these specs:
