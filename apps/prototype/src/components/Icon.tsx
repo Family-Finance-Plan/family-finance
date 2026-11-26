@@ -25,7 +25,8 @@ export type IconName =
   | "logo"
   | "keyboard"
   | "copy"
-  | "restore";
+  | "restore"
+  | "settings";
 
 const paths: Record<IconName, string> = {
   chart: "M4 20V10M10 20V4M16 20v-7M22 20H2",
@@ -57,6 +58,8 @@ const paths: Record<IconName, string> = {
   keyboard: "M2 6h20v12H2zM6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10",
   copy: "M9 9h11v11H9zM5 15H4V4h11v1",
   restore: "M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5",
+  settings:
+    "M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1M15 4v4M9 10v4M17 16v4",
 };
 
 export function Icon({

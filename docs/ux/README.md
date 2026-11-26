@@ -11,6 +11,7 @@ Stage 3 output for Issue #8 (UX1). These files describe the screens the develope
 | [upload-and-review.md](upload-and-review.md) | Upload documents, processing, review before intake, upload history | `/upload`, `/upload/:documentId/review` |
 | [transactions.md](transactions.md) | All transactions, grouped by month, filters, quick edit | `/transactions` |
 | [household.md](household.md) | Household members, users and roles, invite (mock) | `/household` |
+| [settings.md](settings.md) | Display settings for this device: theme, text size, density, motion, start page | `/settings` |
 | [demo-data.md](demo-data.md) | The synthetic household and data the prototype runs on | n/a |
 
 ## Scope
@@ -55,6 +56,8 @@ Deliberately left out of v0.1 (each screen file repeats what applies to it):
 ## Visual language
 
 ### Colour tokens (light theme)
+
+A dark theme redefines the same tokens; see [settings.md](settings.md#dark-theme).
 
 Defined as CSS custom properties on `:root` in `apps/prototype/src/styles.css`.
 
@@ -116,13 +119,13 @@ Desktop (≥1024)                                   Phone (<600)
 │ SideNav  │  <main> page content              │  │ <main>               │
 │ (start = │                                   │  │                      │
 │  right)  │                                   │  ├──────────────────────┤
-│          │                                   │  │ BottomNav (4 items)  │
+│          │                                   │  │ BottomNav (5 items)  │
 └──────────┴───────────────────────────────────┘  └──────────────────────┘
 ```
 
-- **TopBar**: app name "ניהול כספי משפחה" (existing `he.appName`) at inline-start; household name (demo: "משק בית לדוגמה") and `UserMenu` (avatar initials, menu: "יציאה" sign out) at inline-end. Height 56px.
+- **TopBar**: app name "ניהול כספי משפחה" (existing `he.appName`) at inline-start; household name (demo: "משק בית לדוגמה") and `UserMenu` (avatar initials, menu: "הגדרות" settings, "יציאה" sign out) at inline-end. Height 56px.
 - **SideNav** (≥1024): fixed width 232px on the inline-start side (right in RTL). Items with icon + label. On tablet (600–1023) it collapses to an icon rail of 72px with tooltips.
-- **BottomNav** (<600): fixed to the bottom, 4 items, icon + short label, `padding-block-end: env(safe-area-inset-bottom)`.
+- **BottomNav** (<600): fixed to the bottom, 5 items, icon + short label, `padding-block-end: env(safe-area-inset-bottom)`.
 - Nav items (same order everywhere):
 
 | Key | Label | Route | Icon |
@@ -131,6 +134,7 @@ Desktop (≥1024)                                   Phone (<600)
 | `nav.transactions` | "תנועות" | `/transactions` | list |
 | `nav.upload` | "העלאת מסמכים" (bottom nav: "העלאה") | `/upload` | upload; shows a count badge of documents waiting for review |
 | `nav.household` | "משק הבית" | `/household` | people |
+| `nav.settings` | "הגדרות" | `/settings` | settings (sliders); also in the user menu |
 
 - Active item: `--primary` text, 3px `border-inline-start` bar (side nav) or top bar indicator (bottom nav), `aria-current="page"`.
 - A "skip to content" link ("דילוג לתוכן") is the first focusable element.
@@ -203,6 +207,8 @@ The prototype has a role switcher in the `UserMenu` ("הצגה בתור: מנה�
 3. Itemized card statement uploaded in v0.1: acknowledged with a note, nothing imported.
 4. Coverage line: keep both the percentage and the account count.
 5. Bulk edit and delete (FR-34): included in the prototype; may be deferred for v0.1 itself.
+6. Settings screen added during review: theme (system, light, dark), text size and more ([settings.md](settings.md)).
+7. The visual look is too generic and not attractive enough. Accepted for the prototype as is; a dedicated visual design pass (brand, colour, typography, illustration) comes as a separate task later, before the real screens in `apps/web` are styled.
 
 ## Implementation notes (UX1 prototype, developer)
 Where the prototype deviates from or fills gaps in these specs:

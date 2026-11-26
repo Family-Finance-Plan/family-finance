@@ -39,6 +39,7 @@ describe("every route renders with the prototype banner", () => {
     "/upload/doc-006/review",
     "/upload/doc-004/review",
     "/household",
+    "/settings",
     "/invite/accept?invite=u-invited",
     "/invite/accept?invite=missing",
   ];

@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import { AppShell } from "./components/AppShell";
 import { ToastProvider } from "./components/feedback";
+import { usePreferences } from "./lib/preferences";
 import { matchPath, navigate, useLocation } from "./lib/router";
 import { he } from "./locale/he";
 import { DashboardPage } from "./screens/dashboard/DashboardPage";
 import { HouseholdPage } from "./screens/HouseholdPage";
 import { InviteAcceptPage, SetupPage, SignInPage } from "./screens/SignIn";
 import { ReviewPage } from "./screens/ReviewPage";
+import { SettingsPage } from "./screens/SettingsPage";
 import { TransactionsPage } from "./screens/TransactionsPage";
 import { UploadPage } from "./screens/UploadPage";
 import { type AppState, StoreProvider, useStore } from "./state/store";
@@ -18,6 +20,7 @@ function Routes() {
   const { path } = useLocation();
   const { state } = useStore();
   const session = state.session;
+  const { startPage } = usePreferences();
   const needsAuth = !PUBLIC_ROUTES.includes(path);
   const needsHousehold = needsAuth && path !== "/setup";
   const redirect =
@@ -26,7 +29,7 @@ function Routes() {
       : needsHousehold && session && !session.householdId
         ? "/setup"
         : path === "/sign-in" && session?.householdId
-          ? "/"
+          ? startPage
           : null;
 
   useEffect(() => {
@@ -49,6 +52,7 @@ function Routes() {
   else if (path === "/upload") page = <UploadPage />;
   else if (review) page = <ReviewPage documentId={review.documentId ?? ""} />;
   else if (path === "/household") page = <HouseholdPage />;
+  else if (path === "/settings") page = <SettingsPage />;
   else page = <DashboardPage />;
   return <AppShell>{page}</AppShell>;
 }

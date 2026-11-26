@@ -18,7 +18,7 @@ export function PrototypeBanner() {
 }
 
 interface NavItem {
-  key: "dashboard" | "transactions" | "upload" | "household";
+  key: "dashboard" | "transactions" | "upload" | "household" | "settings";
   to: string;
   icon: IconName;
 }
@@ -28,6 +28,7 @@ const NAV: NavItem[] = [
   { key: "transactions", to: "/transactions", icon: "list" },
   { key: "upload", to: "/upload", icon: "upload" },
   { key: "household", to: "/household", icon: "people" },
+  { key: "settings", to: "/settings", icon: "settings" },
 ];
 
 function isActive(item: NavItem, path: string): boolean {
@@ -96,6 +97,17 @@ function UserMenu() {
               </label>
             ))}
           </fieldset>
+          <button
+            type="button"
+            className="btn btn--ghost btn--block"
+            onClick={() => {
+              setOpen(false);
+              navigate("/settings");
+            }}
+          >
+            <Icon name="settings" />
+            {he.userMenu.settings}
+          </button>
           <button
             type="button"
             className="btn btn--secondary btn--block"

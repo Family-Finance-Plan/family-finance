@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import { applyPreferences, getPreferences } from "./lib/preferences";
 import { createInitialState, type Session } from "./state/store";
 import "./styles.css";
 
@@ -24,6 +25,9 @@ function sessionFromSearch(): Session | null {
     return { userId: "u-parent-b", householdId: "hh-demo" };
   return null;
 }
+
+// Apply saved display settings before the first render, so the page never flashes the wrong theme.
+applyPreferences(getPreferences());
 
 createRoot(root).render(
   <StrictMode>
