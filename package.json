@@ -10,12 +10,14 @@
     "dev": "pnpm --parallel --filter \"./apps/*\" dev",
     "build": "pnpm -r build",
     "typecheck": "tsc -b",
+    "lint": "oxlint --deny-warnings",
     "test": "pnpm -r test",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
   "devDependencies": {
     "@types/node": "^26.6.0",
+    "oxlint": "1.93.0",
     "prettier": "^3.10.1",
     "typescript": "^7.0.2"
   }

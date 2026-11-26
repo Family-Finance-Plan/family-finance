@@ -461,9 +461,7 @@ export function DashboardPage() {
   const todayFraction = today / daysInMonth(CURRENT_MONTH);
 
   const groups = groupByMonth(active);
-  const tableMonths = [...futureMonths]
-    .reverse()
-    .concat([...pastMonths].reverse());
+  const tableMonths = futureMonths.toReversed().concat(pastMonths.toReversed());
   const toggle = (ym: string) =>
     setExpanded((e) => {
       const next = new Set(e);
@@ -560,6 +558,7 @@ export function DashboardPage() {
             <input
               type="checkbox"
               role="switch"
+              aria-checked={preview}
               checked={preview}
               onChange={(e) => togglePreview(e.target.checked)}
             />
@@ -635,7 +634,7 @@ export function DashboardPage() {
                   monthOf(f.date) === ym &&
                   f.date > DEMO_TODAY,
             )
-            .sort((a, b) => a.date.localeCompare(b.date));
+            .toSorted((a, b) => a.date.localeCompare(b.date));
           const fut = isFuture ? futureByMonth(data.futureItems, ym) : null;
           const summary = fut
             ? CERTAINTIES.map(

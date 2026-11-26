@@ -248,7 +248,7 @@ function QueueRow({ item }: { item: QueueItem }) {
 }
 
 function History({ data, isPhone }: { data: HouseholdData; isPhone: boolean }) {
-  const docs = [...data.documents].sort((a, b) =>
+  const docs = data.documents.toSorted((a, b) =>
     b.uploadedAt.localeCompare(a.uploadedAt),
   );
   const who = (id: string) =>
@@ -384,6 +384,8 @@ export function UploadPage() {
     <div className="page">
       <PageHeader title={he.upload.title} />
       {can("upload") ? (
+        // Drag and drop is extra; the file input inside the label is the keyboard path.
+        // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
         <label
           className={`dropzone ${dragging ? "is-dragging" : ""} ${isPhone ? "dropzone--compact" : ""}`}
           onDragOver={(e) => {

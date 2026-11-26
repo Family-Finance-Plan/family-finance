@@ -223,6 +223,9 @@ export function SetupPage() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const lastAdded = useRef<string | null>(null);
 
+  // Both effects run on purpose when a value changes that they don't read: the step (move
+  // focus to the new heading) and the member list (focus the member just added).
+  /* oxlint-disable react/exhaustive-effect-dependencies */
   useEffect(() => {
     headingRef.current?.focus();
   }, [step]);
@@ -232,6 +235,7 @@ export function SetupPage() {
       lastAdded.current = null;
     }
   }, [members]);
+  /* oxlint-enable react/exhaustive-effect-dependencies */
 
   if (!session || !me) return null;
 
@@ -389,6 +393,7 @@ export function SetupPage() {
                     <input
                       type="checkbox"
                       role="switch"
+                      aria-checked={m.usesApp}
                       checked={m.usesApp}
                       onChange={(e) =>
                         setMembers((ms) =>

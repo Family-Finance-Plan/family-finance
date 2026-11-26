@@ -33,7 +33,9 @@ describe("commitIntake", () => {
   });
 
   it("refuses to commit while a row is still pending (R-008)", () => {
-    expect(() => commitIntake(createDemoHousehold(), "doc-006")).toThrow();
+    expect(() => commitIntake(createDemoHousehold(), "doc-006")).toThrow(
+      "Every row needs a decision",
+    );
   });
 });
 

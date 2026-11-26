@@ -48,4 +48,4 @@ See "One-time setup" in docs/sdlc/github-workflow.md: Projects board and statuse
 docs/setup-checklist.md: setting up a separate identity for the agents and protecting the main branch. Claude Code will remind you at the start of a session and go through it with you.
 
 ## What is still missing
-In docs/spec/spec-corrections.md, section D. In addition: lint, secret scanning and hooks that enforce rules R-004, R-007, R-011, R-012 still need to be set up in the development stage.
+In docs/spec/spec-corrections.md, section D. In addition: secret scanning and hooks that enforce rules R-004, R-007, R-011, R-012 still need to be set up in the development stage. Lint runs in CI since T3 (Oxlint, ADR-010).

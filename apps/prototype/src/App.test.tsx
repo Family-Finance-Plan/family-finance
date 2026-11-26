@@ -162,15 +162,13 @@ describe("no backend calls", () => {
   });
 
   it("renders every route without using fetch or XMLHttpRequest", () => {
-    const fetchSpy = vi.fn(() => {
+    const fetchSpy = vi.fn<() => never>(() => {
       throw new Error("fetch must not be called");
     });
     let xhrCount = 0;
-    class NoXhr {
-      constructor() {
-        xhrCount += 1;
-        throw new Error("XMLHttpRequest must not be used");
-      }
+    function NoXhr() {
+      xhrCount += 1;
+      throw new Error("XMLHttpRequest must not be used");
     }
     vi.stubGlobal("fetch", fetchSpy);
     vi.stubGlobal("XMLHttpRequest", NoXhr);

@@ -6,6 +6,7 @@ import {
   type ReactNode,
   type RefObject,
   useEffect,
+  useLayoutEffect,
   useId,
   useRef,
 } from "react";
@@ -21,7 +22,9 @@ function useFocusTrap(
   trap: boolean,
 ) {
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
+  useLayoutEffect(() => {
+    onCloseRef.current = onClose;
+  });
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const node = ref.current;
@@ -73,6 +76,8 @@ export function Modal({
   const titleId = useId();
   useFocusTrap(ref, onClose, true);
   return (
+    // Backdrop click closes; keyboard users close with Escape (useFocusTrap).
+    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="overlay"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}
@@ -120,6 +125,8 @@ export function Drawer({
   const titleId = useId();
   useFocusTrap(ref, onClose, true);
   return (
+    // Backdrop click closes; keyboard users close with Escape (useFocusTrap).
+    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions
     <div
       className="overlay overlay--drawer"
       onMouseDown={(e) => e.target === e.currentTarget && onClose()}

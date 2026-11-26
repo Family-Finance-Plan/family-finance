@@ -34,6 +34,7 @@ jobs:
         run: bash tools/check-commit-emails.sh "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
       - run: pnpm format:check
       - run: pnpm typecheck
+      - run: pnpm lint
       - run: pnpm test
       - run: pnpm build
       - name: Smoke test of the built API
