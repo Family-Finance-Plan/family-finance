@@ -1,0 +1,40 @@
+# CI for every PR to main and every push to main (T2). Required check on main: "ci".
+name: ci
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Commit emails are noreply (R-029)
+        if: github.event_name == 'pull_request'
+        run: bash tools/check-commit-emails.sh "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"
+      - run: pnpm format:check
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+      - name: Smoke test of the built API
+        run: node tools/smoke-api.mjs
