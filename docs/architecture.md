@@ -3,12 +3,13 @@
 Living description of the code's modules and data model (R-022). Decisions behind it are in docs/adr/; this file describes what exists now. Current state: the T1 monorepo skeleton (ADR-010).
 
 ## Modules
-A pnpm workspace with two apps and one shared package.
+A pnpm workspace with three apps and one shared package.
 
 | Package | Owns |
 |---|---|
 | `apps/api` | NestJS backend. All server logic and HTTP endpoints, under the global prefix `/api`. Today: `GET /api/health`. |
 | `apps/web` | React + Vite frontend. The Hebrew RTL UI; UI strings live in `src/locale/`. Today: the app name and a server status line. |
+| `apps/prototype` | Clickable UX prototype of the v0.1 screens (React + Vite, Hebrew RTL), Issue #8. Prototype only: in-memory synthetic demo data, no backend calls, no persistence, never deployed to Production. Dev server on port 5174. |
 | `packages/contracts` | Shared API types only (no runtime code). Today: `HealthResponse`. |
 
 `packages/repository` (the only package allowed to use Kysely, ADR-006) arrives with the Repository task.
