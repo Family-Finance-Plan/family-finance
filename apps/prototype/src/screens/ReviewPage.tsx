@@ -44,6 +44,7 @@ import {
   intakeCounts,
   newId,
   rejectDocument,
+  reviewCategory,
   rowComplete,
   type RowState,
   rowState,
@@ -173,7 +174,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
     patchRow(id, (r) => ({
       ...r,
       lowConfidence: r.lowConfidence.filter((f) => f !== field),
-      ...(field === "category" ? { categoryConfirmed: true } : {}),
+      ...(field === "category" ? { categoryId: reviewCategory(r) } : {}),
     }));
 
   const states = rows.map((r) => ({ row: r, state: rowState(r) }));
@@ -219,7 +220,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
           ...r,
           decision,
           ...(decision === "approved"
-            ? { lowConfidence: [], categoryConfirmed: true }
+            ? { lowConfidence: [], categoryId: reviewCategory(r) }
             : {}),
         };
       }),
@@ -243,18 +244,20 @@ export function ReviewPage({ documentId }: { documentId: string }) {
   };
   const onRowKey = (e: KeyboardEvent<HTMLElement>, r: ReviewRow) => {
     if (e.target !== e.currentTarget || readOnly) return;
-    const key = e.key.toLowerCase();
-    if (key === "a" && canApprove(r)) {
+    // Match physical keys (e.code) so shortcuts also work on a Hebrew keyboard layout.
+    const code = e.code;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (code === "KeyA" && canApprove(r)) {
       decide([r.id], "approved");
       focusNext(r.id);
-    } else if (key === "r") {
+    } else if (code === "KeyR") {
       decide([r.id], "rejected");
       focusNext(r.id);
-    } else if (key === " ") {
+    } else if (code === "Space") {
       e.preventDefault();
       toggleSel(r.id);
-    } else if (key === "j" || key === "k") {
-      const order = key === "j" ? rows : [...rows].reverse();
+    } else if (code === "KeyJ" || code === "KeyK") {
+      const order = code === "KeyJ" ? rows : [...rows].reverse();
       const i = order.findIndex((x) => x.id === r.id);
       const target = order
         .slice(i + 1)
@@ -266,6 +269,24 @@ export function ReviewPage({ documentId }: { documentId: string }) {
           ?.querySelector<HTMLElement>(`[data-row="${target.id}"]`)
           ?.focus();
     }
+  };
+  const TABS: Tab[] = ["all", "attention", "unparsed", "duplicates"];
+  /** Arrow keys move between tabs. In RTL, ArrowLeft moves forward (towards inline-end). */
+  const onTabKey = (e: KeyboardEvent<HTMLButtonElement>) => {
+    const rtl = document.documentElement.dir === "rtl";
+    const forward = rtl ? "ArrowLeft" : "ArrowRight";
+    const back = rtl ? "ArrowRight" : "ArrowLeft";
+    const i = TABS.indexOf(tab);
+    let next: number | null = null;
+    if (e.key === forward) next = (i + 1) % TABS.length;
+    else if (e.key === back) next = (i - 1 + TABS.length) % TABS.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = TABS.length - 1;
+    if (next === null) return;
+    e.preventDefault();
+    const target = TABS[next] ?? "all";
+    setTab(target);
+    document.getElementById(`review-tab-${target}`)?.focus();
   };
   const toggleSel = (id: string) =>
     setSelected((s) => {
@@ -284,7 +305,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
         manual: true,
         fields: { type: "expense", currency: "ILS" },
         suggestedCategoryId: null,
-        categoryConfirmed: true,
+        categoryId: null,
         memberIds: [],
         tagIds: [],
         lowConfidence: [],
@@ -366,7 +387,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
           onChange={(e) =>
             patchRow(r.id, (x) => {
               const type = e.target.value as TxType;
-              const current = getCategory(x.suggestedCategoryId);
+              const current = getCategory(reviewCategory(x));
               const keep =
                 type !== "transfer" &&
                 current !== undefined &&
@@ -374,7 +395,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
               return {
                 ...x,
                 fields: { ...x.fields, type },
-                suggestedCategoryId: keep ? x.suggestedCategoryId : null,
+                ...(keep ? {} : { categoryId: null }),
                 lowConfidence: x.lowConfidence.filter(
                   (f) =>
                     f !== "type" && (type !== "transfer" || f !== "category"),
@@ -448,10 +469,10 @@ export function ReviewPage({ documentId }: { documentId: string }) {
       return <span className="muted">{he.common.none}</span>;
     const chip = (
       <span className="chips">
-        <Chip variant={r.suggestedCategoryId ? "solid" : "dashed"}>
-          {categoryLabel(r.suggestedCategoryId)}
+        <Chip variant={reviewCategory(r) ? "solid" : "dashed"}>
+          {categoryLabel(reviewCategory(r))}
         </Chip>
-        {r.suggestedCategoryId && !r.categoryConfirmed ? (
+        {r.categoryId === undefined && r.suggestedCategoryId ? (
           <span className="chip chip--suggestion">{he.picker.suggestion}</span>
         ) : null}
       </span>
@@ -468,7 +489,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
             type="button"
             className="chip-btn"
             aria-expanded={open}
-            aria-label={`${he.table.category}: ${categoryLabel(r.suggestedCategoryId)} · ${t(he.review.rowLabel, { n: n(r) })}`}
+            aria-label={`${he.table.category}: ${categoryLabel(reviewCategory(r))} · ${t(he.review.rowLabel, { n: n(r) })}`}
             onClick={() =>
               setOpenPicker(open ? null : { row: r.id, kind: "category" })
             }
@@ -482,13 +503,12 @@ export function ReviewPage({ documentId }: { documentId: string }) {
             >
               <CategoryPicker
                 type={r.fields.type === "income" ? "income" : "expense"}
-                value={r.suggestedCategoryId}
+                value={reviewCategory(r)}
                 onChange={(id) => {
                   setOpenPicker(null);
                   patchRow(r.id, (x) => ({
                     ...x,
-                    suggestedCategoryId: id,
-                    categoryConfirmed: true,
+                    categoryId: id,
                     lowConfidence: x.lowConfidence.filter(
                       (f) => f !== "category",
                     ),
@@ -783,9 +803,13 @@ export function ReviewPage({ documentId }: { documentId: string }) {
                   key={k}
                   type="button"
                   role="tab"
+                  id={`review-tab-${k}`}
                   aria-selected={tab === k}
+                  aria-controls="review-panel"
+                  tabIndex={tab === k ? 0 : -1}
                   className={tab === k ? "is-on" : ""}
                   onClick={() => setTab(k)}
+                  onKeyDown={onTabKey}
                 >
                   {he.review.tabs[k]}
                 </button>
@@ -801,7 +825,13 @@ export function ReviewPage({ documentId }: { documentId: string }) {
             </button>
           </div>
         ) : null}
-        <section className="card card--flush" ref={tableRef}>
+        <section
+          className="card card--flush"
+          ref={tableRef}
+          role="tabpanel"
+          id="review-panel"
+          aria-labelledby={`review-tab-${tab}`}
+        >
           {visible.length === 0 ? (
             <p className="muted card__pad">{he.review.noRows}</p>
           ) : null}
@@ -1027,7 +1057,11 @@ export function ReviewPage({ documentId }: { documentId: string }) {
       {body}
 
       {!readOnly && rows.length > 0 ? (
-        <div className="action-bar" role="region" aria-label={he.review.title}>
+        <div
+          className="action-bar"
+          role="region"
+          aria-label={he.review.actionsLabel}
+        >
           <span className="action-bar__count">
             {t(he.review.selected, { k: selected.size })}
           </span>

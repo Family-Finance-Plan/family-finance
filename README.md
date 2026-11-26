@@ -15,7 +15,7 @@ pnpm bootstrap
 
 This installs the dependencies and starts the API (http://127.0.0.1:3000, under `/api`) and the web app together. Open http://localhost:5173. The web dev server proxies `/api` to the API, so the browser sees one origin.
 
-The clickable UX prototype (demo data only, no backend) runs at http://localhost:5174.
+The clickable UX prototype (demo data only, no backend) runs at http://127.0.0.1:5174.
 
 The API listens on `127.0.0.1:3000` by default. The `HOST` and `PORT` environment variables override this (the hosting platform sets them); nothing needs to be set locally.
 

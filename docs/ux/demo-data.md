@@ -1,6 +1,6 @@
 # Demo data for the v0.1 prototype
 
-Everything here is invented (R-006, R-029). No real names, emails, account numbers or figures. Names are roles ("הורה א"); emails use the reserved `example.com` domain; accounts have no numbers. The developer generates the full JSON from this description into `apps/web/src/demo/` (for example `household.json`, `transactions.json`, `review-documents.json`, `future-items.json`). Hebrew strings in the demo JSON are data, not UI copy, so they live with the demo data and not in the locale file.
+Everything here is invented (R-006, R-029). No real names, emails, account numbers or figures. Names are roles ("הורה א"); emails use the reserved `example.com` domain; accounts have no numbers. The developer generates the full data from this description into `apps/prototype/src/demo/` as typed TypeScript (`household.ts`, `transactions.generated.ts`, `documents.ts`, `future-items.ts`). Hebrew strings in the demo JSON are data, not UI copy, so they live with the demo data and not in the locale file.
 
 Fixed clock: `DEMO_TODAY = '2026-10-15'`.
 

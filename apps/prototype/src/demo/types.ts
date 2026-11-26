@@ -133,9 +133,13 @@ export interface ReviewRow {
     currency?: string | null;
     original?: OriginalAmount;
   };
+  /** Category suggested by extraction (D13). Never changed by the user. */
   suggestedCategoryId: string | null;
-  /** True once the user touched or confirmed the suggested category (D13). */
-  categoryConfirmed?: boolean;
+  /**
+   * The category the user chose or confirmed. Undefined until the user touches it; until then
+   * the suggestion is shown (marked "הצעה") and used.
+   */
+  categoryId?: string | null;
   memberIds: string[];
   tagIds: string[];
   lowConfidence: ReviewField[];

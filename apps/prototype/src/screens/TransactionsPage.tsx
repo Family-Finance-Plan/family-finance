@@ -266,7 +266,8 @@ export function TransactionsPage() {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
       if (
-        e.key === "/" &&
+        // Physical key (e.code), so it also works on a Hebrew layout.
+        e.code === "Slash" &&
         !["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName)
       ) {
         e.preventDefault();

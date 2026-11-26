@@ -179,6 +179,13 @@ export function restoreTransactions(
 
 // --- Review and intake ---------------------------------------------------------------------------
 
+/** The category a review row is imported with: the user's choice, else the suggestion. */
+export function reviewCategory(row: ReviewRow): string | null {
+  return row.categoryId !== undefined
+    ? row.categoryId
+    : row.suggestedCategoryId;
+}
+
 export type RowState =
   "ready" | "attention" | "unparsed" | "duplicate" | "approved" | "rejected";
 
@@ -276,7 +283,7 @@ export function commitIntake(
       type,
       amountAgorot: f.amountAgorot ?? 0,
       ...(f.original ? { original: f.original } : {}),
-      categoryId: type === "transfer" ? null : r.suggestedCategoryId,
+      categoryId: type === "transfer" ? null : reviewCategory(r),
       memberIds: r.memberIds,
       tagIds: r.tagIds,
       ...(r.status ? { status: r.status } : {}),

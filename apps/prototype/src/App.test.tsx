@@ -7,7 +7,7 @@ import {
   waitFor,
   within,
 } from "@testing-library/react";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "./App";
 import { navigate } from "./lib/router";
 import { t } from "./lib/format";
@@ -152,5 +152,43 @@ describe("approving the pending review updates the Dashboard", () => {
     expect(
       screen.getByText(t(he.dashboard.coverage, { p: 51, n: 2, total: 3 })),
     ).toBeTruthy();
+  });
+});
+
+describe("no backend calls", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("renders every route without using fetch or XMLHttpRequest", () => {
+    const fetchSpy = vi.fn(() => {
+      throw new Error("fetch must not be called");
+    });
+    let xhrCount = 0;
+    class NoXhr {
+      constructor() {
+        xhrCount += 1;
+        throw new Error("XMLHttpRequest must not be used");
+      }
+    }
+    vi.stubGlobal("fetch", fetchSpy);
+    vi.stubGlobal("XMLHttpRequest", NoXhr);
+    const routes = [
+      "/",
+      "/transactions",
+      "/upload",
+      "/upload/doc-006/review",
+      "/household",
+      "/invite/accept?invite=u-invited",
+    ];
+    for (const route of routes) {
+      renderAt(route);
+      expect(screen.getAllByText(he.banner.title).length).toBeGreaterThan(0);
+      cleanup();
+    }
+    renderAt("/sign-in", null);
+    renderAt("/setup", { userId: "u-new", householdId: null });
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(xhrCount).toBe(0);
   });
 });

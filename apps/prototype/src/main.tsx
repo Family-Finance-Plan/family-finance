@@ -12,6 +12,9 @@ if (!root) {
 /**
  * Prototype-only review shortcut: `?as=parent-a` or `?as=parent-b` (before the `#`) starts
  * signed in, so a deep link like `/?as=parent-a#/transactions` opens directly. Demo users only.
+ *
+ * PROTOTYPE ONLY. Never carry this into apps/web: in the real app the user and the tenant come
+ * from the authenticated session only, never from a URL or browser parameter (R-003, ADR-001/002).
  */
 function sessionFromSearch(): Session | null {
   const as = new URLSearchParams(window.location.search).get("as");

@@ -10,6 +10,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { App } from "../App";
 import { t } from "../lib/format";
 import { he } from "../locale/he";
+import { demoTransactions } from "../demo/transactions.generated";
+import { navigate } from "../lib/router";
 import { createInitialState, TIMINGS } from "../state/store";
 
 function renderAt(hash: string) {
@@ -40,6 +42,9 @@ describe("forecast preview (phase 2 layer)", () => {
     expect(screen.queryByText(he.dashboard.forecastCaption)).toBeNull();
 
     fireEvent.click(toggle);
+    expect(screen.queryAllByText(he.certainty.expected).length).toBeGreaterThan(
+      0,
+    ); // legend
     expect(
       screen.getAllByText(he.dashboard.forecastCaption).length,
     ).toBeGreaterThan(0);
@@ -92,6 +97,14 @@ describe("upload (file contents are never read)", () => {
     expect(
       screen.getAllByText(he.upload.statuses["awaiting-review"]),
     ).toHaveLength(1);
+    // The transaction count is unchanged.
+    act(() => navigate("/transactions?period=all", { replace: true }));
+    const active = demoTransactions.filter((x) => !x.deletedAt).length;
+    expect(
+      screen.getByText((text) => text.startsWith(`${active} `), {
+        selector: "bdi",
+      }),
+    ).toBeTruthy();
   });
 
   it("rejects unsupported and oversized files before anything else", () => {
@@ -128,5 +141,54 @@ describe("prototype role switcher", () => {
     expect(screen.queryAllByRole("checkbox", { name: /בחירת/ })).toHaveLength(
       0,
     );
+  });
+});
+
+describe("forecast preview: expected items", () => {
+  it("shows expected salaries in November, separate from verified and estimated amounts", () => {
+    renderAt("/");
+    fireEvent.click(
+      screen.getByRole("switch", {
+        name: (n) => n.includes(he.dashboard.forecastToggle),
+      }),
+    );
+    fireEvent.click(
+      screen.getByRole("button", { name: he.dashboard.nextMonth }),
+    );
+    const income = screen.getByRole("region", {
+      name: `${he.dashboard.income} ${he.dashboard.phase2}`,
+    });
+    // One line per certainty, never a single mixed total (R-009).
+    expect(within(income).getByText(he.certainty.expected)).toBeTruthy();
+    expect(within(income).getByText(he.certainty.verified)).toBeTruthy();
+    expect(within(income).getByText(he.certainty.estimate)).toBeTruthy();
+    expect(income.textContent).toContain("26,300"); // salaries A + B, expected
+    // The November group lists the expected rows.
+    expect(screen.getAllByText("משכורת – הורה א").length).toBeGreaterThan(0);
+  });
+});
+
+describe("review screen highlighting", () => {
+  it("marks low-confidence fields and unparsed rows", () => {
+    renderAt("/upload/doc-006/review");
+    // r04, r05, r06, r08, r10, r11, r15 have one uncertain field each; r17 has two.
+    expect(
+      screen.getAllByRole("img", { name: he.status.lowConfidence }),
+    ).toHaveLength(9);
+    // Two unparsed rows: status label, red tint and the raw source text.
+    expect(screen.getAllByText(he.review.statuses.unparsed)).toHaveLength(2);
+    expect(
+      document.querySelectorAll("tbody.review-row--unparsed"),
+    ).toHaveLength(2);
+    expect(screen.getAllByText(he.review.rawText)).toHaveLength(2);
+    // Confirming a field clears its mark.
+    fireEvent.click(
+      screen.getAllByRole("button", {
+        name: he.review.confirmValue,
+      })[0] as HTMLElement,
+    );
+    expect(
+      screen.getAllByRole("img", { name: he.status.lowConfidence }),
+    ).toHaveLength(8);
   });
 });

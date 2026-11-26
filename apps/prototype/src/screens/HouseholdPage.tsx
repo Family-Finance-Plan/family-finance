@@ -216,6 +216,7 @@ function InviteDialog({
   const [role, setRole] = useState<Role>("partner");
   const [error, setError] = useState<string | null>(null);
   const [created, setCreated] = useState<User | null>(null);
+  const [copied, setCopied] = useState(false);
   const submit = (e: FormEvent) => {
     e.preventDefault();
     const mail = email.trim().toLowerCase();
@@ -287,15 +288,21 @@ function InviteDialog({
             <button
               type="button"
               className="btn btn--secondary btn--sm"
-              onClick={() =>
-                void navigator.clipboard?.writeText(link).catch(() => undefined)
-              }
+              onClick={() => {
+                void navigator.clipboard
+                  ?.writeText(link)
+                  .catch(() => undefined);
+                setCopied(true);
+              }}
             >
               <Icon name="copy" size={16} />
               {he.household.copy}
             </button>
           </span>
         </label>
+        <p className="hint" role="status" aria-live="polite">
+          {copied ? he.household.copied : ""}
+        </p>
         <Link to={`/invite/accept?invite=${created.id}`} className="link-btn">
           {he.household.showInvite}
         </Link>

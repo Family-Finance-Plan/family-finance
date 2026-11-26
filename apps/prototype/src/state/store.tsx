@@ -8,6 +8,7 @@ import {
   useCallback,
   useContext,
   useMemo,
+  useEffect,
   useRef,
   useState,
 } from "react";
@@ -96,6 +97,22 @@ export function StoreProvider({
   const [state, setRaw] = useState<AppState>(
     () => initialState ?? createInitialState(),
   );
+  // Fake upload/extraction timers; cleared when the provider unmounts.
+  const timers = useRef(new Set<ReturnType<typeof setTimeout>>());
+  const later = useCallback((fn: () => void, ms: number) => {
+    const id = setTimeout(() => {
+      timers.current.delete(id);
+      fn();
+    }, ms);
+    timers.current.add(id);
+  }, []);
+  useEffect(() => {
+    const pending = timers.current;
+    return () => {
+      for (const id of pending) clearTimeout(id);
+      pending.clear();
+    };
+  }, []);
   const stateRef = useRef(state);
   stateRef.current = state;
   const setState = useCallback((update: (s: AppState) => AppState) => {
@@ -203,10 +220,10 @@ export function StoreProvider({
   const startExtraction = useCallback(
     (id: string) => {
       patchItem(id, { status: "extracting", slow: false });
-      setTimeout(() => patchItem(id, { slow: true }), TIMINGS.slowAfter);
-      setTimeout(() => finishExtraction(id), TIMINGS.extraction);
+      later(() => patchItem(id, { slow: true }), TIMINGS.slowAfter);
+      later(() => finishExtraction(id), TIMINGS.extraction);
     },
-    [finishExtraction, patchItem],
+    [finishExtraction, later, patchItem],
   );
 
   const startUpload = useCallback(
@@ -216,7 +233,7 @@ export function StoreProvider({
         progress += 25;
         if (progress < 100) {
           patchItem(id, { progress });
-          setTimeout(tick, TIMINGS.progressStep);
+          later(tick, TIMINGS.progressStep);
           return;
         }
         patchItem(id, { progress: 100 });
@@ -224,9 +241,9 @@ export function StoreProvider({
           patchItem(id, { status: "duplicate-file" });
         else startExtraction(id);
       };
-      setTimeout(tick, TIMINGS.progressStep);
+      later(tick, TIMINGS.progressStep);
     },
-    [patchItem, startExtraction],
+    [later, patchItem, startExtraction],
   );
 
   const enqueueFiles = useCallback(

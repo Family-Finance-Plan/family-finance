@@ -446,6 +446,7 @@ export const he = {
     selected: "{k} נבחרו",
     approveSelected: "אישור הנבחרות",
     rejectSelected: "דחיית הנבחרות",
+    actionsLabel: "פעולות אישור וקליטה",
     approveReady: "אישור כל השורות התקינות ({m})",
     approveReadyHint: "שורות שמסומנות לבדיקה צריך לאשר בנפרד.",
     needsAttention: "{n} שורות דורשות טיפול לפני אישור",

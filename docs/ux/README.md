@@ -1,6 +1,6 @@
 # UX specs: v0.1 clickable prototype
 
-Stage 3 output for Issue #8 (UX1). These files describe the screens the developer builds as a clickable React prototype (`apps/web`) running on demo data only (R-006, R-029). English text; Hebrew appears only as proposed UI copy, in quotes, and must live in `apps/web/src/locale/he.ts` (R-026), never in components.
+Stage 3 output for Issue #8 (UX1). These files describe the screens the developer builds as a clickable React prototype (`apps/prototype`) running on demo data only (R-006, R-029). English text; Hebrew appears only as proposed UI copy, in quotes, and must live in `apps/prototype/src/locale/he.ts` (R-026), never in components.
 
 ## Index
 
@@ -56,7 +56,7 @@ Deliberately left out of v0.1 (each screen file repeats what applies to it):
 
 ### Colour tokens (light theme)
 
-Defined as CSS custom properties on `:root` in `apps/web/src/styles.css`.
+Defined as CSS custom properties on `:root` in `apps/prototype/src/styles.css`.
 
 | Token | Value | Use | Contrast on `--bg-surface` |
 |---|---|---|---|
@@ -145,7 +145,7 @@ Component `PrototypeBanner`, shown on every screen including sign-in, cannot be 
 
 ## Formatting
 
-All formatting lives in one module, `apps/web/src/format.ts`, with unit tests.
+All formatting lives in one module, `apps/prototype/src/lib/format.ts`, with unit tests.
 
 ### Amounts
 
@@ -215,3 +215,7 @@ Where the prototype deviates from or fills gaps in these specs:
 7. **Income breakdown.** The coverage line for the income view shows the account count only; the percentage is defined for expenses.
 8. **Bulk assign** adds the chosen members and tags to each selected row (it does not replace existing ones).
 9. **Not built in the prototype:** full grid keyboard navigation (arrow keys between cells) on the review and transactions tables (row shortcuts A / R / J / K / Space and `/` for search are built; `C` / `M` are not), list virtualization, the full ARIA combobox pattern (pickers are a search field plus a listbox), the tablet filter popover (the desktop filter bar wraps instead), and simulated "still extracting" and intake-error states. Forced states via `?state=loading|empty|error` exist on the Dashboard, Transactions, upload history and Household.
+10. **Keyboard shortcuts match the physical key** (`KeyboardEvent.code`: `KeyA`, `KeyR`, `KeyJ`, `KeyK`, `Space`, `Slash`), not `key`, so they work on a Hebrew keyboard layout. The real app must do the same.
+11. **`?as=` sign-in shortcut is prototype only** and must never be carried into `apps/web`: the user and tenant come from the authenticated session only (R-003). Likewise the prototype invite link uses the user id; real invites need an unguessable, single-use, expiring token.
+12. **Upload simulation** picks the outcome from a substring of the file name (`dup`, `fail`, `card`, otherwise a copy of doc-006); only the name and size are used, never the contents.
+13. **Review category:** a review row keeps the extraction's `suggestedCategoryId` unchanged and stores the user's choice separately in `categoryId` (undefined until the user picks or confirms one; the suggestion is used and tagged "הצעה" until then).
