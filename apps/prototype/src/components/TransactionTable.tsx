@@ -51,7 +51,7 @@ function QuickCategory({
       </button>
       {open ? (
         <Popover label={he.picker.categoryLabel} onClose={() => setOpen(false)}>
-          <div onClick={(e) => e.stopPropagation()}>
+          <div role="presentation" onClick={(e) => e.stopPropagation()}>
             <CategoryPicker
               type={tx.type === "income" ? "income" : "expense"}
               value={tx.categoryId}
@@ -178,7 +178,7 @@ function QuickMembers({
       </button>
       {open ? (
         <Popover label={he.table.assignmentAndTags} onClose={close}>
-          <div onClick={(e) => e.stopPropagation()}>
+          <div role="presentation" onClick={(e) => e.stopPropagation()}>
             <MemberTagPicker
               members={data.members}
               tags={data.tags}
@@ -224,6 +224,10 @@ export interface TableOptions {
     column: "date" | "description" | "amount",
     label: string,
   ) => ReactNode;
+  /** Current sort of a column, set as aria-sort on its header cell. */
+  sortState?: (
+    column: "date" | "description" | "amount",
+  ) => "ascending" | "descending" | undefined;
 }
 
 export function TransactionTable({
@@ -237,6 +241,8 @@ export function TransactionTable({
   const editable = can("editTransactions");
   const header = (col: "date" | "description" | "amount", label: string) =>
     options.sortHeader ? options.sortHeader(col, label) : label;
+  const sorted = (col: "date" | "description" | "amount") =>
+    options.sortState?.(col);
   return (
     <table className="tx-table">
       <thead>
@@ -246,10 +252,12 @@ export function TransactionTable({
               <span className="sr-only">{he.table.select}</span>
             </th>
           ) : null}
-          <th scope="col" className="col-date">
+          <th scope="col" className="col-date" aria-sort={sorted("date")}>
             {header("date", he.table.date)}
           </th>
-          <th scope="col">{header("description", he.table.description)}</th>
+          <th scope="col" aria-sort={sorted("description")}>
+            {header("description", he.table.description)}
+          </th>
           <th scope="col" className="col-cat">
             {he.table.category}
           </th>
@@ -259,7 +267,7 @@ export function TransactionTable({
           <th scope="col" className="col-type">
             {he.table.type}
           </th>
-          <th scope="col" className="col-amount">
+          <th scope="col" className="col-amount" aria-sort={sorted("amount")}>
             {header("amount", he.table.amount)}
           </th>
           {options.rowMenu ? (

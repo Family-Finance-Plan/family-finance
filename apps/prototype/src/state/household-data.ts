@@ -291,7 +291,7 @@ export function commitIntake(
       history: [],
     };
   });
-  const dates = created.map((t) => t.date).sort();
+  const dates = created.map((t) => t.date).toSorted();
   const coverageTo = doc.detected?.to ?? dates[dates.length - 1];
   const coverageFrom = doc.detected?.from ?? dates[0];
   let coverage = data.coverage;

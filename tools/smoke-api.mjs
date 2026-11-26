@@ -5,8 +5,8 @@ import { createServer } from "node:net";
 
 const port = await new Promise((resolve) => {
   const srv = createServer().listen(0, "127.0.0.1", () => {
-    const { port } = srv.address();
-    srv.close(() => resolve(port));
+    const free = srv.address().port;
+    srv.close(() => resolve(free));
   });
 });
 

@@ -79,7 +79,7 @@ export function useTransactionActions() {
   const recentCategories = [...data.transactions]
     .filter((x) => x.categoryId !== null)
     .slice(-40)
-    .reverse()
+    .toReversed()
     .map((x) => x.categoryId as string)
     .filter((id, i, all) => all.indexOf(id) === i)
     .slice(0, 5);

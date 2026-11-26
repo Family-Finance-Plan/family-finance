@@ -12,13 +12,13 @@ ADR-005 sets TypeScript end to end in a monorepo, with NestJS for the backend an
    - `apps/api`: NestJS backend.
    - `apps/web`: React frontend.
    - `packages/contracts`: shared API types.
-   - `packages/repository`: arrives with T6. It is the only package allowed to depend on Kysely (ADR-006); T3 adds the automated enforcement.
+   - `packages/repository`: arrives with T6. It is the only package allowed to depend on Kysely (ADR-006); lint enforces this since T3.
 4. **Web build:** Vite.
 5. **Tests:** Vitest in all packages, with `unplugin-swc` so Nest decorators and metadata work. Fallback to Jest for `apps/api` only, and only if Vitest proves unworkable there.
 6. **Contracts:** TypeScript types only in T1. The root `tsconfig` uses project references and builds with `tsc -b`. API controllers return contract types and the web client consumes them, so any mismatch fails `pnpm build` and `pnpm typecheck`.
 7. **Dev wiring:** `pnpm dev` runs api and web in parallel. Vite proxies `/api` to Nest, so the browser sees one origin and no CORS is configured.
 8. **Fresh clone:** after the README prerequisites (Node 26, `npm install -g pnpm`), one documented command, `pnpm bootstrap`, installs dependencies and starts both apps.
-9. **Formatting:** Prettier with `endOfLine: lf` in T1. ESLint arrives in T3. `.gitattributes` is extended to `* text=auto eol=lf`.
+9. **Formatting and lint:** Prettier with `endOfLine: lf` in T1; `.gitattributes` is extended to `* text=auto eol=lf`. Lint (T3) uses **Oxlint** (`.oxlintrc.json`, `pnpm lint`, run in CI) instead of ESLint: typescript-eslint supports TypeScript up to 6.0 only, and this repo uses TypeScript 7. Oxlint does not depend on the TypeScript package and covers the same ground: TypeScript, React and React hooks, jsx-a11y, import and Vitest rules. Correctness rules are errors, and warnings also fail CI (`--deny-warnings`). A disabled rule on a line always carries a comment with the reason.
 10. **Strict TypeScript everywhere:** `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `noFallthroughCasesInSwitch`, `forceConsistentCasingInFileNames`, set in a shared base config. No package may disable a strict flag.
 
 ## Consequences
@@ -26,7 +26,7 @@ ADR-005 sets TypeScript end to end in a monorepo, with NestJS for the backend an
 - Contract drift between api and web is a compile error, not a runtime surprise. There is no runtime validation yet (see Open).
 - Without a task runner, build ordering relies on `tsc -b` project references and pnpm's topological `-r` runs. Acceptable at this size.
 - Vitest with SWC for Nest is less common than Jest; the Jest fallback for `apps/api` limits the risk.
-- The Kysely boundary is a documented rule until T3 adds the lint/CI check; until then it is advisory only.
+- The Kysely boundary is enforced by lint since T3: `no-restricted-imports` blocks `kysely` everywhere except `packages/repository`.
 - The LF rule may produce a one-time line-ending diff across existing files.
 
 ## Rejected alternatives

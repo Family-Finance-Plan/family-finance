@@ -563,7 +563,7 @@ export function HouseholdPage() {
   const admins = data.users.filter(
     (x) => x.role === "admin" && x.status === "active",
   ).length;
-  const members = [...data.members].sort((a, b) =>
+  const members = data.members.toSorted((a, b) =>
     a.kind === "family" ? -1 : b.kind === "family" ? 1 : 0,
   );
 

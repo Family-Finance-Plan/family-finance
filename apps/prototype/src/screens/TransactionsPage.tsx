@@ -256,12 +256,14 @@ export function TransactionsPage() {
   const editable = can("editTransactions");
   const forced = retried ? null : query.get("state");
 
-  // Debounced search (250ms) into the URL.
+  // Debounced search (250ms) into the URL. Runs on typing only, not when the URL changes.
+  /* oxlint-disable react-hooks/exhaustive-deps, react/exhaustive-effect-dependencies */
   useEffect(() => {
     if (search === filters.q) return;
     const id = setTimeout(() => setFilters({ q: search }), 250);
     return () => clearTimeout(id);
   }, [search]);
+  /* oxlint-enable react-hooks/exhaustive-deps, react/exhaustive-effect-dependencies */
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const el = e.target as HTMLElement;
@@ -292,7 +294,7 @@ export function TransactionsPage() {
     const factor = sort.dir === "asc" ? 1 : -1;
     return groups.map((g) => ({
       ...g,
-      rows: [...g.rows].sort((a, b) => {
+      rows: g.rows.toSorted((a, b) => {
         if (sort.col === "amount")
           return factor * (a.amountAgorot - b.amountAgorot);
         if (sort.col === "description")
@@ -528,6 +530,7 @@ export function TransactionsPage() {
       <input
         type="checkbox"
         role="switch"
+        aria-checked={filters.showDeleted}
         checked={filters.showDeleted}
         onChange={(e) => setFilters({ showDeleted: e.target.checked })}
       />
@@ -853,6 +856,12 @@ export function TransactionsPage() {
                                 onOpen: (tx) => setDrawerId(tx.id),
                                 rowMenu,
                                 highlightId: highlight,
+                                sortState: (col) =>
+                                  sort.col === col
+                                    ? sort.dir === "asc"
+                                      ? "ascending"
+                                      : "descending"
+                                    : undefined,
                                 sortHeader: (col, label) => (
                                   <button
                                     type="button"
@@ -860,13 +869,6 @@ export function TransactionsPage() {
                                     aria-label={t(he.table.sortBy, {
                                       column: label,
                                     })}
-                                    aria-sort={
-                                      sort.col === col
-                                        ? sort.dir === "asc"
-                                          ? "ascending"
-                                          : "descending"
-                                        : undefined
-                                    }
                                     onClick={() =>
                                       setSort((s) => ({
                                         col,

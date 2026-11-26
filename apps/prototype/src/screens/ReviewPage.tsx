@@ -79,10 +79,12 @@ function AmountInput({
   const [text, setText] = useState(
     value === undefined ? "" : amountToInput(value),
   );
-  useEffect(
-    () => setText(value === undefined ? "" : amountToInput(value)),
-    [value],
-  );
+  // Reset the draft when the committed value changes (React's "adjust state on prop change").
+  const [shown, setShown] = useState(value);
+  if (shown !== value) {
+    setShown(value);
+    setText(value === undefined ? "" : amountToInput(value));
+  }
   return (
     <input
       type="text"
@@ -178,7 +180,6 @@ export function ReviewPage({ documentId }: { documentId: string }) {
     }));
 
   const states = rows.map((r) => ({ row: r, state: rowState(r) }));
-  const count = (s: RowState) => states.filter((x) => x.state === s).length;
   const lowConf = rows.filter(
     (r) => r.lowConfidence.length > 0 && r.parseStatus === "parsed",
   ).length;
@@ -257,7 +258,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
       e.preventDefault();
       toggleSel(r.id);
     } else if (code === "KeyJ" || code === "KeyK") {
-      const order = code === "KeyJ" ? rows : [...rows].reverse();
+      const order = code === "KeyJ" ? rows : rows.toReversed();
       const i = order.findIndex((x) => x.id === r.id);
       const target = order
         .slice(i + 1)
@@ -838,9 +839,12 @@ export function ReviewPage({ documentId }: { documentId: string }) {
           {isPhone ? (
             <ul className="review-cards">
               {visible.map(({ row: r, state }) => (
+                // The card is the target of the review shortcuts (A, R, J, K; docs/ux/upload-and-review.md).
+                // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
                 <li
                   key={r.id}
                   className={`review-card ${rowClass(r, state)}`}
+                  // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex
                   tabIndex={0}
                   data-row={r.id}
                   onKeyDown={(e) => onRowKey(e, r)}
@@ -965,7 +969,7 @@ export function ReviewPage({ documentId }: { documentId: string }) {
                       </tr>
                       {showFields && (r.duplicateOf || (r.manual && r.raw)) ? (
                         <tr className="review-subrow">
-                          <td />
+                          <td aria-hidden="true" />
                           <td colSpan={8}>
                             {r.manual ? rawLine(r) : null}
                             {duplicateLine(r)}

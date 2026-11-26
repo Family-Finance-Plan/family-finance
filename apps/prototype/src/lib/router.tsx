@@ -96,5 +96,7 @@ export function Link({ to, onClick, ...rest }: LinkProps) {
     e.preventDefault();
     navigate(to);
   };
+  // Content comes in through `children` in `rest`.
+  // oxlint-disable-next-line jsx-a11y/anchor-has-content
   return <a href={`#${to}`} onClick={handle} {...rest} />;
 }

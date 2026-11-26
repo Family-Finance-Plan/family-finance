@@ -9,6 +9,7 @@ import {
   useContext,
   useMemo,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -114,7 +115,9 @@ export function StoreProvider({
     };
   }, []);
   const stateRef = useRef(state);
-  stateRef.current = state;
+  useLayoutEffect(() => {
+    stateRef.current = state;
+  });
   const setState = useCallback((update: (s: AppState) => AppState) => {
     setRaw((s) => {
       const next = update(s);

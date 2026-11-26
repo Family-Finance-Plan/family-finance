@@ -11,7 +11,7 @@ describe("ServerStatus", () => {
 
   it("shows that the server is up when /api/health returns ok", async () => {
     const fetchMock = vi
-      .fn()
+      .fn<typeof fetch>()
       .mockResolvedValue(Response.json({ status: "ok" }));
     vi.stubGlobal("fetch", fetchMock);
 

@@ -80,7 +80,7 @@ export function monthTotals(
 export function monthsWithData(transactions: readonly Transaction[]): string[] {
   return [
     ...new Set(transactions.filter(isActive).map((t) => monthOf(t.date))),
-  ].sort();
+  ].toSorted();
 }
 
 /** Every month from the earliest with data to `currentMonth`, oldest first. */
@@ -143,7 +143,7 @@ export function categoryBreakdown(
           ? 0
           : Math.floor((amount * 100) / categorizedTotal),
     }))
-    .sort((a, b) => b.amount - a.amount);
+    .toSorted((a, b) => b.amount - a.amount);
   return { rows, notItemized, uncategorized, categorizedTotal };
 }
 
@@ -362,10 +362,10 @@ export function groupByMonth(
     else groups.set(m, [t]);
   }
   return [...groups.entries()]
-    .sort(([a], [b]) => b.localeCompare(a))
+    .toSorted(([a], [b]) => b.localeCompare(a))
     .map(([month, rows]) => ({
       month,
-      rows: [...rows].sort(
+      rows: rows.toSorted(
         (a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id),
       ),
     }));

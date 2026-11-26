@@ -13,10 +13,10 @@ describe("demo data (demo-data.md generation notes)", () => {
       expect(Number.isSafeInteger(t.amountAgorot)).toBe(true);
       expect(t.amountAgorot).toBeGreaterThan(0);
     }
-    for (const r of doc006Rows()) {
-      if (r.fields.amountAgorot !== undefined)
-        expect(Number.isSafeInteger(r.fields.amountAgorot)).toBe(true);
-    }
+    const parsedAmounts = doc006Rows()
+      .map((r) => r.fields.amountAgorot)
+      .filter((a) => a !== undefined);
+    for (const a of parsedAmounts) expect(Number.isSafeInteger(a)).toBe(true);
   });
 
   it("gives every future item a certainty", () => {
@@ -43,8 +43,7 @@ describe("demo data (demo-data.md generation notes)", () => {
 
   it("references only known categories and stays on or before DEMO_TODAY", () => {
     for (const t of demoTransactions) {
-      if (t.categoryId !== null)
-        expect(getCategory(t.categoryId)).toBeDefined();
+      expect(t.categoryId === null || getCategory(t.categoryId)).toBeTruthy();
       expect(t.date <= DEMO_TODAY).toBe(true);
     }
   });
