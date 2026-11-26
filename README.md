@@ -15,10 +15,12 @@ pnpm bootstrap
 
 This installs the dependencies and starts the API (http://127.0.0.1:3000, under `/api`) and the web app together. Open http://localhost:5173. The web dev server proxies `/api` to the API, so the browser sees one origin.
 
+The clickable UX prototype (demo data only, no backend) runs at http://127.0.0.1:5174.
+
 The API listens on `127.0.0.1:3000` by default. The `HOST` and `PORT` environment variables override this (the hosting platform sets them); nothing needs to be set locally.
 
 Other commands, run from the repo root:
-- `pnpm dev` – start the API and the web app in parallel
+- `pnpm dev` – start the API, the web app and the prototype in parallel
 - `pnpm build` – build all packages
 - `pnpm typecheck` – strict TypeScript check of the whole workspace (`tsc -b`)
 - `pnpm test` – run the Vitest suites of all packages
