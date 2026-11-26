@@ -23,7 +23,7 @@ A pnpm workspace with three apps and one shared package.
 - The root `tsconfig.json` lists project references and `tsc -b` builds them in order (`pnpm typecheck`). `packages/contracts` emits declarations only; `apps/api` compiles to CommonJS in `dist/`; `apps/web` is typechecked by `tsc` and bundled by Vite.
 - TypeScript 7 (native compiler) has no classic compiler API, so the Nest CLI is not used. The API builds with `tsc -b`, and `pnpm dev` runs `tsc -b --watch` with `node --watch dist/main.js`.
 - Vitest runs in every package (`pnpm test`). `apps/api` uses `unplugin-swc` so Nest decorators and their metadata work in tests; `apps/web` uses jsdom and Testing Library.
-- Tests compile the API with SWC, while the shipped API (`dist/`) is emitted by `tsc` (TypeScript 7), so the tests do not exercise the emitted output. A smoke test of `dist/main.js` should be added with CI (T2).
+- Tests compile the API with SWC, while the shipped API (`dist/`) is emitted by `tsc` (TypeScript 7), so the tests do not exercise the emitted output. CI (T2) covers this with `tools/smoke-api.mjs`, which starts the built `dist/main.js` and checks `GET /api/health`.
 
 ## Data model
 None yet. There is no database or persistence in T1. The data model (a separate SQLite file per tenant, accessed only through the Repository layer) arrives with the tenancy and Repository tasks (ADR-001, ADR-006) and will be described here then.
