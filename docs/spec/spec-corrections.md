@@ -52,3 +52,8 @@ Updated 2026-11-23: the permission matrix, file size and source retention, the d
 | D16 | Test statements | The owner supplies the examples. They must be synthetic or fully redacted, because the repo is public |
 | D17 | Requirement priorities | No per-requirement priority labels in v0.1. Everything in the v0.1 scope (D14) is Must. Priorities are revisited when v0.2 is planned |
 | D15 | Hosting cost and backup storage | Open. Devops presents prices before Staging and backups are built (ADR-009) |
+
+## F. Requirements added by the owner after the spec
+| ID | Phase | Requirement | Source |
+|---|---|---|---|
+| FR-116 | v0.2 (forecast) | The user can remove a future row from the forecast so it is not counted in forecast totals or on the Timeline, for example an expected expense that will not happen. The removal is recoverable (like D11) and kept in the item's history (FR-72, FR-73, R-010), never a silent delete. For a recurring item the user chooses: this month only, or this month and later. Removing a future row never touches actual transactions | Owner, UX1 review, 2026-11-26 |

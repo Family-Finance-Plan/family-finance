@@ -148,6 +148,7 @@ When the preview is on, the current month's group gets:
   - Buttons "אישור" (disabled until a choice is made) and "ביטול".
   - After "save": toast "הסכום עודכן מ-{month}. הערך הקודם נשמר." After "temporary": the row shows the `הערכה` badge and a small "זמני" tag with a "ביטול ההערכה" link.
   - Prototype only: changes live in memory and reset on reload.
+- **Removing a future row (FR-116, v0.2, not in the prototype yet):** the owner wants to drop a future row they don't want counted. Planned shape: a row action "הסרה מהתחזית" with a choice for recurring items ("רק בחודש הזה" / "מהחודש הזה והלאה"), an undo toast, and a "הצגת שורות שהוסרו" toggle to restore them. The row leaves the forecast totals and the chart; its history keeps the removal.
 
 ### `TransactionCardList` (phone)
 
@@ -196,7 +197,7 @@ Prototype: a hidden dev menu (`?state=loading|empty|error`) forces each state fo
 
 ## Left out of v0.1
 
-- Forecast, future events, "save vs temporary estimate" as real features (phase 2; preview only).
+- Forecast, future events, "save vs temporary estimate" as real features (phase 2; preview only). Removing a future row from the forecast (FR-116) comes with them.
 - Balance line and liquid balance (D12, FR-91, FR-102).
 - Investment and net worth layers (phase 3).
 - Daily granularity inside a month on the chart (FR-83's "rises and falls during the month"): later, with the balance line.
